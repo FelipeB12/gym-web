@@ -6,21 +6,26 @@ const Register = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
+  const [error, setError] = useState('');
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError('');
     try {
+      console.log('Attempting to register...');
       const response = await axios.post('http://localhost:5000/api/auth/register', {
         name,
         email,
-        password
+        password,
+        role: 'client'
       });
-      console.log('Registration successful:', response.data);
-      navigate('/dashboard'); // Redirect to dashboard after successful registration
+      console.log('Registration response:', response.data);
+      localStorage.setItem('token', response.data.token);
+      navigate('/dashboard');
     } catch (error) {
       console.error('Registration error:', error.response?.data || error.message);
-      // Handle registration error (e.g., show error message to user)
+      setError(error.response?.data?.msg || 'An error occurred during registration');
     }
   };
 
@@ -28,12 +33,14 @@ const Register = () => {
     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
       <form onSubmit={handleSubmit} style={{ width: '300px' }}>
         <h2>GYM APP - Register</h2>
+        {error && <p style={{ color: 'red' }}>{error}</p>}
         <input
           type="text"
           placeholder="Nombre"
           value={name}
           onChange={(e) => setName(e.target.value)}
           style={{ width: '100%', marginBottom: '10px', padding: '5px' }}
+          autoComplete="name"
         />
         <input
           type="email"
@@ -41,6 +48,7 @@ const Register = () => {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           style={{ width: '100%', marginBottom: '10px', padding: '5px' }}
+          autoComplete="email"
         />
         <input
           type="password"
@@ -48,6 +56,7 @@ const Register = () => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           style={{ width: '100%', marginBottom: '10px', padding: '5px' }}
+          autoComplete="new-password"
         />
         <button type="submit" style={{ width: '100%', padding: '10px', backgroundColor: 'white', color: 'rgb(25, 25, 25)', marginBottom: '10px' }}>
           Registrarme

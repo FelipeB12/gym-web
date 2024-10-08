@@ -23,6 +23,7 @@ const Landing = () => {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           style={{ width: '100%', marginBottom: '10px', padding: '5px' }}
+          autoComplete="username"
         />
         <input
           type="password"
@@ -30,6 +31,7 @@ const Landing = () => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           style={{ width: '100%', marginBottom: '10px', padding: '5px' }}
+          autoComplete="current-password"
         />
         <button type="submit" style={{ width: '100%', padding: '10px', backgroundColor: 'white', color: 'rgb(25, 25, 25)', marginBottom: '10px' }}>
           Login
