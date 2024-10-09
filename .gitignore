@@ -1,2 +1,4 @@
 mongodb-compass_1.43.5_amd64.deb
 *.deb
+node_modules
+client/node_modules

@@ -11,6 +11,10 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!name || !email || !password) {
+      setError('Please fill in all fields');
+      return;
+    }
     setError('');
     try {
       console.log('Attempting to register...');
@@ -19,13 +23,29 @@ const Register = () => {
         email,
         password,
         role: 'client'
+      }, {
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        withCredentials: true
       });
       console.log('Registration response:', response.data);
       localStorage.setItem('token', response.data.token);
       navigate('/dashboard');
     } catch (error) {
-      console.error('Registration error:', error.response?.data || error.message);
-      setError(error.response?.data?.msg || 'An error occurred during registration');
+      console.error('Registration error:', error);
+      if (error.response) {
+        console.error('Error response:', error.response.data);
+        console.error('Error status:', error.response.status);
+        console.error('Error headers:', error.response.headers);
+        setError(error.response.data.msg || error.response.data.error || 'An error occurred during registration');
+      } else if (error.request) {
+        console.error('Error request:', error.request);
+        setError('No response received from the server. Please try again.');
+      } else {
+        console.error('Error message:', error.message);
+        setError('An unexpected error occurred. Please try again.');
+      }
     }
   };
 

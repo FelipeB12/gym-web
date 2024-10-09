@@ -1,27 +1,72 @@
 const express = require('express');
+const cors = require('cors');
 const mongoose = require('mongoose');
-const cors = require('cors');  // Make sure this line is present
 const app = express();
 
-// Enable CORS for all routes
-app.use(cors({
-  origin: 'http://localhost:3000',  // Allow requests from your React app
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  allowedHeaders: ['Content-Type', 'Authorization']
-}));
+// Logging middleware
+//app.use((req, res, next) => {
+//  console.log(`${new Date().toISOString()} - ${req.method} ${req.url}`);
+//  next();
+//});
 
-// Connect to MongoDB
-mongoose.connect('mongodb://localhost/your_database', { useNewUrlParser: true, useUnifiedTopology: true })
-  .then(() => console.log('Connected to MongoDB'))
-  .catch(err => console.error('Could not connect to MongoDB', err));
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).send('Something broke!');
+});
 
+mongoose.connect('mongodb://localhost:27017/gym_db', { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => console.log('MongoDB connected...'))
+  .catch(err => {
+    console.error('MongoDB connection error:', err);
+    process.exit(1);
+  });
 
+// CORS configuration
+const corsOptions = {
+  origin: 'http://localhost:3000',
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true,
+  optionsSuccessStatus: 204
+};
+
+// Apply CORS middleware
+app.use(cors(corsOptions));
+
+// Handle preflight requests
+app.options('*', cors(corsOptions));
 
 // Middleware
 app.use(express.json());
 
+app.use((err, req, res, next) => {
+  console.error('Unhandled error:', err);
+  res.status(500).json({ msg: 'Server error', error: err.message });
+});
+
+// Connect to MongoDB
+mongoose.connect('mongodb://localhost/gym_db', {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+})
+.then(() => console.log('Connected to MongoDB'))
+.catch(err => console.error('Failed to connect to MongoDB:', err.message));
+
+// Add this before your routes
+app.options('*', (req, res) => {
+  res.sendStatus(200);
+});
+
 // Routes
-// Add your routes here
+const authRoutes = require('./middleware/auth');
+app.use('/api/auth', authRoutes);
+
+// Test route
+app.get('/test', (req, res) => {
+  res.json({ message: 'CORS is working' });
+});
 
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});

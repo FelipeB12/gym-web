@@ -1,3 +1,9 @@
+const express = require('express');
+const router = express.Router();
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const User = require('../models/User');
+
 router.post('/register', async (req, res) => {
   console.log('Received registration request:', req.body);
   try {
@@ -24,7 +30,7 @@ router.post('/register', async (req, res) => {
 
     // Save user to database
     await user.save();
-    console.log('New user created:', user.email);
+    console.log('New user created:', email);
 
     // Create and return a JWT
     const payload = {
@@ -39,14 +45,18 @@ router.post('/register', async (req, res) => {
       process.env.JWT_SECRET || 'your_jwt_secret',
       { expiresIn: '1h' },
       (err, token) => {
-        if (err) throw err;
-        console.log('JWT created for user:', user.email);
+        if (err) {
+          console.error('JWT sign error:', err);
+          throw err;
+        }
+        console.log('JWT created for user:', email);
         res.json({ token });
       }
     );
   } catch (err) {
     console.error('Server error during registration:', err.message);
-    console.error(err.stack);  // Add this line to get the full error stack
     res.status(500).send('Server error');
   }
 });
+
+module.exports = router;

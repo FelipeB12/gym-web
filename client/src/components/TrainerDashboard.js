@@ -1,6 +1,5 @@
 import React from 'react';
 import { Routes, Route, Link } from 'react-router-dom';
-import TrainerProfile from './TrainerProfile';
 import TrainerClients from './TrainerClients';
 import TrainerSchedule from './TrainerSchedule';
 import TrainerWorkouts from './TrainerWorkouts';
