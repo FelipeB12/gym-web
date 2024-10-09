@@ -1,17 +1,13 @@
 const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
+const authRoutes = require('./routes/auth'); // Make sure this path is correct
 const app = express();
 
-// Logging middleware
-//app.use((req, res, next) => {
-//  console.log(`${new Date().toISOString()} - ${req.method} ${req.url}`);
-//  next();
-//});
-
-app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).send('Something broke!');
+// Add this near the top of the file, after your imports
+app.use((req, res, next) => {
+  console.log(`${new Date().toISOString()} - ${req.method} ${req.url}`);
+  next();
 });
 
 mongoose.connect('mongodb://localhost:27017/gym_db', { useNewUrlParser: true, useUnifiedTopology: true })
@@ -52,13 +48,20 @@ mongoose.connect('mongodb://localhost/gym_db', {
 .then(() => console.log('Connected to MongoDB'))
 .catch(err => console.error('Failed to connect to MongoDB:', err.message));
 
+
+// Add this just before your routes
+console.log('Available routes:');
+app._router.stack.forEach(function(r){
+  if (r.route && r.route.path){
+    console.log(r.route.path)
+  }
+});
 // Add this before your routes
 app.options('*', (req, res) => {
   res.sendStatus(200);
 });
 
 // Routes
-const authRoutes = require('./middleware/auth');
 app.use('/api/auth', authRoutes);
 
 // Test route

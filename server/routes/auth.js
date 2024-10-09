@@ -1,5 +1,10 @@
+const express = require('express');
+const router = express.Router();
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const User = require('../models/User');
 
-
+// Registration route
 router.post('/register', async (req, res) => {
     console.log('Received registration request:', req.body);
     try {
@@ -57,3 +62,45 @@ router.post('/register', async (req, res) => {
         res.status(500).json({ msg: 'Server error', error: err.message, stack: err.stack });
       }
   });
+
+// Login route
+router.post('/login', async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    // Check if user exists
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(400).json({ msg: 'Invalid credentials' });
+    }
+
+    // Check password
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res.status(400).json({ msg: 'Invalid credentials' });
+    }
+
+    // Create and return a JWT
+    const payload = {
+      user: {
+        id: user.id,
+        role: user.role
+      }
+    };
+
+    jwt.sign(
+      payload,
+      process.env.JWT_SECRET || 'your_jwt_secret',
+      { expiresIn: '1h' },
+      (err, token) => {
+        if (err) throw err;
+        res.json({ token });
+      }
+    );
+  } catch (err) {
+    console.error('Server error during login:', err);
+    res.status(500).json({ msg: 'Server error', error: err.message });
+  }
+});
+
+module.exports = router;

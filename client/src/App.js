@@ -14,10 +14,8 @@ const App = () => {
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (token) {
-      // Here you would typically verify the token with your backend
-      // For now, we'll just assume it's valid
       setIsAuthenticated(true);
-      // You would also get the user role from the token or a separate API call
+      // You would typically decode the token here to get the user role
       setUserRole('client'); // or 'trainer' based on the user's role
     }
   }, []);
@@ -29,10 +27,20 @@ const App = () => {
         <Route path="/register" element={<Register />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route
-          path="/dashboard"
+          path="/ClientDashboard/*"
           element={
             isAuthenticated ? (
-              userRole === 'client' ? <ClientDashboard /> : <TrainerDashboard />
+              userRole === 'client' ? <ClientDashboard /> : <Navigate to="/" replace />
+            ) : (
+              <Navigate to="/" replace />
+            )
+          }
+        />
+        <Route
+          path="/TrainerDashboard/*"
+          element={
+            isAuthenticated ? (
+              userRole === 'trainer' ? <TrainerDashboard /> : <Navigate to="/" replace />
             ) : (
               <Navigate to="/" replace />
             )
