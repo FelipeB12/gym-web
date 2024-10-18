@@ -84,7 +84,8 @@ router.post('/login', async (req, res) => {
     const payload = {
       user: {
         id: user.id,
-        role: user.role
+        role: user.role,
+        name: user.name // Include the user's name in the payload
       }
     };
 
@@ -94,7 +95,7 @@ router.post('/login', async (req, res) => {
       { expiresIn: '1h' },
       (err, token) => {
         if (err) throw err;
-        res.json({ token });
+        res.json({ token, name: user.name }); // Return the token and user's name - Ensure this returns the user's name
       }
     );
   } catch (err) {
