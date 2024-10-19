@@ -5,6 +5,8 @@ import ClientDashboard from './components/ClientDashboard';
 import TrainerDashboard from './components/TrainerDashboard';
 import Register from './components/Register';
 import ForgotPassword from './components/ForgotPassword';
+import ClientProfile from './components/ClientProfile'; // Import ClientProfile
+import Layout from './components/Layout'; // Import Layout
 import './styles.css';
 
 const App = () => {
@@ -18,8 +20,6 @@ const App = () => {
     setUserName(name); // Set the user's name
     setUserRole('client'); // Set user role as needed
   };
-
-
 
   return (
     <Router>
@@ -38,7 +38,23 @@ const App = () => {
             path="/ClientDashboard/*"
             element={
               isAuthenticated ? (
-                userRole === 'client' ? <ClientDashboard userName={userName} /> : <Navigate to="/" replace />
+                userRole === 'client' ? (
+                  <Layout>
+                    <ClientDashboard userName={userName} />
+                  </Layout>
+                ) : <Navigate to="/" replace />
+              ) : (
+                <Navigate to="/" replace />
+              )
+            }
+          />
+          <Route
+            path="/ClientProfile"
+            element={
+              isAuthenticated ? (
+                <Layout>
+                  <ClientProfile />
+                </Layout>
               ) : (
                 <Navigate to="/" replace />
               )
