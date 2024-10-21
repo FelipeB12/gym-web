@@ -1,8 +1,9 @@
 import React from 'react';
-import { Routes, Route, Link } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import ClientProfile from './ClientProfile';
 import ClientWorkouts from './ClientWorkouts';
 import ClientAIChat from './ClientAIChat';
+import ClientAppointment from './ClientAppointment';
 import ClientProgress from './ClientProgress';
 
 const ClientDashboard = ({ userName }) => { // Receive userName as a prop
@@ -38,29 +39,12 @@ const ClientDashboard = ({ userName }) => { // Receive userName as a prop
         <button className="button">Empezar</button>
       </div>
 
-      <nav className="bottom-nav">
-        <Link to="/ClientDashboard" className="nav-icon">
-          <span role="img" aria-label="Home">🏠</span> {/* Home Icon */}
-        </Link>
-        <Link to="/ClientWorkouts" className="nav-icon">
-          <span role="img" aria-label="Workouts">🏋️‍♂️</span> {/* Workouts Icon */}
-        </Link>
-        <Link to="/ClientAIChat" className="nav-icon">
-          <span role="img" aria-label="Nutrition">💬</span> {/* Nutrition Icon */}
-        </Link>
-        <Link to="/ClientProgress" className="nav-icon">
-          <span role="img" aria-label="Progress">📈</span> {/* Progress Icon */}
-        </Link>
-        <Link to="/ClientProfile" className="nav-icon">
-          <span role="img" aria-label="Profile">👤</span>  {/* Profile Icon */}
-        </Link>
-      </nav>
-
       <Routes>
         <Route path="clientprofile" element={<ClientProfile />} />
         <Route path="clientworkouts" element={<ClientWorkouts />} />
-        <Route path="clientiachat" element={<ClientAIChat />} />
+        <Route path="clientaichat" element={<ClientAIChat />} />
         <Route path="clientprogress" element={<ClientProgress />} />
+        <Route path="clientappointment" element={<ClientAppointment />} />
       </Routes>
     </React.Fragment>
   );

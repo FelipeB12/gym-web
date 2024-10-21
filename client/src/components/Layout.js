@@ -20,6 +20,9 @@ const Layout = ({ children }) => {
         <Link to="/ClientProfile" className="nav-icon">
           <span role="img" aria-label="Profile">👤</span>  {/* Profile Icon */}
         </Link>
+        <Link to="/ClientAppointment" className="nav-icon">
+          <span role="img" aria-label="Appointment">📅</span>  {/* Appointment Icon */}
+        </Link>
       </nav>
       {children} {/* Render the current view here */}
     </div>

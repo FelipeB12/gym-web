@@ -6,6 +6,10 @@ import TrainerDashboard from './components/TrainerDashboard';
 import Register from './components/Register';
 import ForgotPassword from './components/ForgotPassword';
 import ClientProfile from './components/ClientProfile'; // Import ClientProfile
+import ClientWorkouts from './components/ClientWorkouts'; // Import ClientWorkouts
+import ClientAIChat from './components/ClientAIChat'; // Import ClientAIChat
+import ClientProgress from './components/ClientProgress'; // Import ClientProgress
+import ClientAppointment from './components/ClientAppointment'; // Import ClientAppointment
 import Layout from './components/Layout'; // Import Layout
 import './styles.css';
 
@@ -54,6 +58,54 @@ const App = () => {
               isAuthenticated ? (
                 <Layout>
                   <ClientProfile />
+                </Layout>
+              ) : (
+                <Navigate to="/" replace />
+              )
+            }
+          />
+          <Route
+            path="/ClientWorkouts"
+            element={
+              isAuthenticated ? (
+                <Layout>
+                  <ClientWorkouts />
+                </Layout>
+              ) : (
+                <Navigate to="/" replace />
+              )
+            }
+          />
+          <Route
+            path="/ClientAIChat"
+            element={
+              isAuthenticated ? (
+                <Layout>
+                  <ClientAIChat />
+                </Layout>
+              ) : (
+                <Navigate to="/" replace />
+              )
+            }
+          />
+          <Route
+            path="/ClientProgress"
+            element={
+              isAuthenticated ? (
+                <Layout>
+                  <ClientProgress />
+                </Layout>
+              ) : (
+                <Navigate to="/" replace />
+              )
+            }
+          />
+          <Route
+            path="/ClientAppointment"
+            element={
+              isAuthenticated ? (
+                <Layout>
+                  <ClientAppointment />
                 </Layout>
               ) : (
                 <Navigate to="/" replace />

@@ -311,3 +311,172 @@ body {
 .profile-form button:hover {
   background-color: #a8b8ca; /* Change background color on hover */
 }
+
+
+
+/*  CHAT IA  */
+
+/* client/src/components/ClientAIChat.css */
+
+.chat-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%; /* Full height of the parent */
+  padding: 20px;
+  background-color: #2c2c2c; /* Dark background for the chat */
+}
+
+.chat-box {
+  background-color: #fff; /* White background for the chat box */
+  border-radius: 10px; /* Rounded corners */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
+  width: 100%;
+  max-width: 600px; /* Maximum width of the chat box */
+  display: flex;
+  flex-direction: column;
+}
+
+.messages {
+  padding: 15px;
+  overflow-y: auto; /* Allow scrolling if messages overflow */
+  flex-grow: 1; /* Take up available space */
+  border-bottom: 1px solid #ccc; /* Seamless border between messages and input */
+}
+
+.message {
+  margin-bottom: 10px; /* Space between messages */
+  padding: 10px;
+  border-radius: 5px; /* Rounded corners for messages */
+}
+
+.message.user {
+  background-color: #3c5846; /* Darker background for user messages */
+  color: white; /* White text for user messages */
+  align-self: flex-end; /* Align user messages to the right */
+}
+
+.input-container {
+  display: flex;
+  padding: 10px; /* Padding for the input area */
+}
+
+.chat-input {
+  flex-grow: 1; /* Take up available space */
+  padding: 10px; /* Padding inside the input */
+  border: 1px solid #ccc; /* Light border */
+  border-radius: 5px; /* Rounded corners */
+  margin-right: 10px; /* Space between input and button */
+}
+
+.send-button {
+  padding: 10px 15px; /* Padding for the button */
+  background-color: #3c5846; /* Button background color */
+  color: white; /* White text color */
+  border: none; /* Remove default border */
+  border-radius: 5px; /* Rounded corners for the button */
+  cursor: pointer; /* Pointer cursor on hover */
+  transition: background-color 0.3s; /* Smooth transition for background color */
+}
+
+.send-button:hover {
+  background-color: #a8b8ca; /* Change background color on hover */
+}
+
+
+/* CLIENT PROGRESS  */
+
+/* client/src/components/ClientProgress.css */
+
+.progress-container {
+  padding: 20px;
+  background-color: #f9f9f9; /* Light background for the container */
+  border-radius: 10px; /* Rounded corners */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+
+.progress-table {
+  width: 100%; /* Full width of the container */
+  border-collapse: collapse; /* Remove space between borders */
+}
+
+.progress-table th, .progress-table td {
+  border: 1px solid #ccc; /* Light border for table cells */
+  padding: 10px; /* Padding inside cells */
+  text-align: center; /* Center text in cells */
+}
+
+.progress-table th {
+  background-color: #3c5846; /* Dark background for header */
+  color: white; /* White text for header */
+}
+
+.progress-table input {
+  width: 100%; /* Full width for input fields */
+  border: none; /* Remove default border */
+  padding: 5px; /* Padding inside input */
+  border-radius: 5px; /* Rounded corners for input */
+  background-color: #eaeaea; /* Light background for input */
+}
+
+.progress-table input:focus {
+  outline: none; /* Remove default outline */
+  background-color: #fff; /* Change background on focus */
+}
+
+
+/*  CLIENT APPOINTMENT  */
+
+/* client/src/components/ClientAppointment.css */
+
+.appointment-container {
+  padding: 20px;
+  background-color: #f9f9f9; /* Light background for the container */
+  border-radius: 10px; /* Rounded corners */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  text-align: center; /* Center text */
+}
+
+.appointment-selection {
+  margin: 20px 0; /* Space around the selection area */
+}
+
+.appointment-select {
+  padding: 10px; /* Padding inside the select */
+  margin: 0 10px; /* Space between selects */
+  border: 1px solid #ccc; /* Light border */
+  border-radius: 5px; /* Rounded corners */
+}
+
+.book-button {
+  padding: 10px 15px; /* Padding for the button */
+  background-color: #3c5846; /* Button background color */
+  color: white; /* White text color */
+  border: none; /* Remove default border */
+  border-radius: 5px; /* Rounded corners for the button */
+  cursor: pointer; /* Pointer cursor on hover */
+  transition: background-color 0.3s; /* Smooth transition for background color */
+}
+
+.book-button:hover {
+  background-color: #a8b8ca; /* Change background color on hover */
+}
+
+.next-booking {
+  margin-top: 20px; /* Space above the next booking section */
+}
+
+.booking-details {
+  display: flex;
+  justify-content: center; /* Center the booking details */
+  align-items: center; /* Center vertically */
+}
+
+.cancel-button {
+  margin-left: 10px; /* Space between booking details and cancel button */
+  background: none; /* No background */
+  border: none; /* Remove default border */
+  color: #ff4d4d; /* Red color for cancel button */
+  cursor: pointer; /* Pointer cursor on hover */
+  font-size: 1.2rem; /* Font size for cancel button */
+}

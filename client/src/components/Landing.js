@@ -23,7 +23,7 @@ const Landing = ({ onLogin }) => {
         }
       );
 
-      console.log('Login response:', response.data); // Log the entire response
+       // console.log('Login response:', response.data);Log the entire response
 
 
       if (response.data && response.data.token) {
