@@ -11,7 +11,7 @@ const ClientAppointment = () => {
 
   const handleBook = () => {
     if (selectedDay && selectedHour) {
-      const bookingDate = `${selectedDay} ${selectedHour}`;
+      const bookingDate = `${selectedDay} at ${selectedHour}`;
       setNextBooking(bookingDate); // Set the next booking
       setSelectedDay(''); // Reset selection
       setSelectedHour(''); // Reset selection
@@ -19,16 +19,24 @@ const ClientAppointment = () => {
   };
 
   return (
-    <div className="appointment-container">
-      <h1>Book Appointment</h1>
+    <div className="appointment-container common-form">
+      <h1 className="common-title">Book an Appointment</h1>
       <div className="appointment-selection">
-        <select value={selectedDay} onChange={(e) => setSelectedDay(e.target.value)} className="appointment-select">
+        <select 
+          value={selectedDay} 
+          onChange={(e) => setSelectedDay(e.target.value)} 
+          className="appointment-select"
+        >
           <option value="" disabled>Select Day</option>
           {days.map((day, index) => (
             <option key={index} value={day}>{day}</option>
           ))}
         </select>
-        <select value={selectedHour} onChange={(e) => setSelectedHour(e.target.value)} className="appointment-select">
+        <select 
+          value={selectedHour} 
+          onChange={(e) => setSelectedHour(e.target.value)} 
+          className="appointment-select"
+        >
           <option value="" disabled>Select Hour</option>
           {hours.map((hour, index) => (
             <option key={index} value={hour}>{hour}</option>

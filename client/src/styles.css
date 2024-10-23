@@ -12,7 +12,6 @@ body {
 .landing-form {
   border-radius: 30px; /* Rounds the corners of the form */
   padding: 20px; /* Optional: adds padding inside the form */
-
 }
 
 .landing-form input {
@@ -23,7 +22,6 @@ body {
 }
 
 .landing-form button {
-  display: block; /* Make the button a block element */
   margin: 0 auto; /* Center the button */
   width: '50%'; 
   margin-bottom: 20px;
@@ -132,8 +130,10 @@ body {
 
 .app-container {
   display: flex;
-  flex-direction: column;
-  min-height: 100vh; /* Ensure the container takes full height */
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+  min-height: 100vh; /* Full viewport height */
+  background-color: rgb(25, 25, 25); /* Optional: match the background color */
 }
 
 .app-header {
@@ -176,17 +176,14 @@ body {
 
 .member-id {
   font-size: 1.2rem;
-  color: #666;
 }
 
 .days-left {
-  color: #666;
   font-size: 0.9rem;
 }
 
 .title {
   font-size: 1.5rem;
-  color: #333;
   margin: 1rem 0;
 }
 
@@ -224,14 +221,12 @@ body {
 }
 
 .stat-label {
-  color: #666;
   font-size: 0.9rem;
   margin-bottom: 0.5rem;
 }
 
 .stat-value {
   font-size: 1.2rem;
-  color: #333;
 }
 
 .button {
@@ -281,7 +276,6 @@ body {
   border: 1px solid #ccc; /* Light border */
   border-radius: 5px; /* Rounded corners for inputs */
   background-color: #ffffff; /* White background for inputs */
-  color: #333; /* Dark text color */
   transition: border-color 0.3s; /* Smooth transition for border color */
 }
 
@@ -480,3 +474,185 @@ body {
   cursor: pointer; /* Pointer cursor on hover */
   font-size: 1.2rem; /* Font size for cancel button */
 }
+
+/* Common Styles */
+.common-form {
+  max-width: 400px; /* Maximum width of forms */
+  margin: 0 auto; /* Center the form horizontally */
+  padding: 20px; /* Padding inside the form */
+  background-color: #2c2c2c; /* Dark background for the form */
+  border-radius: 10px; /* Rounded corners */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5); /* Subtle shadow for depth */
+}
+
+.common-form h1, .common-form h2 {
+  color: #ffffff; /* White text for titles */
+  text-align: center; /* Center titles */
+}
+
+.common-form input {
+  width: calc(100% - 20px); /* Full width minus padding */
+  padding: 10px; /* Padding inside inputs */
+  border: 1px solid #ccc; /* Light border */
+  border-radius: 5px; /* Rounded corners for inputs */
+  background-color: #ffffff; /* White background for inputs */
+  transition: border-color 0.3s; /* Smooth transition for border color */
+  margin-bottom: 10px; /* Space below each input */
+}
+
+.common-form input:focus {
+  border-color: #3c5846; /* Change border color on focus */
+  outline: none; /* Remove default outline */
+}
+
+.common-form button {
+  width: 100%; /* Full width for buttons */
+  padding: 10px; /* Padding inside buttons */
+  background-color: #3c5846; /* Button background color */
+  color: white; /* White text color */
+  border: none; /* Remove default border */
+  border-radius: 5px; /* Rounded corners for buttons */
+  cursor: pointer; /* Pointer cursor on hover */
+  transition: background-color 0.3s; /* Smooth transition for background color */
+}
+
+.common-form button:hover {
+  background-color: #a8b8ca; /* Change background color on hover */
+}
+
+/* Common Title Styles */
+.common-title {
+  font-size: 1.5rem; /* Title size */
+  margin: 1rem 0; /* Margin around titles */
+  text-align: center; /* Center titles */
+}
+
+.link-container {
+  display: flex;
+  justify-content: space-between; /* Space between links */
+  font-size: 14px; /* Font size for links */
+}
+
+.link {
+  color: white; /* Link color */
+  text-decoration: none; /* Remove underline from links */
+}
+
+.link:hover {
+  color: #f0a500; /* Change color on hover */
+}
+
+.error-message {
+  color: #ff4d4d; /* Red color for error messages */
+  font-size: 0.9rem; /* Slightly smaller font size */
+  margin-top: 5px; /* Space above error messages */
+}
+
+/* Common Form Styles */
+.common-form {
+  max-width: 400px; /* Maximum width of forms */
+  margin: 0 auto; /* Center the form horizontally */
+  padding: 20px; /* Padding inside the form */
+  background-color: #2c2c2c; /* Dark background for the form */
+  border-radius: 10px; /* Rounded corners */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5); /* Subtle shadow for depth */
+}
+
+/* Common Title Styles */
+.common-title {
+  font-size: 1.5rem; /* Title size */
+  margin: 1rem 0; /* Margin around titles */
+  text-align: center; /* Center titles */
+}
+
+/* Common Input Styles */
+.common-input, .common-select {
+  width: calc(100% - 20px); /* Full width minus padding */
+  padding: 10px; /* Padding inside inputs */
+  border: 1px solid #ccc; /* Light border */
+  border-radius: 5px; /* Rounded corners for inputs */
+  background-color: #ffffff; /* White background for inputs */
+  transition: border-color 0.3s; /* Smooth transition for border color */
+  margin-bottom: 10px; /* Space below each input */
+}
+
+
+
+/* Common Button Styles */
+.common-button {
+  width: 100%; /* Full width for buttons */
+  padding: 10px; /* Padding inside buttons */
+  background-color: #3c5846; /* Button background color */
+  color: white; /* White text color */
+  border: none; /* Remove default border */
+  border-radius: 5px; /* Rounded corners for buttons */
+  cursor: pointer; /* Pointer cursor on hover */
+  transition: background-color 0.3s; /* Smooth transition for background color */
+}
+
+/* Error Message Styles */
+.error-message {
+  color: #ff4d4d; /* Red color for error messages */
+  font-size: 0.9rem; /* Slightly smaller font size */
+  margin-top: 5px; /* Space above error messages */
+}
+
+/* Link Container Styles */
+.link-container {
+  display: flex;
+  justify-content: space-between; /* Space between links */
+  font-size: 14px; /* Font size for links */
+}
+
+/* Link Styles */
+.link {
+  color: white; /* Link color */
+  text-decoration: none; /* Remove underline from links */
+}
+
+.link:hover {
+  color: #f0a500; /* Change color on hover */
+}
+
+/* Gender Selection Styles */
+.gender-selection {
+  display: flex; /* Use Flexbox to align items horizontally */
+  justify-content: space-between; /* Space items evenly */
+  margin-bottom: 10px; /* Space below the gender selection */
+}
+
+.gender-button {
+  flex: 1; /* Allow buttons to take equal space */
+  padding: 10px 0; /* Add vertical padding for button appearance */
+  border: 1px solid #ccc; /* Light border */
+  border-radius: 5px; /* Rounded corners */
+  background-color: transparent; /* Transparent background */
+  color: white; /* Text color */
+  cursor: pointer; /* Pointer cursor on hover */
+  transition: background-color 0.3s, border-color 0.3s; /* Smooth transition */
+  text-align: center; /* Center text inside the button */
+}
+
+.gender-button:hover {
+  background-color: rgba(255, 255, 255, 0.2); /* Change background on hover */
+}
+
+.gender-button.active {
+  background-color: #f0a500; /* Active button color */
+  border-color: #f0a500; /* Active border color */
+}
+
+/* Dropdown Styles */
+.common-select {
+  width: 100%; /* Change to 100% to ensure full width */
+  padding: 10px; /* Padding inside dropdown */
+  border: 1px solid #ccc; /* Light border */
+  border-radius: 5px; /* Rounded corners for dropdown */
+  background-color: #ffffff; /* White background for dropdown */
+  margin-bottom: 10px; /* Space below dropdown */
+}
+
+
+
+
+

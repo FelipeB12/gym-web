@@ -17,17 +17,19 @@ const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [userRole, setUserRole] = useState(null);
   const [userName, setUserName] = useState(''); // State for user's name
+  const [membership, setMembership] = useState(''); // State for user's membership
 
-  const handleLogin = (name) => {
+  const handleLogin = (name, membership) => {
     console.log('User logged in:', name); // Debug log
     setIsAuthenticated(true); // Set to true only on successful login
     setUserName(name); // Set the user's name
     setUserRole('client'); // Set user role as needed
+    setMembership(membership); // Store the membership value
   };
 
   return (
     <Router>
-      <div className="app-container">
+      <div className="title">
         {isAuthenticated && ( // Conditionally render the header
           <header className="app-header">
             <h1 className="app-title">GYM <br /> APP</h1>
@@ -44,7 +46,7 @@ const App = () => {
               isAuthenticated ? (
                 userRole === 'client' ? (
                   <Layout>
-                    <ClientDashboard userName={userName} />
+                    <ClientDashboard userName={userName} membership={membership} /> {/* Pass membership here */}
                   </Layout>
                 ) : <Navigate to="/" replace />
               ) : (

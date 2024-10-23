@@ -7,84 +7,175 @@ const Register = () => {
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
   const [error, setError] = useState('');
+  const [successMessage, setSuccessMessage] = useState(''); // New state for success message
+  const [gymType, setGymType] = useState('test-gym');
+  const [gender, setGender] = useState('male');
+  const [age, setAge] = useState('');
+  const [height, setHeight] = useState('');
+  const [weight, setWeight] = useState('');
+  const [objective, setObjective] = useState('strength');
+  const [medicalCondition, setMedicalCondition] = useState('');
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!name || !email || !password) {
-      setError('Please fill in all fields');
+    if (!name || !email || !password || !age || !height || !weight) {
+      setError('Por favor llena todos los campos');
       return;
     }
     setError('');
     try {
-      console.log('Attempting to register...');
-      const response = await axios.post('http://localhost:5000/api/auth/register', {
+      await axios.post('http://localhost:5000/api/auth/register', {
         name,
         email,
         password,
-        role: 'client'
+        role: 'client',
+        gymType,
+        gender,
+        age,
+        height,
+        weight,
+        objective,
+        medicalCondition
       }, {
         headers: {
           'Content-Type': 'application/json'
         },
         withCredentials: true
       });
-      console.log('Registration response:', response.data);
-      localStorage.setItem('token', response.data.token);
-      navigate('/dashboard');
+      
+      // Set success message
+      setSuccessMessage('Usuario registrado correctamente');
+
+      // Redirect to landing page after 2 seconds
+      setTimeout(() => {
+        navigate('/'); // Redirect to Landing page
+      }, 2000);
+
     } catch (error) {
-      console.error('Registration error:', error);
       if (error.response) {
-        console.error('Error response:', error.response.data);
-        console.error('Error status:', error.response.status);
-        console.error('Error headers:', error.response.headers);
         setError(error.response.data.msg || error.response.data.error || 'An error occurred during registration');
-      } else if (error.request) {
-        console.error('Error request:', error.request);
-        setError('No response received from the server. Please try again.');
       } else {
-        console.error('Error message:', error.message);
         setError('An unexpected error occurred. Please try again.');
       }
     }
   };
 
   return (
-    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-      <form onSubmit={handleSubmit} style={{ width: '300px' }}>
-        <h2>GYM APP - Register</h2>
-        {error && <p style={{ color: 'red' }}>{error}</p>}
-        <input
-          type="text"
-          placeholder="Nombre"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          style={{ width: '100%', marginBottom: '10px', padding: '5px' }}
-          autoComplete="name"
-        />
-        <input
-          type="email"
-          placeholder="Correo electrónico"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          style={{ width: '100%', marginBottom: '10px', padding: '5px' }}
-          autoComplete="email"
-        />
-        <input
-          type="password"
-          placeholder="Contraseña"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          style={{ width: '100%', marginBottom: '10px', padding: '5px' }}
-          autoComplete="new-password"
-        />
-        <button type="submit" style={{ width: '100%', padding: '10px', backgroundColor: 'white', color: 'rgb(25, 25, 25)', marginBottom: '10px' }}>
-          Registrarme
-        </button>
-        <div style={{ marginTop: '10px', textAlign: 'center' }}>
-          <Link to="/" style={{ color: 'white', textDecoration: 'none' }}>¿Ya tienes una cuenta? Inicia sesión</Link>
-        </div>
-      </form>
+    <div className="app-container">
+      <div className="landing-form common-form">
+        <form onSubmit={handleSubmit}>
+          <h2 className="common-title">GYM APP</h2>
+          {error && <p className="error-message">{error}</p>}
+          {successMessage && <p className="success-message">{successMessage}</p>} {/* Display success message */}
+          <input
+            type="text"
+            placeholder="Nombre"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            className="common-input"
+            autoComplete="name"
+          />
+          <input
+            type="email"
+            placeholder="Correo electrónico"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="common-input"
+            autoComplete="email"
+          />
+          <input
+            type="password"
+            placeholder="Contraseña"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="common-input"
+            autoComplete="new-password"
+          />
+          <select
+            value={gymType}
+            onChange={(e) => setGymType(e.target.value)}
+            className="common-select"
+          >
+            <option value="prueba-gratis">Prueba Gratis</option>
+            <option value="test-gym">Test Gym</option>  
+          </select>
+
+          <p className='title'>Información de progreso</p>
+          
+          <div className="gender-selection">
+            <label className={`gender-button ${gender === 'male' ? 'active' : ''}`}>
+              <input
+                type="radio"
+                value="male"
+                checked={gender === 'male'}
+                onChange={(e) => setGender(e.target.value)}
+                style={{ display: 'none' }}
+              />
+              Hombre
+            </label>
+            <label className={`gender-button ${gender === 'female' ? 'active' : ''}`}>
+              <input
+                type="radio"
+                value="female"
+                checked={gender === 'female'}
+                onChange={(e) => setGender(e.target.value)}
+                style={{ display: 'none' }}
+              />
+              Mujer
+            </label>
+          </div>
+
+          <input
+            type="number"
+            placeholder="Edad"
+            value={age}
+            onChange={(e) => setAge(e.target.value)}
+            className="common-input"
+            autoComplete="age"
+          />
+          <input
+            type="number"
+            placeholder="Altura (cm)"
+            value={height}
+            onChange={(e) => setHeight(e.target.value)}
+            className="common-input"
+            autoComplete="height"
+          />
+          <input
+            type="number"
+            placeholder="Peso (kg)"
+            value={weight}
+            onChange={(e) => setWeight(e.target.value)}
+            className="common-input"
+            autoComplete="weight"
+          />
+          <select
+            value={objective}
+            onChange={(e) => setObjective(e.target.value)}
+            className="common-select"
+          >
+            <option value="strength">Ganar fuerza</option>
+            <option value="lose-weight">Perder peso</option>
+            <option value="gain-weight">Ganar peso</option>
+          </select>
+
+          <textarea
+            placeholder="Condición médica especial, si no aplica escriba: ninguna"
+            value={medicalCondition}
+            onChange={(e) => setMedicalCondition(e.target.value)}
+            className="common-input"
+            rows="3"
+          />
+
+          <button type="submit" className="common-button">
+            Registrarme
+          </button>
+          <div className="link-container">
+            <Link to="/" className="link">¿Ya tienes una cuenta? Inicia sesión</Link>
+          </div>
+        </form>
+      </div>
     </div>
   );
 };

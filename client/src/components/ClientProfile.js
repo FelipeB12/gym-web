@@ -89,7 +89,8 @@ const ClientProfile = () => {
 
   return (
     <div className="container">
-      <form className="profile-form" id="profileForm" onSubmit={handleSubmit}>
+      <form className="common-form" id="profileForm" onSubmit={handleSubmit}>
+        <h1 className="common-title">Profile</h1>
         <div className="form-group">
           <input
             type="text"

@@ -23,12 +23,20 @@ const Landing = ({ onLogin }) => {
         }
       );
 
-       // console.log('Login response:', response.data);Log the entire response
-
+      console.log('Login response:', response.data); // Log the response
 
       if (response.data && response.data.token) {
         localStorage.setItem('token', response.data.token);
-        onLogin(response.data.name); // This should be the user's name
+        
+        // Fetch user data after login
+        const userResponse = await axios.get('http://localhost:5000/api/auth/user', {
+          headers: {
+            'Authorization': `Bearer ${response.data.token}`
+          }
+        });
+
+        // Pass the user's name and membership to the handleLogin function
+        onLogin(userResponse.data.name, userResponse.data.membership); // Update this line
         navigate('/ClientDashboard');
       } else {
         setError('Login failed: No token received');
@@ -40,34 +48,36 @@ const Landing = ({ onLogin }) => {
   };
 
   return (
-    <div className="landing-form">
-      <form onSubmit={handleSubmit}>
-        <h2 className="title">GYM APP</h2>
-        <input
-          type="email"
-          placeholder="Correo electrónico"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          style={{ width: '100%', marginBottom: '10px', padding: '5px' }}
-          autoComplete="username"
-        />
-        <input
-          type="password"
-          placeholder="Contraseña"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          style={{ width: '100%', marginBottom: '10px', padding: '5px' }}
-          autoComplete="current-password"
-        />
-        <button type="submit">
-          Ingresar
-        </button>
-        {error && <p style={{ color: 'red' }}>{error}</p>}
-        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '14px' }}>
-          <Link to="/forgot-password" style={{ color: 'white', textDecoration: 'none' }}>¿Olvidaste tu contraseña?</Link>
-          <Link to="/register" style={{ color: 'white', textDecoration: 'none' }}>Registrarme</Link>
-        </div>
-      </form>
+    <div className="app-container"> {/* Centering container */}
+      <div className="landing-form common-form">
+        <form onSubmit={handleSubmit}>
+          <h2 className="common-title">GYM APP</h2>
+          <input
+            type="email"
+            placeholder="Correo electrónico"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="common-input"
+            autoComplete="username"
+          />
+          <input
+            type="password"
+            placeholder="Contraseña"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="common-input"
+            autoComplete="current-password"
+          />
+          <button type="submit" className="common-button">
+            Ingresar
+          </button>
+          {error && <p className="error-message">{error}</p>}
+          <div className="link-container">
+            <Link to="/forgot-password" className="link">¿Olvidaste tu contraseña?</Link>
+            <Link to="/register" className="link">Registrarme</Link>
+          </div>
+        </form>
+      </div>
     </div>
   );
 };

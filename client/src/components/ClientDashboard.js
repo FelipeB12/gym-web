@@ -6,7 +6,7 @@ import ClientAIChat from './ClientAIChat';
 import ClientAppointment from './ClientAppointment';
 import ClientProgress from './ClientProgress';
 
-const ClientDashboard = ({ userName }) => { // Receive userName as a prop
+const ClientDashboard = ({ userName, membership }) => { // Receive membership as a prop
 
   // Function to handle circle click
   const handleCircleClick = (e) => {
@@ -18,7 +18,7 @@ const ClientDashboard = ({ userName }) => { // Receive userName as a prop
       <div className="container">
         <div className="header">
           <div className="member-id">Trigs 9999999</div>
-          <div className="days-left">Membership left: 69 days</div>
+          <div className="days-left">Días de membresía: {membership} days</div> {/* Display membership value */}
         </div>
         <div className="title">Asistencia Semanal</div>
         <div className="week-circles">
