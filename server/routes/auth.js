@@ -134,4 +134,30 @@ router.get('/user', auth, async (req, res) => {
   }
 });
 
+// Add this new route for updating user profile
+router.put('/update-profile', auth, async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id);
+    if (!user) {
+      return res.status(404).json({ msg: 'User not found' });
+    }
+
+    // Update user fields
+    const updateFields = ['name', 'email', 'gymType', 'gender', 'age', 
+                         'height', 'weight', 'objective', 'medicalCondition'];
+    
+    updateFields.forEach(field => {
+      if (req.body[field] !== undefined) {
+        user[field] = req.body[field];
+      }
+    });
+
+    await user.save();
+    res.json(user);
+  } catch (err) {
+    console.error('Error updating profile:', err);
+    res.status(500).json({ msg: 'Server error' });
+  }
+});
+
 module.exports = router;
