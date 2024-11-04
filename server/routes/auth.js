@@ -142,18 +142,24 @@ router.put('/update-profile', auth, async (req, res) => {
       return res.status(404).json({ msg: 'User not found' });
     }
 
+    const { name, email, gymType, gender, age, height, weight, objective, medicalCondition } = req.body;
+
     // Update user fields
-    const updateFields = ['name', 'email', 'gymType', 'gender', 'age', 
-                         'height', 'weight', 'objective', 'medicalCondition'];
-    
-    updateFields.forEach(field => {
-      if (req.body[field] !== undefined) {
-        user[field] = req.body[field];
-      }
-    });
+    if (name) user.name = name;
+    if (email) user.email = email;
+    if (gymType) user.gymType = gymType;
+    if (gender) user.gender = gender;
+    if (age) user.age = parseInt(age);
+    if (height) user.height = parseInt(height);
+    if (weight) user.weight = parseInt(weight);
+    if (objective) user.objective = objective;
+    if (medicalCondition !== undefined) user.medicalCondition = medicalCondition;
 
     await user.save();
-    res.json(user);
+
+    // Return updated user without password
+    const updatedUser = await User.findById(user._id).select('-password');
+    res.json(updatedUser);
   } catch (err) {
     console.error('Error updating profile:', err);
     res.status(500).json({ msg: 'Server error' });

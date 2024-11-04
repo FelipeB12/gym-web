@@ -16,6 +16,7 @@ const ClientProfile = () => {
   });
 
   const [errors, setErrors] = useState({});
+  const [successMessage, setSuccessMessage] = useState('');
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -50,73 +51,100 @@ const ClientProfile = () => {
 
   const handleChange = (e) => {
     const { id, value } = e.target;
-    setFormData({ ...formData, [id]: value });
-    validateInput(e.target);
+    setFormData(prevState => ({
+      ...prevState,
+      [id]: value
+    }));
+    // Remove validation error when user starts typing
+    setErrors(prevErrors => ({
+      ...prevErrors,
+      [id]: ''
+    }));
   };
 
-  const validateInput = (input) => {
-    const { id, value } = input;
-    let isValid = true;
-    let errorMessage = '';
-
-    switch (id) {
-      case 'name':
-        isValid = value.length >= 2;
-        errorMessage = isValid ? '' : 'Please enter your name';
-        break;
-      case 'password':
-        isValid = value.length >= 6;
-        errorMessage = isValid ? '' : 'Password must be at least 6 characters';
-        break;
-      case 'email':
-        isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
-        errorMessage = isValid ? '' : 'Please enter a valid email';
-        break;
-      case 'gym':
-        isValid = value.length >= 2;
-        errorMessage = isValid ? '' : 'Please enter your gym name';
-        break;
-      case 'membership':
-        isValid = value.length >= 2;
-        errorMessage = isValid ? '' : 'Please enter your membership type';
-        break;
-      default:
-        break;
+  const validateForm = () => {
+    const newErrors = {};
+    
+    if (!formData.name || formData.name.length < 2) {
+      newErrors.name = 'El nombre es requerido (mínimo 2 caracteres)';
+    }
+    
+    if (!formData.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      newErrors.email = 'Email inválido';
+    }
+    
+    if (!formData.age || isNaN(formData.age)) {
+      newErrors.age = 'La edad debe ser un número';
+    }
+    
+    if (!formData.height || isNaN(formData.height)) {
+      newErrors.height = 'La altura debe ser un número';
+    }
+    
+    if (!formData.weight || isNaN(formData.weight)) {
+      newErrors.weight = 'El peso debe ser un número';
     }
 
-    setErrors((prevErrors) => ({
-      ...prevErrors,
-      [id]: errorMessage
-    }));
-
-    input.classList.toggle('error', !isValid);
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    if (!validateForm()) {
+      return;
+    }
+
     try {
       const token = localStorage.getItem('token');
-      await axios.put('http://localhost:5000/api/auth/update-profile', formData, {
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
+      const response = await axios.put(
+        'http://localhost:5000/api/auth/update-profile',
+        {
+          name: formData.name,
+          email: formData.email,
+          gymType: formData.gym,
+          gender: formData.gender,
+          age: parseInt(formData.age),
+          height: parseInt(formData.height),
+          weight: parseInt(formData.weight),
+          objective: formData.objective,
+          medicalCondition: formData.medicalCondition
+        },
+        {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          }
         }
-      });
-      
-      alert('Profile updated successfully!');
+      );
+
+      setSuccessMessage('¡Perfil actualizado exitosamente!');
+      setTimeout(() => {
+        setSuccessMessage('');
+      }, 3000);
+
     } catch (error) {
       console.error('Error updating profile:', error);
-      setErrors({ submit: 'Error updating profile' });
+      setErrors({ 
+        submit: error.response?.data?.msg || 'Error al actualizar el perfil'
+      });
     }
   };
 
   return (
     <div className="container">
-      <form className="common-form" id="profileForm" onSubmit={handleSubmit}>
-        <h1 className="common-title">Profile</h1>
+      <form className="common-form" onSubmit={handleSubmit}>
+        <h1 className="common-title">Mi Perfil</h1>
         
-        {errors.fetch && <div className="error-message">{errors.fetch}</div>}
+        {successMessage && (
+          <div className="success-message">{successMessage}</div>
+        )}
         
+        {errors.submit && (
+          <div className="error-message">{errors.submit}</div>
+        )}
+
         <div className="form-group">
           <label htmlFor="name">Nombre:</label>
           <input
@@ -125,11 +153,11 @@ const ClientProfile = () => {
             placeholder="Name"
             value={formData.name}
             onChange={handleChange}
-            required
+            className={errors.name ? 'error' : ''}
           />
           {errors.name && <div className="error-message">{errors.name}</div>}
         </div>
-        
+
         <div className="form-group">
           <label htmlFor="email">Correo Electrónico:</label>
           <input
@@ -138,7 +166,7 @@ const ClientProfile = () => {
             placeholder="Email"
             value={formData.email}
             onChange={handleChange}
-            required
+            className={errors.email ? 'error' : ''}
           />
           {errors.email && <div className="error-message">{errors.email}</div>}
         </div>
@@ -146,25 +174,27 @@ const ClientProfile = () => {
         <div className="form-group">
           <label htmlFor="age">Edad:</label>
           <input
-            type="text"
+            type="number"
             id="age"
-            placeholder="Age"
+            placeholder="Edad"
             value={formData.age}
             onChange={handleChange}
-            required
+            className={errors.age ? 'error' : ''}
           />
+          {errors.age && <div className="error-message">{errors.age}</div>}
         </div>
 
         <div className="form-group">
           <label htmlFor="height">Altura (cm):</label>
           <input
-            type="text"
+            type="number"
             id="height"
-            placeholder="Height in cm"
+            placeholder="Altura en cm"
             value={formData.height}
             onChange={handleChange}
-            required
+            className={errors.height ? 'error' : ''}
           />
+          {errors.height && <div className="error-message">{errors.height}</div>}
         </div>
 
         <div className="form-group">
@@ -172,23 +202,26 @@ const ClientProfile = () => {
           <input
             type="text"
             id="weight"
-            placeholder="Weight in kg"
+            placeholder="Peso en kg"
             value={formData.weight}
             onChange={handleChange}
-            required
+            className={errors.weight ? 'error' : ''}
           />
+          {errors.weight && <div className="error-message">{errors.weight}</div>}
         </div>
 
         <div className="form-group">
           <label htmlFor="objective">Objetivo:</label>
-          <input
-            type="text"
+          <select
             id="objective"
-            placeholder="Your fitness objective"
+            placeholder="Tu objetivo de entrenamiento"
             value={formData.objective}
             onChange={handleChange}
-            required
-          />
+          >
+            <option value="strength">Ganar fuerza</option>
+            <option value="lose-weight">Perder peso</option>
+            <option value="gain-weight">Ganar peso</option>
+          </select>
         </div>
 
         <div className="form-group">
@@ -198,11 +231,15 @@ const ClientProfile = () => {
             placeholder="Any medical conditions"
             value={formData.medicalCondition}
             onChange={handleChange}
-            required
           />
         </div>
-        
-        <button type="submit">Guardar Cambios</button>
+
+        <button 
+          type="submit" 
+          className="submit-button"
+        >
+          Guardar Cambios
+        </button>
       </form>
     </div>
   );
