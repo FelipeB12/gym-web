@@ -384,39 +384,63 @@ body {
 
 .progress-container {
   padding: 20px;
-  background-color: #f9f9f9; /* Light background for the container */
   border-radius: 10px; /* Rounded corners */
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
 }
 
 .progress-table {
-  width: 100%; /* Full width of the container */
-  border-collapse: collapse; /* Remove space between borders */
+  border-collapse: collapse;
+  width: 100%;
+  margin-top: 20px;
 }
 
-.progress-table th, .progress-table td {
-  border: 1px solid #ccc; /* Light border for table cells */
-  padding: 10px; /* Padding inside cells */
-  text-align: center; /* Center text in cells */
+.progress-table th,
+.progress-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: center;
 }
 
-.progress-table th {
-  background-color: #3c5846; /* Dark background for header */
-  color: white; /* White text for header */
+.inner-table {
+  border-collapse: collapse;
+  width: 100%;
+  margin-top: 10px;
 }
 
-.progress-table input {
-  width: 100%; /* Full width for input fields */
-  border: none; /* Remove default border */
-  padding: 5px; /* Padding inside input */
-  border-radius: 5px; /* Rounded corners for input */
-  background-color: #eaeaea; /* Light background for input */
+.inner-table th,
+.inner-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: center;
 }
 
-.progress-table input:focus {
-  outline: none; /* Remove default outline */
-  background-color: #fff; /* Change background on focus */
+.body-part {
+  text-align: left;
+  font-weight: bold;
 }
+
+.date-column {
+  width: 80px;
+}
+
+.date-input {
+  width: 70px;
+  padding: 2px;
+  text-align: center;
+}
+
+.measurement-input {
+  width: 60px;
+  padding: 2px;
+  text-align: center;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
 
 
 /*  CLIENT APPOINTMENT  */

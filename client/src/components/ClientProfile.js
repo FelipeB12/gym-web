@@ -22,23 +22,23 @@ const ClientProfile = () => {
     const fetchUserData = async () => {
       try {
         const token = localStorage.getItem('token');
-        const response = await axios.get('http://localhost:5000/api/auth/user', {
+        const { data } = await axios.get('http://localhost:5000/api/auth/user', {
           headers: {
             'Authorization': `Bearer ${token}`
           }
         });
 
         setFormData({
-          name: response.data.name || '',
-          email: response.data.email || '',
-          gym: response.data.gymType || 'test-gym',
-          membership: response.data.membership?.toString() || '',
-          gender: response.data.gender || '',
-          age: response.data.age?.toString() || '',
-          height: response.data.height?.toString() || '',
-          weight: response.data.weight?.toString() || '',
-          objective: response.data.objective || '',
-          medicalCondition: response.data.medicalCondition || ''
+          name: data.name || '',
+          email: data.email || '',
+          gym: data.gymType || 'test-gym',
+          membership: data.membership?.toString() || '',
+          gender: data.gender || '',
+          age: data.age?.toString() || '',
+          height: data.height?.toString() || '',
+          weight: data.weight?.toString() || '',
+          objective: data.objective || '',
+          medicalCondition: data.medicalCondition || ''
         });
       } catch (error) {
         console.error('Error fetching user data:', error);
@@ -55,7 +55,6 @@ const ClientProfile = () => {
       ...prevState,
       [id]: value
     }));
-    // Remove validation error when user starts typing
     setErrors(prevErrors => ({
       ...prevErrors,
       [id]: ''
@@ -98,7 +97,7 @@ const ClientProfile = () => {
 
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.put(
+      await axios.put(
         'http://localhost:5000/api/auth/update-profile',
         {
           name: formData.name,
@@ -150,7 +149,6 @@ const ClientProfile = () => {
           <input
             type="text"
             id="name"
-            placeholder="Name"
             value={formData.name}
             onChange={handleChange}
             className={errors.name ? 'error' : ''}
@@ -163,7 +161,6 @@ const ClientProfile = () => {
           <input
             type="email"
             id="email"
-            placeholder="Email"
             value={formData.email}
             onChange={handleChange}
             className={errors.email ? 'error' : ''}
@@ -176,7 +173,6 @@ const ClientProfile = () => {
           <input
             type="number"
             id="age"
-            placeholder="Edad"
             value={formData.age}
             onChange={handleChange}
             className={errors.age ? 'error' : ''}
@@ -200,7 +196,7 @@ const ClientProfile = () => {
         <div className="form-group">
           <label htmlFor="weight">Peso (kg):</label>
           <input
-            type="text"
+            type="number"
             id="weight"
             placeholder="Peso en kg"
             value={formData.weight}
@@ -228,7 +224,7 @@ const ClientProfile = () => {
           <label htmlFor="medicalCondition">Condición Médica:</label>
           <textarea
             id="medicalCondition"
-            placeholder="Any medical conditions"
+            placeholder="Que deban ser tomadas en cuanta para tu entrenamiento, como enfermedades cardiacas..."
             value={formData.medicalCondition}
             onChange={handleChange}
           />

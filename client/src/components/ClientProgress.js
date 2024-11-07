@@ -1,36 +1,55 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 const ClientProgress = () => {
-  // Sample data for the table
+  const exampleDates = ['01/11/2024', '01/09/2024', '01/07/2024', '01/05/2024'];
   const bodyParts = ['Chest', 'Back', 'Arm', 'Glutes', 'Thigh', 'Calf'];
-  const dates = ['Date 1', 'Date 2', 'Date 3', 'Date 4']; // Example dates
+  
+  // State to track which row is expanded
+  const [expandedRow, setExpandedRow] = useState(null);
+
+  const handleRowClick = (index) => {
+    // Toggle the expanded row
+    setExpandedRow(expandedRow === index ? null : index);
+  };
 
   return (
     <div className="progress-container">
-      <h1>Progress Tracker</h1>
+      <h3>Tu progreso en el tiempo</h3>
       <table className="progress-table">
         <thead>
           <tr>
-            <th>Body Part</th>
-            <th>Height</th>
-            <th>Weight</th>
-            <th>FAT%</th>
-            {dates.map((date, index) => (
-              <th key={index}>{date}</th>
-            ))}
+            <th>Fechas</th>
           </tr>
         </thead>
         <tbody>
-          {bodyParts.map((part, index) => (
-            <tr key={index}>
-              <td>{part}</td>
-              <td><input type="text" placeholder="Height" /></td>
-              <td><input type="text" placeholder="Weight" /></td>
-              <td><input type="text" placeholder="FAT%" /></td>
-              {dates.map((_, dateIndex) => (
-                <td key={dateIndex}><input type="text" placeholder="..." /></td>
-              ))}
-            </tr>
+          {exampleDates.map((date, index) => (
+            <React.Fragment key={index}>
+              <tr onClick={() => handleRowClick(index)} style={{ cursor: 'pointer' }}>
+                <td>{date}</td>
+              </tr>
+              {expandedRow === index && (
+                <tr>
+                  <td colSpan="2">
+                    <table className="inner-table">
+                      <thead>
+                        <tr>
+                          <th>Músculo</th>
+                          <th>Medida en cm</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {bodyParts.map((part, partIndex) => (
+                          <tr key={partIndex}>
+                            <td>{part}</td>
+                            <td>50</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </td>
+                </tr>
+              )}
+            </React.Fragment>
           ))}
         </tbody>
       </table>
