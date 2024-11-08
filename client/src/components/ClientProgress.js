@@ -91,13 +91,28 @@ const ClientProgress = () => {
                     <table className="inner-table">
                       <thead>
                         <tr>
-                          <th>Músculo</th>
-                          <th>Medida en cm</th>
+                          <th>Medida</th>
+                          <th>Valor</th>
                         </tr>
                       </thead>
                       <tbody>
                         {measurement.values && (
                           <>
+                            <tr className="measurement-header">
+                              <td colSpan="2">Medidas Generales</td>
+                            </tr>
+                            <tr>
+                              <td>Peso (kg)</td>
+                              <td>{measurement.values.peso}</td>
+                            </tr>
+                            <tr>
+                              <td>Grasa Corporal (%)</td>
+                              <td>{measurement.values.grasaCorporal}</td>
+                            </tr>
+                            
+                            <tr className="measurement-header">
+                              <td colSpan="2">Medidas Musculares (cm)</td>
+                            </tr>
                             <tr>
                               <td>Pecho</td>
                               <td>{measurement.values.pecho}</td>

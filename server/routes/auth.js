@@ -30,6 +30,8 @@ router.post('/register', async (req, res) => {
         const initialMeasurement = {
             date: today,
             values: {
+                peso: weight || 0,
+                grasaCorporal: 0,
                 pecho: 0,
                 bicepDerecho: 0,
                 bicepIzquierdo: 0,

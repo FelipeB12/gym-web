@@ -3,6 +3,8 @@ const mongoose = require('mongoose');
 const MeasurementSchema = new mongoose.Schema({
     date: { type: String, required: true },
     values: {
+        peso: { type: Number, default: 0 },
+        grasaCorporal: { type: Number, default: 0 },
         pecho: { type: Number, default: 0 },
         bicepDerecho: { type: Number, default: 0 },
         bicepIzquierdo: { type: Number, default: 0 },
