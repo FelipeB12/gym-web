@@ -8,72 +8,99 @@ const auth = require('../middleware/auth')
 
 // Registration route
 router.post('/register', async (req, res) => {
-    console.log('Received registration request:', req.body); // Log the request body
+    console.log('Received registration request:', req.body);
     try {
-      const { name, email, password, role, gymType, gender, age, height, weight, objective, medicalCondition } = req.body; // Include all new fields
-  
-      // Check if user already exists
-      let user = await User.findOne({ email });
-      if (user) {
-        console.log('User already exists:', email);
-        return res.status(400).json({ msg: 'User already exists' });
-      }
-  
-      // Determine membership value based on gymType
-      let membership = 0; // Default membership value
-      if (gymType === 'test-gym') {
-        membership = 60; // Set membership to 60 for Test Gym
-      }
-  
-      // Create new user
-      user = new User({
-        name,
-        email,
-        password,
-        role: role || 'client', // Use the provided role or default to 'client'
-        membership, // Set the membership value
-        gender, // Save gender
-        age, // Save age
-        height, // Save height
-        weight, // Save weight
-        objective, // Save objective
-        medicalCondition // Save medical condition
-      });
-  
-      // Hash password
-      const salt = await bcrypt.genSalt(10);
-      user.password = await bcrypt.hash(password, salt);
-  
-      // Save user to database
-      await user.save();
-      console.log('New user created:', email);
-  
-      // Create and return a JWT
-      const payload = {
-        user: {
-          id: user.id,
-          role: user.role
+        const { name, email, password, role, gymType, gender, age, height, weight, objective, medicalCondition } = req.body;
+
+        // Check if user already exists
+        let user = await User.findOne({ email });
+        if (user) {
+            console.log('User already exists:', email);
+            return res.status(400).json({ msg: 'User already exists' });
         }
-      };
-  
-      jwt.sign(
-        payload,
-        process.env.JWT_SECRET || 'your_jwt_secret',
-        { expiresIn: '1h' },
-        (err, token) => {
-          if (err) {
-            console.error('JWT sign error:', err);
-            return res.status(500).json({ msg: 'Error creating token', error: err.message });
-          }
-          console.log('JWT created for user:', email);
-          res.json({ token });
+
+        // Get current date in DD/MM/YYYY format
+        const today = new Date().toLocaleDateString('es-ES', {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric'
+        });
+
+        // Create initial measurement with current date
+        const initialMeasurement = {
+            date: today,
+            values: {
+                pecho: 0,
+                bicepDerecho: 0,
+                bicepIzquierdo: 0,
+                espalda: 0,
+                cintura: 0,
+                gluteos: 0,
+                musloDerecho: 0,
+                musloIzquierdo: 0,
+                gemeloDerecho: 0,
+                gemeloIzquierdo: 0
+            }
+        };
+
+        // Determine membership value based on gymType
+        let membership = 0;
+        if (gymType === 'test-gym') {
+            membership = 60;
         }
-      );
+
+        // Create new user with explicit measurements
+        const newUser = {
+            name,
+            email,
+            password,
+            role: role || 'client',
+            membership,
+            gender,
+            age,
+            height,
+            weight,
+            objective,
+            medicalCondition,
+            measurements: [initialMeasurement] // Store as array
+        };
+
+        user = new User(newUser);
+
+        // Hash password
+        const salt = await bcrypt.genSalt(10);
+        user.password = await bcrypt.hash(password, salt);
+
+        // Save user to database
+        await user.save();
+        console.log('New user created with measurements:', user.measurements);
+
+        // Create and return JWT
+        const payload = {
+            user: {
+                id: user.id,
+                role: user.role
+            }
+        };
+
+        jwt.sign(
+            payload,
+            process.env.JWT_SECRET || 'your_jwt_secret',
+            { expiresIn: '1h' },
+            (err, token) => {
+                if (err) {
+                    console.error('JWT sign error:', err);
+                    return res.status(500).json({ msg: 'Error creating token', error: err.message });
+                }
+                console.log('JWT created for user:', email);
+                res.json({ token });
+            }
+        );
     } catch (err) {
-        console.error('Error saving user:', err); // Log the error
+        console.error('Error saving user:', err);
         res.status(500).json({ msg: 'Server error', error: err.message });
     }
-  });
+});
 
 // Login route
 router.post('/login', async (req, res) => {
@@ -164,6 +191,63 @@ router.put('/update-profile', auth, async (req, res) => {
     console.error('Error updating profile:', err);
     res.status(500).json({ msg: 'Server error' });
   }
+});
+
+// Add this new route for updating measurements
+router.put('/update-measurements', auth, async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id);
+    if (!user) {
+      return res.status(404).json({ msg: 'Usuario no encontrado' });
+    }
+
+    // Update measurements
+    if (req.body.measurements) {
+      user.measurements = {
+        ...user.measurements,
+        ...req.body.measurements
+      };
+    }
+
+    await user.save();
+    res.json(user.measurements);
+  } catch (err) {
+    console.error('Error updating measurements:', err);
+    res.status(500).json({ msg: 'Server error' });
+  }
+});
+
+// Add or update measurements route
+router.post('/measurements', auth, async (req, res) => {
+    try {
+        const user = await User.findById(req.user.id);
+        if (!user) {
+            return res.status(404).json({ msg: 'Usuario no encontrado' });
+        }
+
+        // Get current date in DD/MM/YYYY format
+        const today = new Date();
+        const date = today.toLocaleDateString('es-ES', {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric'
+        });
+
+        // Create new measurement
+        const newMeasurement = {
+            date: date,
+            values: req.body.values
+        };
+
+        // Add new measurement to the array
+        user.measurements.push(newMeasurement);
+
+        await user.save();
+        res.json(user.measurements);
+    } catch (err) {
+        console.error('Error updating measurements:', err);
+        res.status(500).json({ msg: 'Server error' });
+    }
 });
 
 module.exports = router;
