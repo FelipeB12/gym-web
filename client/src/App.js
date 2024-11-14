@@ -5,35 +5,36 @@ import ClientDashboard from './components/ClientDashboard';
 import TrainerDashboard from './components/TrainerDashboard';
 import Register from './components/Register';
 import ForgotPassword from './components/ForgotPassword';
-import ClientProfile from './components/ClientProfile'; // Import ClientProfile
-import ClientWorkouts from './components/ClientWorkouts'; // Import ClientWorkouts
-import ClientAIChat from './components/ClientAIChat'; // Import ClientAIChat
-import ClientProgress from './components/ClientProgress'; // Import ClientProgress
-import ClientAppointment from './components/ClientAppointment'; // Import ClientAppointment
-import Layout from './components/Layout'; // Import Layout
+import ClientProfile from './components/ClientProfile';
+import ClientWorkouts from './components/ClientWorkouts';
+import ClientEditWorkout from './components/ClientEditWorkout';
+import ClientAIChat from './components/ClientAIChat';
+import ClientProgress from './components/ClientProgress';
+import ClientAppointment from './components/ClientAppointment';
+import Layout from './components/Layout';
 import './styles.css';
 
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [userRole, setUserRole] = useState(null);
-  const [userName, setUserName] = useState(''); // State for user's name
-  const [membership, setMembership] = useState(''); // State for user's membership
+  const [userName, setUserName] = useState('');
+  const [membership, setMembership] = useState('');
 
   const handleLogin = (name, membership) => {
-    console.log('User logged in:', name); // Debug log
-    setIsAuthenticated(true); // Set to true only on successful login
-    setUserName(name); // Set the user's name
-    setUserRole('client'); // Set user role as needed
-    setMembership(membership); // Store the membership value
+    console.log('User logged in:', name);
+    setIsAuthenticated(true);
+    setUserName(name);
+    setUserRole('client');
+    setMembership(membership);
   };
 
   return (
     <Router>
       <div className="title">
-        {isAuthenticated && ( // Conditionally render the header
+        {isAuthenticated && (
           <header className="app-header">
             <h1 className="app-title">GYM <br /> APP</h1>
-            <p className="user-greeting">Hola {userName}</p> {/* This should display the user's name */}
+            <p className="user-greeting">Hola {userName}</p>
           </header>
         )}
         <Routes>
@@ -46,7 +47,7 @@ const App = () => {
               isAuthenticated ? (
                 userRole === 'client' ? (
                   <Layout>
-                    <ClientDashboard userName={userName} membership={membership} /> {/* Pass membership here */}
+                    <ClientDashboard userName={userName} membership={membership} />
                   </Layout>
                 ) : <Navigate to="/" replace />
               ) : (
@@ -108,6 +109,18 @@ const App = () => {
               isAuthenticated ? (
                 <Layout>
                   <ClientAppointment />
+                </Layout>
+              ) : (
+                <Navigate to="/" replace />
+              )
+            }
+          />
+          <Route
+            path="/ClientEditWorkout"
+            element={
+              isAuthenticated ? (
+                <Layout>
+                  <ClientEditWorkout />
                 </Layout>
               ) : (
                 <Navigate to="/" replace />

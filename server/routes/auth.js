@@ -45,26 +45,42 @@ router.post('/register', async (req, res) => {
             }
         };
 
+        // Create initial routine structure
+        const initialRoutine = {
+            date: today,
+            values: {
+                "1": [],
+                "2": [],
+                "3": [],
+                "4": [],
+                "5": [],
+                "6": [],
+                "7": []
+            }
+        };
+
         // Determine membership value based on gymType
         let membership = 0;
         if (gymType === 'test-gym') {
             membership = 60;
         }
 
-        // Create new user with explicit measurements
+        // Create new user with explicit measurements and routine
         const newUser = {
             name,
             email,
             password,
             role: role || 'client',
+            gymType,
             membership,
             gender,
-            age,
-            height,
-            weight,
+            age: Number(age),
+            height: Number(height),
+            weight: Number(weight),
             objective,
             medicalCondition,
-            measurements: [initialMeasurement] // Store as array
+            measurements: [initialMeasurement],
+            routine: [initialRoutine]  // Add the routine here
         };
 
         user = new User(newUser);
@@ -75,7 +91,10 @@ router.post('/register', async (req, res) => {
 
         // Save user to database
         await user.save();
-        console.log('New user created with measurements:', user.measurements);
+        console.log('New user created:', {
+            measurements: user.measurements,
+            routine: user.routine  // Log the routine to verify it's being saved
+        });
 
         // Create and return JWT
         const payload = {
@@ -90,11 +109,7 @@ router.post('/register', async (req, res) => {
             process.env.JWT_SECRET || 'your_jwt_secret',
             { expiresIn: '1h' },
             (err, token) => {
-                if (err) {
-                    console.error('JWT sign error:', err);
-                    return res.status(500).json({ msg: 'Error creating token', error: err.message });
-                }
-                console.log('JWT created for user:', email);
+                if (err) throw err;
                 res.json({ token });
             }
         );
@@ -166,32 +181,53 @@ router.get('/user', auth, async (req, res) => {
 // Add this new route for updating user profile
 router.put('/update-profile', auth, async (req, res) => {
   try {
+    const { name, email, gymType, gender, age, height, weight, objective, medicalCondition } = req.body;
+
+    // Find the user by ID
     const user = await User.findById(req.user.id);
     if (!user) {
       return res.status(404).json({ msg: 'User not found' });
     }
 
-    const { name, email, gymType, gender, age, height, weight, objective, medicalCondition } = req.body;
+    // Check if email is being changed and if it's already in use by another user
+    if (email !== user.email) {
+      const existingUser = await User.findOne({ email });
+      if (existingUser && existingUser._id.toString() !== user._id.toString()) {
+        return res.status(400).json({ msg: 'Email already in use' });
+      }
+    }
 
-    // Update user fields
-    if (name) user.name = name;
-    if (email) user.email = email;
-    if (gymType) user.gymType = gymType;
-    if (gender) user.gender = gender;
-    if (age) user.age = parseInt(age);
-    if (height) user.height = parseInt(height);
-    if (weight) user.weight = parseInt(weight);
-    if (objective) user.objective = objective;
-    if (medicalCondition !== undefined) user.medicalCondition = medicalCondition;
+    // Update user fields with type conversion
+    const updates = {
+      name,
+      email,
+      gymType,
+      gender,
+      age: age ? Number(age) : undefined,
+      height: height ? Number(height) : undefined,
+      weight: weight ? Number(weight) : undefined,
+      objective,
+      medicalCondition
+    };
 
-    await user.save();
+    // Remove undefined values
+    Object.keys(updates).forEach(key => updates[key] === undefined && delete updates[key]);
 
-    // Return updated user without password
-    const updatedUser = await User.findById(user._id).select('-password');
-    res.json(updatedUser);
-  } catch (err) {
-    console.error('Error updating profile:', err);
-    res.status(500).json({ msg: 'Server error' });
+    // Update user with the filtered updates
+    const updatedUser = await User.findByIdAndUpdate(
+      req.user.id,
+      { $set: updates },
+      { new: true, runValidators: true }
+    );
+
+    res.json({ msg: 'Profile updated successfully', user: updatedUser });
+  } catch (error) {
+    console.error('Error updating profile:', error);
+    res.status(500).json({ 
+      msg: 'Server error', 
+      error: error.message,
+      stack: process.env.NODE_ENV === 'development' ? error.stack : undefined 
+    });
   }
 });
 

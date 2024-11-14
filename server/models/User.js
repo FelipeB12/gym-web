@@ -18,6 +18,19 @@ const MeasurementSchema = new mongoose.Schema({
     }
 });
 
+const RoutineSchema = new mongoose.Schema({
+    date: String,
+    values: {
+        "1": [mongoose.Schema.Types.Mixed],
+        "2": [mongoose.Schema.Types.Mixed],
+        "3": [mongoose.Schema.Types.Mixed],
+        "4": [mongoose.Schema.Types.Mixed],
+        "5": [mongoose.Schema.Types.Mixed],
+        "6": [mongoose.Schema.Types.Mixed],
+        "7": [mongoose.Schema.Types.Mixed]
+    }
+});
+
 const UserSchema = new mongoose.Schema({
     name: {
         type: String,
@@ -68,7 +81,8 @@ const UserSchema = new mongoose.Schema({
         type: String,
         default: ''
     },
-    measurements: [MeasurementSchema]
+    measurements: [MeasurementSchema],
+    routine: [RoutineSchema]
 });
 
 module.exports = mongoose.model('User', UserSchema);
