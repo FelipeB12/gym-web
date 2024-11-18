@@ -27,6 +27,7 @@ const ClientEditWorkout = () => {
   const [isLoading, setIsLoading] = useState(true);
   const userName = localStorage.getItem('userName') || 'User';
   const navigate = useNavigate();
+  const [exerciseDetails, setExerciseDetails] = useState({});
 
   const muscleGroups = [
     { value: '', label: 'Elige el grupo muscular que quieres entrenar' },
@@ -92,11 +93,35 @@ const ClientEditWorkout = () => {
   };
 
   const handleExerciseSelect = (exercise) => {
-    setSelectedExercises(prev => 
-      prev.find(ex => ex.id === exercise.id)
-        ? prev.filter(ex => ex.id !== exercise.id)
-        : [...prev, exercise]
-    );
+    setSelectedExercises(prev => {
+      const isSelected = prev.find(ex => ex.id === exercise.id);
+      if (isSelected) {
+        // Remove exercise and its details
+        setExerciseDetails(current => {
+          const { [exercise.id]: _, ...rest } = current;
+          return rest;
+        });
+        return prev.filter(ex => ex.id !== exercise.id);
+      } else {
+        // Add exercise with default details
+        setExerciseDetails(current => ({
+          ...current,
+          [exercise.id]: { sets: 0, reps: 0, weight: 0 }
+        }));
+        return [...prev, exercise];
+      }
+    });
+  };
+
+  const handleDetailsChange = (exerciseId, field, value) => {
+    const numValue = parseInt(value) || 0;
+    setExerciseDetails(prev => ({
+      ...prev,
+      [exerciseId]: {
+        ...prev[exerciseId],
+        [field]: numValue
+      }
+    }));
   };
 
   const handleSave = async () => {
@@ -112,16 +137,16 @@ const ClientEditWorkout = () => {
         return;
       }
 
-      // Restructure data to match the ClientRoutine schema
+      // Restructure data with exercise details
       const workoutData = {
         [selectedDay]: {
           exercises: selectedMuscleGroup === 'descanso' 
             ? []
             : selectedExercises.map(exercise => ({
                 name: exercise.name,
-                sets: 0,  // Changed from series
-                reps: 0,  // Changed from rep
-                weight: 0, // Changed from peso
+                sets: exerciseDetails[exercise.id]?.sets || 0,
+                reps: exerciseDetails[exercise.id]?.reps || 0,
+                weight: exerciseDetails[exercise.id]?.weight || 0,
                 notes: ''
               })),
           notes: '',
@@ -137,7 +162,6 @@ const ClientEditWorkout = () => {
             'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/json'
           },
-          // Add timeout and validate status for better error handling
           timeout: 5000,
           validateStatus: (status) => status >= 200 && status < 300
         }
@@ -194,10 +218,46 @@ const ClientEditWorkout = () => {
           <div
             key={exercise.id}
             className={`exercise-card ${selectedExercises.find(ex => ex.id === exercise.id) ? 'selected' : ''}`}
-            onClick={() => handleExerciseSelect(exercise)}
           >
-            <img src={exercise.src} alt={exercise.name} />
-            <span>{exercise.name}</span>
+            <div 
+              className="exercise-image-container"
+              onClick={() => handleExerciseSelect(exercise)}
+            >
+              <img src={exercise.src} alt={exercise.name} />
+              <span className="exercise-name">{exercise.name}</span>
+            </div>
+            
+            {selectedExercises.find(ex => ex.id === exercise.id) && (
+              <div className="exercise-details-inputs">
+                <div className="input-group">
+                  <label>Series:</label>
+                  <input
+                    type="number"
+                    min="0"
+                    value={exerciseDetails[exercise.id]?.sets || 0}
+                    onChange={(e) => handleDetailsChange(exercise.id, 'sets', e.target.value)}
+                  />
+                </div>
+                <div className="input-group">
+                  <label>Reps:</label>
+                  <input
+                    type="number"
+                    min="0"
+                    value={exerciseDetails[exercise.id]?.reps || 0}
+                    onChange={(e) => handleDetailsChange(exercise.id, 'reps', e.target.value)}
+                  />
+                </div>
+                <div className="input-group">
+                  <label>Peso (kg):</label>
+                  <input
+                    type="number"
+                    min="0"
+                    value={exerciseDetails[exercise.id]?.weight || 0}
+                    onChange={(e) => handleDetailsChange(exercise.id, 'weight', e.target.value)}
+                  />
+                </div>
+              </div>
+            )}
           </div>
         ))}
       </div>

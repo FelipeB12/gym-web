@@ -10,7 +10,7 @@ const ClientProgress = () => {
     const fetchMeasurements = async () => {
       try {
         const token = localStorage.getItem('token');
-        const response = await axios.get('http://localhost:5000/api/auth/user', {
+        const response = await axios.get('http://localhost:5002/api/auth/user', {
           headers: {
             'Authorization': `Bearer ${token}`
           }

@@ -22,7 +22,7 @@ const ClientProfile = () => {
     const fetchUserData = async () => {
       try {
         const token = localStorage.getItem('token');
-        const { data } = await axios.get('http://localhost:5000/api/auth/user', {
+        const { data } = await axios.get('http://localhost:5002/api/auth/user', {
           headers: {
             'Authorization': `Bearer ${token}`
           }
@@ -98,7 +98,7 @@ const ClientProfile = () => {
     try {
       const token = localStorage.getItem('token');
       await axios.put(
-        'http://localhost:5000/api/auth/update-profile',
+        'http://localhost:5002/api/auth/update-profile',
         {
           name: formData.name,
           email: formData.email,
