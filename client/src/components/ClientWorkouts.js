@@ -26,6 +26,8 @@ const ClientWorkouts = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [expandedExercise, setExpandedExercise] = useState(null);
+  const [editingExercise, setEditingExercise] = useState(null);
+  const [updatedValues, setUpdatedValues] = useState({});
 
   // Exercise image mapping
   const exerciseImages = {
@@ -84,6 +86,60 @@ const ClientWorkouts = () => {
     return days[day];
   };
 
+  const handleUpdateExercise = async (day, exerciseIndex, exerciseName) => {
+    const exercise = routine[day][exerciseIndex];
+    setEditingExercise({
+      day,
+      index: exerciseIndex,
+      name: exerciseName,
+      values: {
+        sets: exercise.sets,
+        reps: exercise.reps,
+        weight: exercise.weight
+      }
+    });
+    setUpdatedValues({
+      sets: exercise.sets,
+      reps: exercise.reps,
+      weight: exercise.weight
+    });
+  };
+
+  const handleSaveUpdate = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      if (!token) throw new Error('No authentication token found');
+
+      const updatedRoutine = { ...routine };
+      const exercise = updatedRoutine[editingExercise.day][editingExercise.index];
+      
+      // Update exercise values and add timestamp
+      exercise.sets = updatedValues.sets;
+      exercise.reps = updatedValues.reps;
+      exercise.weight = updatedValues.weight;
+      exercise.lastUpdated = new Date().toISOString();
+
+      const response = await axios.post(
+        'http://localhost:5002/api/workouts',
+        { [editingExercise.day]: updatedRoutine[editingExercise.day] },
+        {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          }
+        }
+      );
+
+      if (response.data) {
+        setRoutine(updatedRoutine);
+        setEditingExercise(null);
+      }
+    } catch (error) {
+      console.error('Error updating exercise:', error);
+      alert('Error al actualizar el ejercicio');
+    }
+  };
+
   if (loading) {
     return <div>Loading...</div>;
   }
@@ -103,7 +159,7 @@ const ClientWorkouts = () => {
 
   return (
     <div className="workouts-container">
-      <h2>Mi Rutina</h2>
+      <h5>Mi Rutina</h5>
       <div className="workout-nav">
         <div className="day-buttons">
           {[1, 2, 3, 4, 5, 6, 7].map((day) => (
@@ -116,11 +172,10 @@ const ClientWorkouts = () => {
             </button>
           ))}
         </div>
-        <Link to="/ClientEditWorkout" className="edit-button">
-          Editar
-        </Link>
       </div>
-      
+      <Link to="/ClientEditWorkout" className="edit-button">
+        Editar
+      </Link>
       <div className="routine-grid">
         {Object.entries(filteredRoutine).map(([day, exercises]) => (
           <div key={day} className="day-card">
@@ -144,22 +199,84 @@ const ClientWorkouts = () => {
                         />
                       </div>
                     )}
-                    <div className="exercise-values">
-                      <span className="exercise-value">
-                        <label>Series:</label>
-                        {exercise.sets}
-                      </span>
-                      <span className="exercise-value">
-                        <label>Reps:</label>
-                        {exercise.reps}
-                      </span>
-                      <span className="exercise-value">
-                        <label>Peso:</label>
-                        {exercise.weight}kg
-                      </span>
-                    </div>
-                    {exercise.notes && (
-                      <span className="exercise-notes">{exercise.notes}</span>
+                    
+                    {editingExercise?.day === day && editingExercise?.index === index ? (
+                      <div className="exercise-edit-form">
+                        <div className="exercise-values editing">
+                          <span className="exercise-value">
+                            <label>Series:</label>
+                            <input
+                              type="number"
+                              value={updatedValues.sets}
+                              onChange={(e) => setUpdatedValues({
+                                ...updatedValues,
+                                sets: parseInt(e.target.value) || 0
+                              })}
+                            />
+                          </span>
+                          <span className="exercise-value">
+                            <label>Reps:</label>
+                            <input
+                              type="number"
+                              value={updatedValues.reps}
+                              onChange={(e) => setUpdatedValues({
+                                ...updatedValues,
+                                reps: parseInt(e.target.value) || 0
+                              })}
+                            />
+                          </span>
+                          <span className="exercise-value">
+                            <label>Peso:</label>
+                            <input
+                              type="number"
+                              value={updatedValues.weight}
+                              onChange={(e) => setUpdatedValues({
+                                ...updatedValues,
+                                weight: parseInt(e.target.value) || 0
+                              })}
+                            />
+                          </span>
+                        </div>
+                        <div className="edit-actions">
+                          <button onClick={handleSaveUpdate} className="save-btn">
+                            Guardar
+                          </button>
+                          <button 
+                            onClick={() => setEditingExercise(null)} 
+                            className="cancel-btn"
+                          >
+                            Cancelar
+                          </button>
+                        </div>
+                      </div>
+                    ) : (
+                      <>
+                        <div className="exercise-values">
+                          <span className="exercise-value">
+                            <label>Series:</label>
+                            {exercise.sets}
+                          </span>
+                          <span className="exercise-value">
+                            <label>Reps:</label>
+                            {exercise.reps}
+                          </span>
+                          <span className="exercise-value">
+                            <label>Peso:</label>
+                            {exercise.weight}kg
+                          </span>
+                        </div>
+                        <button 
+                          className="update-btn"
+                          onClick={() => handleUpdateExercise(day, index, exercise.name)}
+                        >
+                          Actualizar
+                        </button>
+                        {exercise.lastUpdated && (
+                          <div className="last-updated">
+                            Última actualización: {new Date(exercise.lastUpdated).toLocaleDateString()}
+                          </div>
+                        )}
+                      </>
                     )}
                   </li>
                 ))}

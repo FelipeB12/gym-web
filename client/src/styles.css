@@ -807,7 +807,7 @@ input::-webkit-inner-spin-button {
 
 .exercise-card.selected {
   border-color: #007bff;
-  background-color: #f8f9fa;
+  background-color: #333;
 }
 
 .exercise-card img {
@@ -1122,6 +1122,144 @@ input::-webkit-inner-spin-button {
 
 .exercise-item:hover {
   box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+/*styles to the exercise box in the workout interface*/
+.exercise-edit-form {
+  margin-top: 10px;
+}
+
+.exercise-values.editing {
+  background: rgba(35, 35, 35, 0.8);
+  padding: 15px;
+  border-radius: 8px;
+}
+
+.exercise-values.editing input {
+  width: 60px;
+  background: rgba(45, 45, 45, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: white;
+  padding: 5px;
+  border-radius: 4px;
+  text-align: center;
+}
+
+.edit-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.save-btn, .cancel-btn, .update-btn {
+  padding: 6px 12px;
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(45, 45, 45, 0.5);
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.save-btn:hover, .cancel-btn:hover, .update-btn:hover {
+  background: rgb(35, 35, 35);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.update-btn {
+  margin-top: 10px;
+  width: 100%;
+}
+
+.last-updated {
+  margin-top: 8px;
+  font-size: 0.8em;
+  color: rgba(255, 255, 255, 0.6);
+  text-align: right;
+  font-style: italic;
+}
+
+/* Exercise Input Fields Styles */
+.exercise-details-inputs {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 15px;
+  background: rgba(35, 35, 35, 0.5);
+  border-radius: 8px;
+  margin-top: 10px;
+  width: 100%;
+}
+
+.input-group {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px;
+  background: rgba(45, 45, 45, 0.5);
+  border-radius: 6px;
+}
+
+.input-group label {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.9em;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-right: 15px;
+  min-width: 80px;
+}
+
+.input-group input {
+  width: 80px;
+  padding: 8px;
+  text-align: center;
+  background: rgba(35, 35, 35, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  color: white;
+  font-size: 1em;
+  transition: all 0.3s ease;
+}
+
+.input-group input:focus {
+  outline: none;
+  border-color: rgba(255, 255, 255, 0.3);
+  background: rgba(55, 55, 55, 0.8);
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.1);
+}
+
+.input-group input:hover {
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Remove spinner arrows from number inputs */
+.input-group input[type="number"]::-webkit-inner-spin-button,
+.input-group input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+
+
+/* Add unit label for weight */
+.input-group:last-child {
+  position: relative;
+}
+
+.input-group:last-child::after {
+  content: 'kg';
+  position: absolute;
+  right: 15px;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.9em;
+}
+
+/* Validation styles */
+.input-group input:invalid {
+  border-color: rgba(255, 99, 71, 0.5);
+}
+
+.input-group input:invalid:focus {
+  box-shadow: 0 0 0 2px rgba(255, 99, 71, 0.2);
 }
 
 
