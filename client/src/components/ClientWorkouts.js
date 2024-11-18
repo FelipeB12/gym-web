@@ -5,134 +5,95 @@ import Layout from './Layout';
 import '../styles.css';
 
 const ClientWorkouts = () => {
-  const [routines, setRoutines] = useState({
-    1: [], 2: [], 3: [], 4: [], 5: [], 6: [], 7: []
+  const [routine, setRoutine] = useState({
+    "1": [], "2": [], "3": [], "4": [], "5": [], "6": [], "7": []
   });
   const [loading, setLoading] = useState(true);
-  const [errorMessage, setErrorMessage] = useState('');
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchRoutines = async () => {
+    const fetchRoutine = async () => {
       try {
         const token = localStorage.getItem('token');
-        const response = await axios.get('http://localhost:5000/api/workouts', {
+        if (!token) {
+          throw new Error('No authentication token found');
+        }
+
+        const response = await axios.get('http://localhost:5002/api/workouts', {
           headers: {
             'Authorization': `Bearer ${token}`
           }
         });
-        setRoutines(response.data.routine || {});
-        setLoading(false);
+
+        if (response.data && response.data.routine) {
+          setRoutine(response.data.routine);
+        }
       } catch (err) {
-        console.error('Error fetching routines:', err);
-        setErrorMessage('Error al cargar las rutinas. Por favor, intente más tarde.');
+        console.error('Error fetching routine:', err);
+        setError('Error loading workout routine');
+      } finally {
         setLoading(false);
       }
     };
 
-    fetchRoutines();
+    fetchRoutine();
   }, []);
 
   const getDayName = (day) => {
     const days = {
-      1: 'Lunes',
-      2: 'Martes',
-      3: 'Miércoles',
-      4: 'Jueves',
-      5: 'Viernes',
-      6: 'Sábado',
-      7: 'Domingo'
+      '1': 'Lunes',
+      '2': 'Martes',
+      '3': 'Miércoles',
+      '4': 'Jueves',
+      '5': 'Viernes',
+      '6': 'Sábado',
+      '7': 'Domingo'
     };
     return days[day];
   };
 
-  if (loading) return <div className="loading">Cargando...</div>;
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
-  const hasRoutines = Object.values(routines).some(day => day.length > 0);
+  if (error) {
+    return <div className="error-message">{error}</div>;
+  }
 
   return (
-    <Layout>
-      <div className="workouts-container">
-        <div className="workouts-header">
-          <h2>Mi Rutina de Ejercicios</h2>
-          <Link to="/ClientEditWorkout" className="edit-button">
-            {hasRoutines ? 'Editar Rutina' : 'Crear Rutina'}
-          </Link>
-        </div>
-
-        {errorMessage ? (
-          <div className="error-message">{errorMessage}</div>
-        ) : (
-          <div className="routine-table-container">
-            <table className="routine-table">
-              <thead>
-                <tr>
-                  <th>Día</th>
-                  <th>Ejercicios</th>
-                  <th>Series</th>
-                  <th>Repeticiones</th>
-                  <th>Peso (kg)</th>
-                  <th>Última Actualización</th>
-                </tr>
-              </thead>
-              <tbody>
-                {Object.entries(routines).map(([day, exercises]) => (
-                  <tr key={day}>
-                    <td className="day-cell">{getDayName(day)}</td>
-                    <td className="exercises-cell">
-                      {exercises.length > 0 ? (
-                        <ul>
-                          {exercises.map((exercise, index) => (
-                            <li key={index}>{exercise.name || 'Ejercicio sin nombre'}</li>
-                          ))}
-                        </ul>
-                      ) : (
-                        <span className="rest-day">Sin ejercicios asignados</span>
-                      )}
-                    </td>
-                    <td>
-                      {exercises.length > 0 ? (
-                        exercises.map((exercise, index) => (
-                          <div key={index}>{exercise.series || '0'}</div>
-                        ))
-                      ) : (
-                        '-'
-                      )}
-                    </td>
-                    <td>
-                      {exercises.length > 0 ? (
-                        exercises.map((exercise, index) => (
-                          <div key={index}>{exercise.rep || '0'}</div>
-                        ))
-                      ) : (
-                        '-'
-                      )}
-                    </td>
-                    <td>
-                      {exercises.length > 0 ? (
-                        exercises.map((exercise, index) => (
-                          <div key={index}>{exercise.peso || '0'}</div>
-                        ))
-                      ) : (
-                        '-'
-                      )}
-                    </td>
-                    <td>
-                      {exercises.length > 0 ? (
-                        exercises.map((exercise, index) => (
-                          <div key={index}>{exercise.lastUpdate || '-'}</div>
-                        ))
-                      ) : (
-                        '-'
-                      )}
-                    </td>
-                  </tr>
+    <div className="workouts-container">
+      <h2>Mi Rutina</h2>
+      <Link to="/ClientEditWorkout" className="edit-button">
+        Editar
+      </Link>
+      
+      <div className="routine-grid">
+        {Object.entries(routine).map(([day, exercises]) => (
+          <div key={day} className="day-card">
+            <h3>{getDayName(day)}</h3>
+            {exercises && exercises.length > 0 ? (
+              <ul className="exercise-list">
+                {exercises.map((exercise, index) => (
+                  <li key={index} className="exercise-item">
+                    <span className="exercise-name">{exercise.name}</span>
+                    {exercise.sets > 0 && (
+                      <span className="exercise-details">
+                        {exercise.sets}x{exercise.reps} @ {exercise.weight}kg
+                      </span>
+                    )}
+                    {exercise.notes && (
+                      <span className="exercise-notes">{exercise.notes}</span>
+                    )}
+                  </li>
                 ))}
-              </tbody>
-            </table>
+              </ul>
+            ) : (
+              <p className="rest-day">Día de descanso</p>
+            )}
           </div>
-        )}
+        ))}
       </div>
-    </Layout>
+    </div>
   );
 };
 

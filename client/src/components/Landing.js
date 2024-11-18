@@ -13,7 +13,7 @@ const Landing = ({ onLogin }) => {
     setError('');
 
     try {
-      const response = await axios.post('http://localhost:5000/api/auth/login', 
+      const response = await axios.post('http://localhost:5002/api/auth/login', 
         { email, password },
         {
           headers: {
@@ -29,7 +29,7 @@ const Landing = ({ onLogin }) => {
         localStorage.setItem('token', response.data.token);
         
         // Fetch user data after login
-        const userResponse = await axios.get('http://localhost:5000/api/auth/user', {
+        const userResponse = await axios.get('http://localhost:5002/api/auth/user', {
           headers: {
             'Authorization': `Bearer ${response.data.token}`
           }
