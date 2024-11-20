@@ -35,9 +35,15 @@ const Landing = ({ onLogin }) => {
           }
         });
 
-        // Pass the user's name and membership to the handleLogin function
-        onLogin(userResponse.data.name, userResponse.data.membership); // Update this line
-        navigate('/ClientDashboard');
+        // Pass the user's role along with name and membership
+        onLogin(userResponse.data.name, userResponse.data.membership, userResponse.data.role);
+        
+        // Redirect based on role
+        if (userResponse.data.role === 'trainer') {
+          navigate('/TrainerDashboard');
+        } else {
+          navigate('/ClientDashboard');
+        }
       } else {
         setError('Login failed: No token received');
       }

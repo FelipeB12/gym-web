@@ -20,11 +20,11 @@ const App = () => {
   const [userName, setUserName] = useState('');
   const [membership, setMembership] = useState('');
 
-  const handleLogin = (name, membership) => {
-    console.log('User logged in:', name);
+  const handleLogin = (name, membership, role) => {
+    console.log('User logged in:', name, 'Role:', role);
     setIsAuthenticated(true);
     setUserName(name);
-    setUserRole('client');
+    setUserRole(role);
     setMembership(membership);
   };
 
@@ -131,7 +131,11 @@ const App = () => {
             path="/TrainerDashboard/*"
             element={
               isAuthenticated ? (
-                userRole === 'trainer' ? <TrainerDashboard /> : <Navigate to="/" replace />
+                userRole === 'trainer' ? (
+                  <Layout>
+                    <TrainerDashboard />
+                  </Layout>
+                ) : <Navigate to="/" replace />
               ) : (
                 <Navigate to="/" replace />
               )

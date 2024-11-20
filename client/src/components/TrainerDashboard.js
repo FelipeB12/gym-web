@@ -1,29 +1,23 @@
 import React from 'react';
-import { Routes, Route, Link } from 'react-router-dom';
-import TrainerClients from './TrainerClients';
-import TrainerSchedule from './TrainerSchedule';
-import TrainerWorkouts from './TrainerWorkouts';
+import { Routes, Route } from 'react-router-dom';
+import TrainerNavBar from './TrainerNavBar';
+import TrainerHome from './TrainerHome';
+import TrainerHeatmap from './TrainerHeatmap';
+import TrainerSearch from './TrainerSearch';
+import TrainerProfile from './TrainerProfile';
 
 const TrainerDashboard = () => {
   return (
-    <div>
-       <nav>
-         <Link to="TrainerDashboard">Profile</Link>
-         <Link to="TrainerClients">Clients</Link>
-         <Link to="TrainerSchedule">Schedule</Link>
-         <Link to="TrainerWorkouts">Workouts</Link>
-      </nav>
+    <div className="trainer-dashboard-container">
       <Routes>
-        <Route path="TrainerDashboard" element={<TrainerDashboard />} />
-        <Route path="TrainerClients" element={<TrainerClients />} />
-        <Route path="TrainerSchedule" element={<TrainerSchedule />} />
-        <Route path="TrainerWorkouts" element={<TrainerWorkouts />} />
-        <Route path="/" element={<TrainerDashboard />} />
+        <Route path="/" element={<TrainerHome />} />
+        <Route path="/heatmap" element={<TrainerHeatmap />} />
+        <Route path="/search" element={<TrainerSearch />} />
+        <Route path="/profile" element={<TrainerProfile />} />
       </Routes>
+      <TrainerNavBar />
     </div>
   );
 };
-
-// ... other component definitions ...
 
 export default TrainerDashboard;
