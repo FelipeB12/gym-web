@@ -1360,5 +1360,38 @@ th {
   padding: 10px;
   margin: 10px 0;
   border-radius: 4px;
-  background-color: #f8d7da;
+}
+
+
+/* styles for the trainer edit client routine page*/
+.routine-layout {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.current-routine {
+  padding: 20px;
+  border-radius: 8px;
+}
+
+.day-summary {
+  margin-bottom: 15px;
+}
+
+.day-summary h4 {
+  margin-bottom: 8px;
+  color: #333;
+}
+
+.day-summary ul {
+  list-style: none;
+  padding-left: 15px;
+}
+
+.day-summary li {
+  margin-bottom: 5px;
+  font-size: 0.9em;
+  color: #666;
 }

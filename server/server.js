@@ -14,7 +14,8 @@ app.use(express.json());
 
 // Routes
 app.use('/api/auth', require('./routes/auth'));
-app.use('/api/workouts', require('./routes/workouts'));
+const workoutRoutes = require('./routes/workouts');
+app.use('/api/workouts', workoutRoutes);
 
 // Test route
 app.get('/test', (req, res) => {
