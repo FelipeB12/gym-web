@@ -288,4 +288,47 @@ router.post('/measurements', auth, async (req, res) => {
     }
 });
 
+// Get all clients (users with role 'client')
+router.get('/clients', auth, async (req, res) => {
+  try {
+    // Check if the requesting user is a trainer
+    const requestingUser = await User.findById(req.user.id);
+    if (requestingUser.role !== 'trainer') {
+      return res.status(403).json({ msg: 'Not authorized to view clients' });
+    }
+
+    // Fetch only clients and select specific fields
+    const clients = await User.find(
+      { role: 'client' },
+      'name email _id' // Only return these fields
+    );
+    
+    res.json(clients);
+  } catch (err) {
+    console.error('Error fetching clients:', err);
+    res.status(500).json({ msg: 'Server error' });
+  }
+});
+
+// Get specific user data (for trainer to view client)
+router.get('/user/:userId', auth, async (req, res) => {
+  try {
+    // Check if the requesting user is a trainer
+    const requestingUser = await User.findById(req.user.id);
+    if (requestingUser.role !== 'trainer') {
+      return res.status(403).json({ msg: 'Not authorized to view client data' });
+    }
+
+    const user = await User.findById(req.params.userId).select('-password');
+    if (!user) {
+      return res.status(404).json({ msg: 'User not found' });
+    }
+
+    res.json(user);
+  } catch (err) {
+    console.error('Error fetching user data:', err);
+    res.status(500).json({ msg: 'Server error' });
+  }
+});
+
 module.exports = router;

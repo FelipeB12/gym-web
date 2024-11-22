@@ -5,6 +5,7 @@ import TrainerHome from './TrainerHome';
 import TrainerHeatmap from './TrainerHeatmap';
 import TrainerSearch from './TrainerSearch';
 import TrainerProfile from './TrainerProfile';
+import TrainerEditClientRoutine from './TrainerEditClientRoutine';
 
 const TrainerDashboard = () => {
   return (
@@ -14,6 +15,7 @@ const TrainerDashboard = () => {
         <Route path="/heatmap" element={<TrainerHeatmap />} />
         <Route path="/search" element={<TrainerSearch />} />
         <Route path="/profile" element={<TrainerProfile />} />
+        <Route path="/edit-routine/:userId" element={<TrainerEditClientRoutine />} />
       </Routes>
       <TrainerNavBar />
     </div>
