@@ -181,7 +181,7 @@ router.get('/user', auth, async (req, res) => {
 // Add this new route for updating user profile
 router.put('/update-profile', auth, async (req, res) => {
   try {
-    const { name, email, gymType, gender, age, height, weight, objective, medicalCondition } = req.body;
+    const { name, email, currentPassword, newPassword, confirmPassword } = req.body;
 
     // Find the user by ID
     const user = await User.findById(req.user.id);
@@ -189,7 +189,7 @@ router.put('/update-profile', auth, async (req, res) => {
       return res.status(404).json({ msg: 'User not found' });
     }
 
-    // Check if email is being changed and if it's already in use by another user
+    // Check if email is being changed and if it's already in use
     if (email !== user.email) {
       const existingUser = await User.findOne({ email });
       if (existingUser && existingUser._id.toString() !== user._id.toString()) {
@@ -197,36 +197,40 @@ router.put('/update-profile', auth, async (req, res) => {
       }
     }
 
-    // Update user fields with type conversion
-    const updates = {
-      name,
-      email,
-      gymType,
-      gender,
-      age: age ? Number(age) : undefined,
-      height: height ? Number(height) : undefined,
-      weight: weight ? Number(weight) : undefined,
-      objective,
-      medicalCondition
-    };
+    // Update basic fields
+    user.name = name || user.name;
+    user.email = email || user.email;
 
-    // Remove undefined values
-    Object.keys(updates).forEach(key => updates[key] === undefined && delete updates[key]);
+    // Handle password update if provided
+    if (newPassword) {
+      // Verify current password
+      const isMatch = await bcrypt.compare(currentPassword, user.password);
+      if (!isMatch) {
+        return res.status(400).json({ msg: 'Current password is incorrect' });
+      }
 
-    // Update user with the filtered updates
-    const updatedUser = await User.findByIdAndUpdate(
-      req.user.id,
-      { $set: updates },
-      { new: true, runValidators: true }
-    );
+      // Verify password confirmation
+      if (newPassword !== confirmPassword) {
+        return res.status(400).json({ msg: 'New passwords do not match' });
+      }
 
-    res.json({ msg: 'Profile updated successfully', user: updatedUser });
+      // Hash new password
+      const salt = await bcrypt.genSalt(10);
+      user.password = await bcrypt.hash(newPassword, salt);
+    }
+
+    // Save updated user
+    await user.save();
+
+    res.json({ msg: 'Profile updated successfully', user: {
+      name: user.name,
+      email: user.email
+    }});
   } catch (error) {
     console.error('Error updating profile:', error);
     res.status(500).json({ 
       msg: 'Server error', 
-      error: error.message,
-      stack: process.env.NODE_ENV === 'development' ? error.stack : undefined 
+      error: error.message 
     });
   }
 });
