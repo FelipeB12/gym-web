@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate, Link } from 'react-router-dom';
-import Layout from './Layout';
 import '../styles.css';
 
 // Import exercise images
@@ -19,13 +18,39 @@ import forearmsExercise1 from './img/tricep_1.png';
 import forearmsExercise2 from './img/tricep_2.png';
 // ... import all other exercise images
 
+// Move exercisesByMuscleGroup outside the component
+const exercisesByMuscleGroup = {
+  espalda: [
+    { id: 'espalda1', name: 'Remo con Barra', src: chestExercise1 },
+    { id: 'espalda2', name: 'Dominadas', src: chestExercise2 },
+  ],
+  pecho: [
+    { id: 'pecho1', name: 'Press de Banca', src: tricepsExercise1 },
+    { id: 'pecho2', name: 'Aperturas', src: tricepsExercise2 },
+  ],
+  pierna: [
+    { id: 'pierna1', name: 'Sentadillas', src: shouldersExercise1 },
+    { id: 'pierna2', name: 'Peso Muerto', src: shouldersExercise2 },
+  ],
+  biceps: [
+    { id: 'biceps1', name: 'Curl con Barra', src: backExercise1 },
+    { id: 'biceps2', name: 'Curl con Mancuernas', src: backExercise2 },
+  ],
+  triceps: [
+    { id: 'triceps1', name: 'Extensiones', src: forearmsExercise1 },
+    { id: 'triceps2', name: 'Press Francés', src: forearmsExercise2 },
+  ],
+  hombros: [
+    { id: 'hombros1', name: 'Press Militar', src: bicepsExercise1 },
+    { id: 'hombros2', name: 'Elevaciones Laterales', src: bicepsExercise2 },
+  ],
+};
+
 const ClientEditWorkout = () => {
   const [selectedDay, setSelectedDay] = useState(null);
   const [selectedMuscleGroup, setSelectedMuscleGroup] = useState('');
   const [selectedExercises, setSelectedExercises] = useState([]);
   const [exercises, setExercises] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const userName = localStorage.getItem('userName') || 'User';
   const navigate = useNavigate();
   const [exerciseDetails, setExerciseDetails] = useState({});
 
@@ -40,33 +65,6 @@ const ClientEditWorkout = () => {
     { value: 'descanso', label: 'Descanso' }
   ];
 
-  const exercisesByMuscleGroup = {
-    espalda: [
-      { id: 'espalda1', name: 'Remo con Barra', src: chestExercise1 },
-      { id: 'espalda2', name: 'Dominadas', src: chestExercise2 },
-    ],
-    pecho: [
-      { id: 'pecho1', name: 'Press de Banca', src: tricepsExercise1 },
-      { id: 'pecho2', name: 'Aperturas', src: tricepsExercise2 },
-    ],
-    pierna: [
-      { id: 'pierna1', name: 'Sentadillas', src: shouldersExercise1 },
-      { id: 'pierna2', name: 'Peso Muerto', src: shouldersExercise2 },
-    ],
-    biceps: [
-      { id: 'biceps1', name: 'Curl con Barra', src: backExercise1 },
-      { id: 'biceps2', name: 'Curl con Mancuernas', src: backExercise2 },
-    ],
-    triceps: [
-      { id: 'triceps1', name: 'Extensiones', src: forearmsExercise1 },
-      { id: 'triceps2', name: 'Press Francés', src: forearmsExercise2 },
-    ],
-    hombros: [
-      { id: 'hombros1', name: 'Press Militar', src: bicepsExercise1 },
-      { id: 'hombros2', name: 'Elevaciones Laterales', src: bicepsExercise2 },
-    ],
-  };
-
   useEffect(() => {
     const checkAuth = async () => {
       const token = localStorage.getItem('token');
@@ -74,7 +72,6 @@ const ClientEditWorkout = () => {
         navigate('/');
         return;
       }
-      setIsLoading(false);
     };
     checkAuth();
   }, [navigate]);

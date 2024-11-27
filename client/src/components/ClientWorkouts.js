@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import Layout from './Layout';
 import '../styles.css';
 
 // Import exercise images (use the same imports as in ClientEditWorkout.js)
@@ -72,19 +71,6 @@ const ClientWorkouts = () => {
 
     fetchRoutine();
   }, []);
-
-  const getDayName = (day) => {
-    const days = {
-      '1': 'Día 1',
-      '2': 'Día 2',
-      '3': 'Día 3',
-      '4': 'Día 4',
-      '5': 'Día 5',
-      '6': 'Día 6',
-      '7': 'Día 7'
-    };
-    return days[day];
-  };
 
   const handleUpdateExercise = async (day, exerciseIndex, exerciseName) => {
     const exercise = routine[day][exerciseIndex];

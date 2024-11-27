@@ -2,11 +2,55 @@ const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const auth = require('../middleware/auth');
 const User = require('../models/User');
 
-const auth = require('../middleware/auth')
+// Login route
+router.post('/login', async (req, res) => {
+  try {
+    const { email, password } = req.body;
 
-// Registration route
+    // Check if user exists
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(400).json({ msg: 'Invalid email or password' });
+    }
+
+    // Check password
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res.status(400).json({ msg: 'Invalid email or password' });
+    }
+
+    // Create and return a JWT
+    const payload = {
+      user: {
+        id: user.id,
+        role: user.role,
+        name: user.name // Include the user's name in the payload
+      }
+    };
+
+    jwt.sign(
+      payload,
+      process.env.JWT_SECRET || 'your_jwt_secret',
+      { expiresIn: '1h' },
+      (err, token) => {
+        if (err) {
+          console.error('JWT sign error:', err);
+          return res.status(500).json({ msg: 'Error creating token', error: err.message });
+        }
+        console.log('JWT created for user:', email);
+        res.json({ token, name: user.name }); // Return the user's name along with the token
+      }
+    );
+  } catch (err) {
+    console.error('Error during login:', err); // Log the error
+    res.status(500).json({ msg: 'Server error', error: err.message });
+  }
+});
+
+// Register route
 router.post('/register', async (req, res) => {
     console.log('Received registration request:', req.body);
     try {
@@ -119,52 +163,7 @@ router.post('/register', async (req, res) => {
     }
 });
 
-// Login route
-router.post('/login', async (req, res) => {
-  try {
-    const { email, password } = req.body;
-
-    // Check if user exists
-    const user = await User.findOne({ email });
-    if (!user) {
-      return res.status(400).json({ msg: 'Invalid email or password' });
-    }
-
-    // Check password
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) {
-      return res.status(400).json({ msg: 'Invalid email or password' });
-    }
-
-    // Create and return a JWT
-    const payload = {
-      user: {
-        id: user.id,
-        role: user.role,
-        name: user.name // Include the user's name in the payload
-      }
-    };
-
-    jwt.sign(
-      payload,
-      process.env.JWT_SECRET || 'your_jwt_secret',
-      { expiresIn: '1h' },
-      (err, token) => {
-        if (err) {
-          console.error('JWT sign error:', err);
-          return res.status(500).json({ msg: 'Error creating token', error: err.message });
-        }
-        console.log('JWT created for user:', email);
-        res.json({ token, name: user.name }); // Return the user's name along with the token
-      }
-    );
-  } catch (err) {
-    console.error('Error during login:', err); // Log the error
-    res.status(500).json({ msg: 'Server error', error: err.message });
-  }
-});
-
-// Add this route to fetch user data
+// Get user data
 router.get('/user', auth, async (req, res) => {
   try {
     const user = await User.findById(req.user.id).select('-password'); // Exclude password from response
@@ -178,8 +177,8 @@ router.get('/user', auth, async (req, res) => {
   }
 });
 
-// Add this new route for updating user profile
-router.put('/update-profile', auth, async (req, res) => {
+// Update user data
+router.put('/user', auth, async (req, res) => {
   try {
     const { name, email, currentPassword, newPassword, confirmPassword } = req.body;
 
@@ -235,64 +234,7 @@ router.put('/update-profile', auth, async (req, res) => {
   }
 });
 
-// Add this new route for updating measurements
-router.put('/update-measurements', auth, async (req, res) => {
-  try {
-    const user = await User.findById(req.user.id);
-    if (!user) {
-      return res.status(404).json({ msg: 'Usuario no encontrado' });
-    }
-
-    // Update measurements
-    if (req.body.measurements) {
-      user.measurements = {
-        ...user.measurements,
-        ...req.body.measurements
-      };
-    }
-
-    await user.save();
-    res.json(user.measurements);
-  } catch (err) {
-    console.error('Error updating measurements:', err);
-    res.status(500).json({ msg: 'Server error' });
-  }
-});
-
-// Add or update measurements route
-router.post('/measurements', auth, async (req, res) => {
-    try {
-        const user = await User.findById(req.user.id);
-        if (!user) {
-            return res.status(404).json({ msg: 'Usuario no encontrado' });
-        }
-
-        // Get current date in DD/MM/YYYY format
-        const today = new Date();
-        const date = today.toLocaleDateString('es-ES', {
-            day: '2-digit',
-            month: '2-digit',
-            year: 'numeric'
-        });
-
-        // Create new measurement
-        const newMeasurement = {
-            date: date,
-            values: req.body.values
-        };
-
-        // Add new measurement to the array
-        user.measurements.push(newMeasurement);
-
-        await user.save();
-        res.json(user.measurements);
-    } catch (err) {
-        console.error('Error updating measurements:', err);
-        res.status(500).json({ msg: 'Server error' });
-    }
-});
-
-// Get all clients (users with role 'client')
+// Trainer specific routes
 router.get('/clients', auth, async (req, res) => {
   try {
     // Check if the requesting user is a trainer
@@ -333,6 +275,15 @@ router.get('/user/:userId', auth, async (req, res) => {
     console.error('Error fetching user data:', err);
     res.status(500).json({ msg: 'Server error' });
   }
+});
+
+// Workout routes
+router.get('/workouts', auth, async (req, res) => {
+    // ... existing workout get code ...
+});
+
+router.post('/workouts', auth, async (req, res) => {
+    // ... existing workout post code ...
 });
 
 module.exports = router;

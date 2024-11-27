@@ -17,6 +17,33 @@ import shouldersExercise2 from './img/pierna_2.png';
 import forearmsExercise1 from './img/tricep_1.png';
 import forearmsExercise2 from './img/tricep_2.png';
 
+const exercisesByMuscleGroup = {
+  espalda: [
+    { id: 'espalda1', name: 'Remo con Barra', src: chestExercise1 },
+    { id: 'espalda2', name: 'Dominadas', src: chestExercise2 },
+  ],
+  pecho: [
+    { id: 'pecho1', name: 'Press de Banca', src: tricepsExercise1 },
+    { id: 'pecho2', name: 'Aperturas', src: tricepsExercise2 },
+  ],
+  pierna: [
+    { id: 'pierna1', name: 'Sentadillas', src: shouldersExercise1 },
+    { id: 'pierna2', name: 'Peso Muerto', src: shouldersExercise2 },
+  ],
+  biceps: [
+    { id: 'biceps1', name: 'Curl con Barra', src: backExercise1 },
+    { id: 'biceps2', name: 'Curl con Mancuernas', src: backExercise2 },
+  ],
+  triceps: [
+    { id: 'triceps1', name: 'Extensiones', src: forearmsExercise1 },
+    { id: 'triceps2', name: 'Press Francés', src: forearmsExercise2 },
+  ],
+  hombros: [
+    { id: 'hombros1', name: 'Press Militar', src: bicepsExercise1 },
+    { id: 'hombros2', name: 'Elevaciones Laterales', src: bicepsExercise2 },
+  ],
+};
+
 const TrainerEditClientRoutine = () => {
   const { userId } = useParams();
   const navigate = useNavigate();
@@ -40,33 +67,6 @@ const TrainerEditClientRoutine = () => {
     { value: 'hombros', label: 'Hombros' },
     { value: 'descanso', label: 'Descanso' }
   ];
-
-  const exercisesByMuscleGroup = {
-    espalda: [
-      { id: 'espalda1', name: 'Remo con Barra', src: chestExercise1 },
-      { id: 'espalda2', name: 'Dominadas', src: chestExercise2 },
-    ],
-    pecho: [
-      { id: 'pecho1', name: 'Press de Banca', src: tricepsExercise1 },
-      { id: 'pecho2', name: 'Aperturas', src: tricepsExercise2 },
-    ],
-    pierna: [
-      { id: 'pierna1', name: 'Sentadillas', src: shouldersExercise1 },
-      { id: 'pierna2', name: 'Peso Muerto', src: shouldersExercise2 },
-    ],
-    biceps: [
-      { id: 'biceps1', name: 'Curl con Barra', src: backExercise1 },
-      { id: 'biceps2', name: 'Curl con Mancuernas', src: backExercise2 },
-    ],
-    triceps: [
-      { id: 'triceps1', name: 'Extensiones', src: forearmsExercise1 },
-      { id: 'triceps2', name: 'Press Francés', src: forearmsExercise2 },
-    ],
-    hombros: [
-      { id: 'hombros1', name: 'Press Militar', src: bicepsExercise1 },
-      { id: 'hombros2', name: 'Elevaciones Laterales', src: bicepsExercise2 },
-    ],
-  };
 
   useEffect(() => {
     const fetchClientData = async () => {
