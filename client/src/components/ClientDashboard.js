@@ -1,24 +1,24 @@
 import React from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useNavigate } from 'react-router-dom';
 import ClientProfile from './ClientProfile';
 import ClientWorkouts from './ClientWorkouts';
 import ClientAIChat from './ClientAIChat';
 import ClientAppointment from './ClientAppointment';
 import ClientProgress from './ClientProgress';
 
-const ClientDashboard = ({ userName, membership }) => { // Receive membership as a prop
-
-  // Function to handle circle click
+const ClientDashboard = ({ userName, membership }) => {
+  const navigate = useNavigate();
+  
   const handleCircleClick = (e) => {
     e.currentTarget.classList.toggle('active');
   };
 
   return (
-    <React.Fragment>
-      <div className="container">
+    <div className="dashboard-container">
+      <div className="dashboard-content">
         <div className="header">
           <div className="member-id">Trigs 9999999</div>
-          <div className="days-left">Días de membresía: {membership} days</div> {/* Display membership value */}
+          <div className="days-left">Días de membresía: {membership} days</div>
         </div>
         <div className="title">Asistencia Semanal</div>
         <div className="week-circles">
@@ -26,17 +26,10 @@ const ClientDashboard = ({ userName, membership }) => { // Receive membership as
             <div key={index} className="circle" onClick={handleCircleClick}></div>
           ))}
         </div>
-        <div className="stats">
-          <div className="stat-item">
-            <span className="stat-label">Calorias</span>
-            <span className="stat-value">2000</span>
-          </div>
-          <div className="stat-item">
-            <span className="stat-label">Proteina</span>
-            <span className="stat-value">100</span>
-          </div>
-        </div>
-        <button className="button">Empezar</button>
+        
+        <button className="button" onClick={() => navigate('/clientworkouts')}>
+          Empezar
+        </button>
       </div>
 
       <Routes>
@@ -46,7 +39,7 @@ const ClientDashboard = ({ userName, membership }) => { // Receive membership as
         <Route path="clientprogress" element={<ClientProgress />} />
         <Route path="clientappointment" element={<ClientAppointment />} />
       </Routes>
-    </React.Fragment>
+    </div>
   );
 };
 

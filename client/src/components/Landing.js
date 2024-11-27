@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
+import logo from './img/logo.png';
 
 const Landing = ({ onLogin }) => {
   const [email, setEmail] = useState('');
@@ -56,6 +57,7 @@ const Landing = ({ onLogin }) => {
   return (
     <div className="app-container"> {/* Centering container */}
       <div className="landing-form common-form">
+        <img src={logo} alt="Logo" className="logo" />
         <form onSubmit={handleSubmit}>
           <h2 className="common-title">GYM APP</h2>
           <input
@@ -65,6 +67,8 @@ const Landing = ({ onLogin }) => {
             onChange={(e) => setEmail(e.target.value)}
             className="common-input"
             autoComplete="username"
+            id="email"
+            name="email"
           />
           <input
             type="password"
@@ -73,6 +77,8 @@ const Landing = ({ onLogin }) => {
             onChange={(e) => setPassword(e.target.value)}
             className="common-input"
             autoComplete="current-password"
+            id="password"
+            name="password"
           />
           <button type="submit" className="common-button">
             Ingresar

@@ -234,6 +234,11 @@ const ClientWorkouts = () => {
                             Cancelar
                           </button>
                         </div>
+                        {exercise.lastUpdated && (
+                          <div className="last-updated">
+                            Última actualización: {new Date(exercise.lastUpdated).toLocaleDateString()}
+                          </div>
+                        )}
                       </div>
                     ) : (
                       <>
@@ -251,17 +256,17 @@ const ClientWorkouts = () => {
                             {exercise.weight}kg
                           </span>
                         </div>
+                        {exercise.lastUpdated && (
+                          <div className="last-updated">
+                            Última actualización: {new Date(exercise.lastUpdated).toLocaleDateString()}
+                          </div>
+                        )}
                         <button 
                           className="update-btn"
                           onClick={() => handleUpdateExercise(day, index, exercise.name)}
                         >
                           Actualizar
                         </button>
-                        {exercise.lastUpdated && (
-                          <div className="last-updated">
-                            Última actualización: {new Date(exercise.lastUpdated).toLocaleDateString()}
-                          </div>
-                        )}
                       </>
                     )}
                   </li>
