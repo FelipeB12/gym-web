@@ -286,4 +286,178 @@ router.post('/workouts', auth, async (req, res) => {
     // ... existing workout post code ...
 });
 
+// Book appointment
+router.post('/appointments', auth, async (req, res) => {
+    try {
+        const { date, time } = req.body;
+        
+        // Get client user
+        const client = await User.findById(req.user.id);
+        if (!client) {
+            return res.status(404).json({ msg: 'Client not found' });
+        }
+
+        // Find trainer (assuming there's only one trainer for now)
+        const trainer = await User.findOne({ role: 'trainer' });
+        if (!trainer) {
+            return res.status(404).json({ msg: 'No trainer found' });
+        }
+
+        // Create appointment object
+        const appointment = {
+            date,
+            time,
+            clientId: client._id,
+            clientName: client.name,
+            status: 'pending'
+        };
+
+        // Initialize appointments array if it doesn't exist
+        if (!trainer.appointments) trainer.appointments = [];
+        if (!client.appointments) client.appointments = [];
+
+        // Add appointment to both client and trainer
+        trainer.appointments.push(appointment);
+        client.appointments.push(appointment);
+
+        // Save both documents
+        await Promise.all([
+            trainer.save(),
+            client.save()
+        ]);
+
+        res.json({ 
+            msg: 'Appointment booked successfully', 
+            appointment 
+        });
+    } catch (err) {
+        console.error('Error booking appointment:', err);
+        res.status(500).json({ msg: 'Server error', error: err.message });
+    }
+});
+
+// Get appointments (works for both trainer and client)
+router.get('/appointments', auth, async (req, res) => {
+    try {
+        const user = await User.findById(req.user.id);
+        if (!user) {
+            return res.status(404).json({ msg: 'User not found' });
+        }
+
+        // If user is a trainer, get all appointments
+        if (user.role === 'trainer') {
+            // Return trainer's appointments directly
+            return res.json({ 
+                appointments: user.appointments || [] 
+            });
+        }
+
+        // If user is a client, return only their appointments
+        res.json({ 
+            appointments: user.appointments || [] 
+        });
+    } catch (err) {
+        console.error('Error fetching appointments:', err);
+        res.status(500).json({ msg: 'Server error' });
+    }
+});
+
+// Update appointment status (trainer only)
+router.put('/appointments/:appointmentId', auth, async (req, res) => {
+    try {
+        const { status } = req.body;
+        const appointmentId = req.params.appointmentId;
+
+        // Verify user is a trainer
+        const trainer = await User.findById(req.user.id);
+        if (!trainer || trainer.role !== 'trainer') {
+            return res.status(403).json({ msg: 'Not authorized to update appointments' });
+        }
+
+        // Find the client who owns this appointment
+        const clients = await User.find({ role: 'client' });
+        let updatedClient = null;
+
+        // Update appointment status for the client
+        for (let client of clients) {
+            const appointmentIndex = client.appointments.findIndex(
+                apt => apt._id.toString() === appointmentId
+            );
+            
+            if (appointmentIndex !== -1) {
+                client.appointments[appointmentIndex].status = status;
+                await client.save();
+                updatedClient = client;
+                break;
+            }
+        }
+
+        // Update trainer's copy of the appointment
+        const trainerAppointmentIndex = trainer.appointments.findIndex(
+            apt => apt._id.toString() === appointmentId
+        );
+        
+        if (trainerAppointmentIndex !== -1) {
+            trainer.appointments[trainerAppointmentIndex].status = status;
+            await trainer.save();
+        }
+
+        if (!updatedClient) {
+            return res.status(404).json({ msg: 'Appointment not found' });
+        }
+
+        res.json({ success: true, msg: 'Appointment status updated' });
+    } catch (err) {
+        console.error('Error updating appointment status:', err);
+        res.status(500).json({ msg: 'Server error' });
+    }
+});
+
+// Delete appointment
+router.delete('/appointments/:appointmentId', auth, async (req, res) => {
+    try {
+        const appointmentId = req.params.appointmentId;
+        const client = await User.findById(req.user.id);
+        
+        if (!client) {
+            return res.status(404).json({ msg: 'Client not found' });
+        }
+
+        // Find the appointment in client's appointments
+        const appointmentIndex = client.appointments.findIndex(
+            apt => apt._id.toString() === appointmentId
+        );
+
+        if (appointmentIndex === -1) {
+            return res.status(404).json({ msg: 'Appointment not found' });
+        }
+
+        // Check if appointment is already confirmed
+        if (client.appointments[appointmentIndex].status === 'confirmed') {
+            return res.status(400).json({ msg: 'Cannot delete confirmed appointments' });
+        }
+
+        // Remove appointment from client's appointments
+        client.appointments.splice(appointmentIndex, 1);
+        await client.save();
+
+        // Remove appointment from trainer's appointments
+        const trainer = await User.findOne({ role: 'trainer' });
+        if (trainer) {
+            const trainerAppointmentIndex = trainer.appointments.findIndex(
+                apt => apt._id.toString() === appointmentId
+            );
+            if (trainerAppointmentIndex !== -1) {
+                trainer.appointments.splice(trainerAppointmentIndex, 1);
+                await trainer.save();
+            }
+        }
+
+        res.json({ success: true, msg: 'Appointment deleted successfully' });
+    } catch (err) {
+        console.error('Error deleting appointment:', err);
+        res.status(500).json({ msg: 'Server error' });
+    }
+});
+
 module.exports = router;

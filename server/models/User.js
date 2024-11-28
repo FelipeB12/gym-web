@@ -31,6 +31,18 @@ const RoutineSchema = new mongoose.Schema({
     }
 });
 
+const AppointmentSchema = new mongoose.Schema({
+    date: String,
+    time: String,
+    clientId: String,
+    clientName: String,
+    status: {
+        type: String,
+        enum: ['pending', 'confirmed', 'cancelled'],
+        default: 'pending'
+    }
+});
+
 const UserSchema = new mongoose.Schema({
     name: {
         type: String,
@@ -82,7 +94,8 @@ const UserSchema = new mongoose.Schema({
         default: ''
     },
     measurements: [MeasurementSchema],
-    routine: [RoutineSchema]
+    routine: [RoutineSchema],
+    appointments: [AppointmentSchema]
 });
 
 module.exports = mongoose.model('User', UserSchema);
