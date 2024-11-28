@@ -154,7 +154,7 @@ body {
 }
 
 .user-greeting {
-  font-size: 16px; /* Smaller text size for greeting */
+  font-size: 24px; /* Smaller text size for greeting */
   margin: 5px 0 0; /* Add some margin above */
 }
 
@@ -1401,14 +1401,15 @@ th {
 /* Dashboard Common Styles LOGO */
 .dashboard-container {
   min-height: 100vh;
+  min-height: calc(100vh - 120px);
   display: flex;
   flex-direction: column;
   align-items: center;
   position: relative;
   padding: 20px;
   background: rgb(25, 25, 25) url('components/img/logo.png') center center no-repeat;
-  background-size: 60% auto;
-  background-position: center 40%;
+  background-size: 150% auto;
+  background-position: center;
   background-blend-mode: overlay;
 }
 
