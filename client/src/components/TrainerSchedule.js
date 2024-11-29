@@ -77,21 +77,21 @@ const TrainerSchedule = () => {
 
     return (
         <div className="trainer-schedule">
-            <h2>Appointments Schedule</h2>
+            <h2>Valoraciones</h2>
             <button onClick={fetchAppointments} className="refresh-button">
-                Refresh Appointments
+                Actualizar
             </button>
             {appointments.length === 0 ? (
-                <p style={{ color: 'white', textAlign: 'center' }}>No appointments scheduled</p>
+            <p style={{ color: 'white', textAlign: 'center' }}>No hay valoraciones</p>
             ) : (
                 <table className="appointments-table">
                     <thead>
                         <tr>
-                            <th>Client Name</th>
-                            <th>Day</th>
-                            <th>Time</th>
-                            <th>Status</th>
-                            <th>Actions</th>
+                            <th>Nombre del Cliente</th>
+                            <th>Fecha</th>
+                            <th>Hora</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
                         </tr>
                     </thead>
                     <tbody>

@@ -9,6 +9,7 @@ body {
   background-position: center;
   background-blend-mode: overlay;
   color: white;
+  padding-bottom: 70px;
 }
 /* LANDING CSS */
 /* Add styles for the Landing component */
@@ -264,7 +265,6 @@ body {
 
 .profile-form input, .common-form input, 
 .common-form select, .common-form textarea {
-  width: 100%;
   padding: 10px;
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 5px;
@@ -320,9 +320,9 @@ body {
   display: flex;
   justify-content: center;
   align-items: stretch;
-  height: calc(100vh - 120px); /* Full height minus navbar heights */
+  height: calc(100vh - 140px);
   padding: 20px;
-  margin-bottom: 60px; /* Space for bottom navbar */
+  margin-bottom: 70px;
 }
 
 .chat-box {
@@ -344,8 +344,8 @@ body {
 }
 
 .message {
-  max-width: 80%;
-  padding: 10px 15px;
+  max-width: 90%;
+  padding: 8px 12px;
   border-radius: 15px;
   word-wrap: break-word;
 }
@@ -371,10 +371,12 @@ body {
 }
 
 .input-container {
-  display: flex;
-  padding: 15px;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 0 0 10px 10px;
+  position: fixed;
+  bottom: 70px;
+  left: 0;
+  right: 0;
+  padding: 10px;
+  background: transparent;
 }
 
 .chat-input {
@@ -885,9 +887,56 @@ input::-webkit-inner-spin-button {
 }
 /* woukout interface*/
 .workouts-container {
-  padding: 20px;
-  max-width: 1200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 800px;
   margin: 0 auto;
+}
+
+.workout-nav {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+.day-buttons {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.day-nav-btn {
+  padding: 10px 20px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 5px;
+  background-color: rgba(35, 35, 35, 0.5);
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.day-nav-btn.active {
+  background-color: #3c5846;
+  border-color: #3c5846;
+}
+
+.day-nav-btn:hover {
+  background-color: rgba(60, 88, 70, 0.7);
+}
+
+@media (max-width: 480px) {
+  .day-buttons {
+    gap: 5px;
+  }
+  
+  .day-nav-btn {
+    padding: 8px 16px;
+    font-size: 0.9rem;
+  }
 }
 
 .routine-grid {
@@ -1539,10 +1588,7 @@ th {
   padding: 20px;
   max-width: 1000px;
   margin: 0 auto;
-  margin-bottom: 80px; /* Space for bottom nav */
-  background-color: rgb(35, 35, 35);
   border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
 }
 
 .trainer-schedule h2 {
@@ -1639,4 +1685,305 @@ th {
 
 .status-cancelled {
   color: #dc3545;
+}
+
+/* Responsive styles for all containers */
+.container, 
+.appointment-container,
+.chat-container,
+.profile-form,
+.common-form {
+  width: 90%;
+  max-width: 600px;
+  margin: 20px auto;
+  padding: 20px;
+}
+
+/* Responsive table styles */
+.appointments-table,
+.progress-table {
+  width: 100%;
+  overflow-x: auto;
+  display: block;
+}
+
+/* Responsive form elements */
+.appointment-selection {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+}
+
+.appointment-select,
+.common-form input,
+.common-form select,
+.common-form textarea {
+  padding: 12px;
+  margin-bottom: 10px;
+}
+
+/* Responsive buttons */
+.book-button,
+.delete-button,
+.submit-button,
+.common-form button {
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+}
+
+/* Media queries for different screen sizes */
+@media (min-width: 768px) {
+  .appointment-selection {
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .appointment-select {
+    width: 40%;
+  }
+
+  .book-button {
+    width: auto;
+    margin: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .container,
+  .appointment-container,
+  .chat-container,
+  .profile-form,
+  .common-form {
+    padding: 15px;
+    margin: 10px auto;
+  }
+
+  .common-title {
+    font-size: 1.2rem;
+  }
+
+  .message {
+    max-width: 90%;
+    padding: 8px 12px;
+  }
+
+  .trainer-nav,
+  .bottom-nav {
+    padding: 10px 5px;
+  }
+
+  .trainer-nav a,
+  .bottom-nav a {
+    font-size: 0.7rem;
+  }
+
+  .trainer-nav svg {
+    font-size: 1.2rem;
+  }
+}
+
+/* Responsive table for mobile */
+@media (max-width: 600px) {
+  .appointments-table th,
+  .appointments-table td,
+  .progress-table th,
+  .progress-table td {
+    padding: 8px 5px;
+    font-size: 0.9rem;
+  }
+
+  .delete-button {
+    padding: 6px 10px;
+    font-size: 0.8rem;
+  }
+
+  /* Stack table headers for better mobile view */
+  .appointments-table thead {
+    display: none;
+  }
+
+  .appointments-table tr {
+    display: block;
+    margin-bottom: 15px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 5px;
+  }
+
+  .appointments-table td {
+    display: block;
+    text-align: right;
+    padding: 10px;
+    position: relative;
+    padding-left: 50%;
+  }
+
+  .appointments-table td::before {
+    content: attr(data-label);
+    position: absolute;
+    left: 10px;
+    width: 45%;
+    text-align: left;
+    font-weight: bold;
+  }
+}
+
+/* Ensure content doesn't overlap with bottom navigation */
+body {
+  padding-bottom: 70px;
+}
+
+.chat-container {
+  height: calc(100vh - 140px);
+  margin-bottom: 70px;
+}
+
+/* Responsive input containers */
+.input-container {
+  position: fixed;
+  bottom: 70px;
+  left: 0;
+  right: 0;
+  padding: 10px;
+  background: transparent;
+}
+
+/* Ensure forms don't overflow on small screens */
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+/* Make select dropdowns more touch-friendly on mobile */
+select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 20px;
+  padding-right: 30px;
+}
+
+/* Appointments table styles */
+.appointments-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.appointments-table th,
+.appointments-table td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Mobile responsive table */
+@media screen and (max-width: 768px) {
+  .appointments-table thead {
+    display: none;
+  }
+
+  .appointments-table tr {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 15px;
+  }
+
+  .appointments-table td {
+    border: none;
+    padding: 8px 0;
+    text-align: center;
+  }
+
+  .appointments-table td::before {
+    content: attr(data-label);
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+    color: rgba(255, 255, 255, 0.7);
+  }
+
+  .delete-button {
+    width: 100%;
+    max-width: 200px;
+    margin: 10px auto 0;
+    padding: 10px;
+  }
+
+  .appointments-table td:last-child {
+    padding-top: 15px;
+    margin-top: 10px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+  }
+}
+
+/* Appointment card styles */
+.current-appointments {
+  margin-top: 30px;
+  text-align: center;
+}
+
+.appointments-table {
+  display: none; /* Hide the table structure */
+}
+
+/* Card layout for appointment */
+.appointment-card {
+  background-color: rgba(35, 35, 35, 0.5);
+  border-radius: 10px;
+  padding: 20px;
+  margin: 20px auto;
+  max-width: 300px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.appointment-detail {
+  margin: 10px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.detail-label {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.9rem;
+}
+
+.detail-value {
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+
+.delete-button {
+  width: 100%;
+  padding: 10px;
+  margin-top: 15px;
+  background-color: rgba(220, 53, 69, 0.8);
+  border: none;
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.delete-button:hover {
+  background-color: rgba(220, 53, 69, 1);
+}
+
+.delete-button:disabled {
+  background-color: rgba(108, 117, 125, 0.8);
+  cursor: not-allowed;
 }

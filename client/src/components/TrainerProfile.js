@@ -97,7 +97,7 @@ const TrainerProfile = () => {
       }
 
       const response = await axios.put(
-        'http://localhost:5002/api/auth/update-profile',
+        'http://localhost:5002/api/users/profile',
         updateData,
         {
           headers: {

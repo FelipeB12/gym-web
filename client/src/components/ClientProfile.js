@@ -12,7 +12,10 @@ const ClientProfile = () => {
     height: '',
     weight: '',
     objective: '',
-    medicalCondition: ''
+    medicalCondition: '',
+    currentPassword: '',
+    newPassword: '',
+    confirmPassword: ''
   });
 
   const [errors, setErrors] = useState({});
@@ -84,6 +87,18 @@ const ClientProfile = () => {
       newErrors.weight = 'El peso debe ser un número';
     }
 
+    if (formData.newPassword || formData.currentPassword || formData.confirmPassword) {
+      if (!formData.currentPassword) {
+        newErrors.currentPassword = 'La contraseña actual es requerida';
+      }
+      if (!formData.newPassword) {
+        newErrors.newPassword = 'La nueva contraseña es requerida';
+      }
+      if (formData.newPassword !== formData.confirmPassword) {
+        newErrors.confirmPassword = 'Las contraseñas no coinciden';
+      }
+    }
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -97,19 +112,27 @@ const ClientProfile = () => {
 
     try {
       const token = localStorage.getItem('token');
+      const updateData = {
+        name: formData.name,
+        email: formData.email,
+        gymType: formData.gym,
+        gender: formData.gender,
+        age: parseInt(formData.age),
+        height: parseInt(formData.height),
+        weight: parseInt(formData.weight),
+        objective: formData.objective,
+        medicalCondition: formData.medicalCondition
+      };
+
+      if (formData.newPassword) {
+        updateData.currentPassword = formData.currentPassword;
+        updateData.newPassword = formData.newPassword;
+        updateData.confirmPassword = formData.confirmPassword;
+      }
+
       await axios.put(
-        'http://localhost:5002/api/auth/update-profile',
-        {
-          name: formData.name,
-          email: formData.email,
-          gymType: formData.gym,
-          gender: formData.gender,
-          age: parseInt(formData.age),
-          height: parseInt(formData.height),
-          weight: parseInt(formData.weight),
-          objective: formData.objective,
-          medicalCondition: formData.medicalCondition
-        },
+        'http://localhost:5002/api/auth/user',
+        updateData,
         {
           headers: {
             'Authorization': `Bearer ${token}`,
@@ -118,7 +141,14 @@ const ClientProfile = () => {
         }
       );
 
-      setSuccessMessage('¡Perfil actualizado exitosamente!');
+      setFormData(prev => ({
+        ...prev,
+        currentPassword: '',
+        newPassword: '',
+        confirmPassword: ''
+      }));
+
+      setSuccessMessage('Información actualizada');
       setTimeout(() => {
         setSuccessMessage('');
       }, 3000);
@@ -228,6 +258,42 @@ const ClientProfile = () => {
             value={formData.medicalCondition}
             onChange={handleChange}
           />
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="currentPassword">Contraseña Actual:</label>
+          <input
+            type="password"
+            id="currentPassword"
+            value={formData.currentPassword}
+            onChange={handleChange}
+            className={errors.currentPassword ? 'error' : ''}
+          />
+          {errors.currentPassword && <div className="error-message">{errors.currentPassword}</div>}
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="newPassword">Nueva Contraseña:</label>
+          <input
+            type="password"
+            id="newPassword"
+            value={formData.newPassword}
+            onChange={handleChange}
+            className={errors.newPassword ? 'error' : ''}
+          />
+          {errors.newPassword && <div className="error-message">{errors.newPassword}</div>}
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="confirmPassword">Confirmar Nueva Contraseña:</label>
+          <input
+            type="password"
+            id="confirmPassword"
+            value={formData.confirmPassword}
+            onChange={handleChange}
+            className={errors.confirmPassword ? 'error' : ''}
+          />
+          {errors.confirmPassword && <div className="error-message">{errors.confirmPassword}</div>}
         </div>
 
         <button 

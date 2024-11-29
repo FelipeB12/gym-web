@@ -109,7 +109,7 @@ const ClientAppointment = () => {
 
     return (
         <div className="appointment-container common-form">
-            <h1 className="common-title">Book an Appointment</h1>
+            <h1 className="common-title">Reservar una Cita</h1>
             
             <div className="appointment-selection">
                 <select 
@@ -117,7 +117,7 @@ const ClientAppointment = () => {
                     onChange={(e) => setSelectedDay(e.target.value)} 
                     className="appointment-select"
                 >
-                    <option value="" disabled>Select Date</option>
+                    <option value="" disabled>Seleccionar Fecha</option>
                     {days.map((day, index) => (
                         <option key={index} value={day}>{day}</option>
                     ))}
@@ -127,48 +127,43 @@ const ClientAppointment = () => {
                     onChange={(e) => setSelectedHour(e.target.value)} 
                     className="appointment-select"
                 >
-                    <option value="" disabled>Select Hour</option>
+                    <option value="" disabled>Seleccionar Hora</option>
                     {hours.map((hour, index) => (
                         <option key={index} value={hour}>{hour}</option>
                     ))}
                 </select>
-                <button onClick={handleBook} className="book-button">BOOK</button>
+                <button onClick={handleBook} className="book-button">RESERVAR</button>
             </div>
 
             <div className="current-appointments">
-                <h2>Your Appointments</h2>
+                <h2>Tus Citas</h2>
                 {error && <p className="error-message">{error}</p>}
                 {appointments.length === 0 ? (
-                    <p>No appointments scheduled</p>
+                    <p>No hay citas programadas</p>
                 ) : (
-                    <table className="appointments-table">
-                        <thead>
-                            <tr>
-                                <th>Day</th>
-                                <th>Time</th>
-                                <th>Status</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {appointments.map((appointment, index) => (
-                                <tr key={index}>
-                                    <td>{appointment.date}</td>
-                                    <td>{appointment.time}</td>
-                                    <td>{appointment.status}</td>
-                                    <td>
-                                        <button
-                                            onClick={() => handleDelete(appointment._id)}
-                                            className="delete-button"
-                                            disabled={appointment.status === 'confirmed'}
-                                        >
-                                            Delete
-                                        </button>
-                                    </td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
+                    appointments.map((appointment, index) => (
+                        <div key={index} className="appointment-card">
+                            <div className="appointment-detail">
+                                <span className="detail-label">Fecha</span>
+                                <span className="detail-value">{appointment.date}</span>
+                            </div>
+                            <div className="appointment-detail">
+                                <span className="detail-label">Hora</span>
+                                <span className="detail-value">{appointment.time}</span>
+                            </div>
+                            <div className="appointment-detail">
+                                <span className="detail-label">Estado</span>
+                                <span className="detail-value">{appointment.status}</span>
+                            </div>
+                            <button
+                                onClick={() => handleDelete(appointment._id)}
+                                className="delete-button"
+                                disabled={appointment.status === 'confirmed'}
+                            >
+                                Eliminar
+                            </button>
+                        </div>
+                    ))
                 )}
             </div>
         </div>
