@@ -144,7 +144,17 @@ const App = () => {
           />
           <Route
             path="/TrainerDashboard/edit-progress/:userId"
-            element={<TrainerEditClientProgress />}
+            element={
+              isAuthenticated ? (
+                userRole === 'trainer' ? (
+                  <Layout>
+                    <TrainerEditClientProgress />
+                  </Layout>
+                ) : <Navigate to="/" replace />
+              ) : (
+                <Navigate to="/" replace />
+              )
+            }
           />
         </Routes>
       </div>

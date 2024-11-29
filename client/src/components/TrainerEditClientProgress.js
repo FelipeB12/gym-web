@@ -67,24 +67,30 @@ const TrainerEditClientProgress = () => {
         values: measurements
       };
 
-      await axios.post(
-        `http://localhost:5002/api/auth/measurements/${userId}`,
-        { measurement: newMeasurement },
-        {
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json'
-          }
-        }
-      );
+      console.log('Sending measurement data:', newMeasurement);
 
-      setSuccess('Medidas actualizadas correctamente');
-      setTimeout(() => {
-        navigate('/TrainerDashboard/search');
-      }, 2000);
+      const response = await axios({
+        method: 'post',
+        url: `http://localhost:5002/api/auth/measurements/${userId}`,
+        data: { measurement: newMeasurement },
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+      });
+
+      console.log('Server response:', response.data);
+
+      if (response.data.msg === 'Measurements updated successfully') {
+        alert('Progreso actualizado correctamente');
+        setSuccess('Medidas actualizadas correctamente');
+        setTimeout(() => {
+          navigate('/TrainerDashboard/search');
+        }, 2000);
+      }
     } catch (err) {
-      setError('Error al actualizar las medidas');
-      console.error(err);
+      console.error('Error details:', err.response || err);
+      setError(err.response?.data?.msg || 'Error al actualizar las medidas');
     }
   };
 
