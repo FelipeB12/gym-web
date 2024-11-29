@@ -471,4 +471,29 @@ router.delete('/appointments/:appointmentId', auth, async (req, res) => {
     }
 });
 
+// Add new measurements for a client (trainer only)
+router.post('/measurements/:userId', auth, async (req, res) => {
+  try {
+    // Verify user is a trainer
+    const trainer = await User.findById(req.user.id);
+    if (!trainer || trainer.role !== 'trainer') {
+      return res.status(403).json({ msg: 'Not authorized to update measurements' });
+    }
+
+    const client = await User.findById(req.params.userId);
+    if (!client) {
+      return res.status(404).json({ msg: 'Client not found' });
+    }
+
+    // Add new measurement to the array
+    client.measurements.push(req.body.measurement);
+    await client.save();
+
+    res.json({ msg: 'Measurements updated successfully' });
+  } catch (err) {
+    console.error('Error updating measurements:', err);
+    res.status(500).json({ msg: 'Server error' });
+  }
+});
+
 module.exports = router;

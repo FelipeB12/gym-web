@@ -12,6 +12,7 @@ import ClientAIChat from './components/ClientAIChat';
 import ClientProgress from './components/ClientProgress';
 import ClientAppointment from './components/ClientAppointment';
 import Layout from './components/Layout';
+import TrainerEditClientProgress from './components/TrainerEditClientProgress';
 import './styles.css';
 
 const App = () => {
@@ -140,6 +141,10 @@ const App = () => {
                 <Navigate to="/" replace />
               )
             }
+          />
+          <Route
+            path="/TrainerDashboard/edit-progress/:userId"
+            element={<TrainerEditClientProgress />}
           />
         </Routes>
       </div>

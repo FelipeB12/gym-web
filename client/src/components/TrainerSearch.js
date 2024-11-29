@@ -80,12 +80,18 @@ const TrainerSearch = () => {
                 <tr key={user._id}>
                   <td>{user.name}</td>
                   <td>{user.email}</td>
-                  <td>
+                  <td className="action-buttons">
                     <Link 
                       to={`/TrainerDashboard/edit-routine/${user._id}`}
                       className="edit-routine-link"
                     >
                       Edit Routine
+                    </Link>
+                    <Link 
+                      to={`/TrainerDashboard/edit-progress/${user._id}`}
+                      className="edit-progress-link"
+                    >
+                      Editar Progreso
                     </Link>
                   </td>
                 </tr>
