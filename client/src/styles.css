@@ -4,7 +4,10 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: rgb(25, 25, 25);
+  background: rgb(25, 25, 25) url('components/img/logo.png') center center fixed;
+  background-size: cover;
+  background-position: center;
+  background-blend-mode: overlay;
   color: white;
 }
 /* LANDING CSS */
@@ -141,9 +144,7 @@ body {
 .app-header {
   display: flex;
   flex-direction: column; /* Stack title and greeting vertically */
-  
   padding: 20px; /* Add some padding */
-  background-color: rgb(25, 25, 25); /* Match the navbar color */
   color: white; /* Text color */
 }
 
@@ -253,57 +254,60 @@ body {
 /* client/src/styles.css */
 
 /* Profile Form Styles */
-.profile-form {
-  border-radius: 10px; /* Rounded corners */
-  padding: 20px; /* Padding inside the form */
-  max-width: 400px; /* Maximum width of the form */
-  margin: 20px auto; /* Center the form horizontally */
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5); /* Subtle shadow for depth */
-}
-
-.profile-form h1 {
-  color: #ffffff; /* White text for the title */
-  text-align: center; /* Center the title */
-}
-
-.profile-form .form-group {
-  margin-bottom: 15px; /* Space between form groups */
-}
-
-.profile-form input {
-  width: 100%; /* Full width for inputs */
-  padding: 10px; /* Padding inside inputs */
+.profile-form, .common-form {
+  border-radius: 10px;
+  padding: 20px;
+  max-width: 400px;
+  margin: 20px auto;
   border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 5px; /* Rounded corners for inputs */
-  background-color: rgb(45, 45, 45);
-  transition: border-color 0.3s; /* Smooth transition for border color */
 }
 
-.profile-form input:focus {
+.profile-form input, .common-form input, 
+.common-form select, .common-form textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 5px;
+  background-color: rgba(35, 35, 35, 0.5);
+  color: white;
+  transition: border-color 0.3s;
+}
+
+.profile-form input:focus, .common-form input:focus,
+.common-form select:focus, .common-form textarea:focus {
   border-color: rgba(255, 255, 255, 0.3);
-  outline: none; /* Remove default outline */
+  outline: none;
 }
 
-.profile-form .error-message {
-  color: #ff4d4d; /* Red color for error messages */
-  font-size: 0.9rem; /* Slightly smaller font size */
-  margin-top: 5px; /* Space above error messages */
+.profile-form .error-message, .common-form .error-message {
+  color: #ff4d4d;
+  font-size: 0.9rem;
+  margin-top: 5px;
 }
 
-.profile-form button {
-  width: 100%; /* Full width for the button */
-  padding: 10px; /* Padding inside the button */
-  background-color: #3c5846; /* Button background color */
-  color: white; /* White text color */
-  border: none; /* Remove default border */
-  border-radius: 5px; /* Rounded corners for the button */
-  font-size: 1rem; /* Font size for the button */
-  cursor: pointer; /* Pointer cursor on hover */
-  transition: background-color 0.3s; /* Smooth transition for background color */
+.profile-form button, .common-form button {
+  width: 100%;
+  padding: 10px;
+  background-color: #3c5846;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
 }
 
-.profile-form button:hover {
-  background-color: #a8b8ca; /* Change background color on hover */
+.profile-form button:hover, .common-form button:hover {
+  background-color: #a8b8ca;
+}
+
+.success-message {
+  background-color: rgba(60, 88, 70, 0.2);
+  color: #4CAF50;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 4px;
+  text-align: center;
 }
 
 
@@ -322,9 +326,7 @@ body {
 }
 
 .chat-box {
-  background-color: rgb(35, 35, 35);
   border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
   width: 100%;
   max-width: 600px;
   display: flex;
@@ -349,21 +351,21 @@ body {
 }
 
 .message.user {
-  background-color: #3c5846;
+  background-color: rgba(60, 88, 70, 0.7);
   color: white;
   align-self: flex-end;
   border-bottom-right-radius: 5px;
 }
 
 .message.ai {
-  background-color: #404040;
+  background-color: rgba(64, 64, 64, 0.7);
   color: white;
   align-self: flex-start;
   border-bottom-left-radius: 5px;
 }
 
 .message.loading {
-  background-color: #404040;
+  background-color: rgba(64, 64, 64, 0.7);
   color: #888;
   font-style: italic;
 }
@@ -371,18 +373,17 @@ body {
 .input-container {
   display: flex;
   padding: 15px;
-  background-color: #2c2c2c;
-  border-top: 1px solid #404040;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 0 0 10px 10px;
 }
 
 .chat-input {
   flex-grow: 1;
   padding: 12px;
-  border: 1px solid #404040;
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 20px;
   margin-right: 10px;
-  background-color: #363636;
+  background-color: rgba(35, 35, 35, 0.5);
   color: white;
 }
 
@@ -418,7 +419,6 @@ body {
 .progress-container {
   padding: 20px;
   border-radius: 10px; /* Rounded corners */
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
 }
 
 .progress-table {
@@ -482,9 +482,7 @@ input::-webkit-inner-spin-button {
 
 .appointment-container {
   padding: 20px;
-  background-color: #f9f9f9; /* Light background for the container */
   border-radius: 10px; /* Rounded corners */
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
   text-align: center; /* Center text */
 }
 
@@ -534,179 +532,214 @@ input::-webkit-inner-spin-button {
 
 /* Common Styles */
 .common-form {
-  max-width: 400px; /* Maximum width of forms */
-  margin: 0 auto; /* Center the form horizontally */
-  padding: 20px; /* Padding inside the form */
-  background-color: rgb(35, 35, 35);
-  border-radius: 10px; /* Rounded corners */
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5); /* Subtle shadow for depth */
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+  border-radius: 10px;
 }
 
 .common-form h1, .common-form h2 {
-  color: #ffffff; /* White text for titles */
-  text-align: center; /* Center titles */
+  color: #ffffff;
+  text-align: center;
 }
 
 .common-form input {
-  width: calc(100% - 20px); /* Full width minus padding */
-  padding: 10px; /* Padding inside inputs */
+  width: calc(100% - 20px);
+  padding: 10px;
   border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 5px; /* Rounded corners for inputs */
-  background-color: rgb(45, 45, 45);
-  transition: border-color 0.3s; /* Smooth transition for border color */
-  margin-bottom: 10px; /* Space below each input */
+  border-radius: 5px;
+  background-color: rgba(35, 35, 35, 0.5);
+  color: white;
+  transition: border-color 0.3s;
+  margin-bottom: 10px;
 }
 
 .common-form input:focus {
   border-color: rgba(255, 255, 255, 0.3);
-  outline: none; /* Remove default outline */
+  outline: none;
 }
 
 .common-form button {
-  width: 100%; /* Full width for buttons */
-  padding: 10px; /* Padding inside buttons */
-  background-color: #3c5846; /* Button background color */
-  color: white; /* White text color */
-  border: none; /* Remove default border */
-  border-radius: 5px; /* Rounded corners for buttons */
-  cursor: pointer; /* Pointer cursor on hover */
-  transition: background-color 0.3s; /* Smooth transition for background color */
+  width: 100%;
+  padding: 10px;
+  background-color: #3c5846;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
 }
 
 .common-form button:hover {
-  background-color: #a8b8ca; /* Change background color on hover */
+  background-color: #a8b8ca;
 }
 
 /* Common Title Styles */
 .common-title {
-  font-size: 1.5rem; /* Title size */
-  margin: 1rem 0; /* Margin around titles */
-  text-align: center; /* Center titles */
+  font-size: 1.5rem;
+  margin: 1rem 0;
+  text-align: center;
 }
 
 .link-container {
   display: flex;
-  justify-content: space-between; /* Space between links */
-  font-size: 14px; /* Font size for links */
+  justify-content: space-between;
+  font-size: 14px;
 }
 
 .link {
-  color: white; /* Link color */
-  text-decoration: none; /* Remove underline from links */
+  color: white;
+  text-decoration: none;
 }
 
 .link:hover {
-  color: #f0a500; /* Change color on hover */
+  color: #f0a500;
 }
 
 .error-message {
-  color: #ff4d4d; /* Red color for error messages */
-  font-size: 0.9rem; /* Slightly smaller font size */
-  margin-top: 5px; /* Space above error messages */
+  color: #ff4d4d;
+  font-size: 0.9rem;
+  margin-top: 5px;
 }
 
 /* Common Form Styles */
 .common-form {
-  max-width: 400px; /* Maximum width of forms */
-  margin: 0 auto; /* Center the form horizontally */
-  padding: 20px; /* Padding inside the form */
-  background-color: rgb(35, 35, 35);
-  border-radius: 10px; /* Rounded corners */
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5); /* Subtle shadow for depth */
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.common-form h1, .common-form h2 {
+  color: #ffffff;
+  text-align: center;
+}
+
+.common-form input {
+  width: calc(100% - 20px);
+  padding: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 5px;
+  background-color: rgba(35, 35, 35, 0.5);
+  color: white;
+  transition: border-color 0.3s;
+  margin-bottom: 10px;
+}
+
+.common-form input:focus {
+  border-color: rgba(255, 255, 255, 0.3);
+  outline: none;
+}
+
+.common-form button {
+  width: 100%;
+  padding: 10px;
+  background-color: #3c5846;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.common-form button:hover {
+  background-color: #a8b8ca;
 }
 
 /* Common Title Styles */
 .common-title {
-  font-size: 1.5rem; /* Title size */
-  margin: 1rem 0; /* Margin around titles */
-  text-align: center; /* Center titles */
+  font-size: 1.5rem;
+  margin: 1rem 0;
+  text-align: center;
 }
 
 /* Common Input Styles */
 .common-input, .common-select {
-  width: calc(100% - 20px); /* Full width minus padding */
-  padding: 10px; /* Padding inside inputs */
+  width: calc(100% - 20px);
+  padding: 10px;
   border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 5px; /* Rounded corners for inputs */
-  background-color: rgb(45, 45, 45);
-  transition: border-color 0.3s; /* Smooth transition for border color */
-  margin-bottom: 10px; /* Space below each input */
+  border-radius: 5px;
+  background-color: rgba(35, 35, 35, 0.5);
+  color: white;
+  transition: border-color 0.3s;
+  margin-bottom: 10px;
 }
 
 
 
 /* Common Button Styles */
 .common-button {
-  width: 100%; /* Full width for buttons */
-  padding: 10px; /* Padding inside buttons */
-  background-color: #3c5846; /* Button background color */
-  color: white; /* White text color */
-  border: none; /* Remove default border */
-  border-radius: 5px; /* Rounded corners for buttons */
-  cursor: pointer; /* Pointer cursor on hover */
-  transition: background-color 0.3s; /* Smooth transition for background color */
+  width: 100%;
+  padding: 10px;
+  background-color: #3c5846;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
 }
 
 /* Error Message Styles */
 .error-message {
-  color: #ff4d4d; /* Red color for error messages */
-  font-size: 0.9rem; /* Slightly smaller font size */
-  margin-top: 5px; /* Space above error messages */
+  color: #ff4d4d;
+  font-size: 0.9rem;
+  margin-top: 5px;
 }
 
 /* Link Container Styles */
 .link-container {
   display: flex;
-  justify-content: space-between; /* Space between links */
-  font-size: 14px; /* Font size for links */
+  justify-content: space-between;
+  font-size: 14px;
 }
 
 /* Link Styles */
 .link {
-  color: white; /* Link color */
-  text-decoration: none; /* Remove underline from links */
+  color: white;
+  text-decoration: none;
 }
 
 .link:hover {
-  color: #f0a500; /* Change color on hover */
+  color: #f0a500;
 }
 
 /* Gender Selection Styles */
 .gender-selection {
-  display: flex; /* Use Flexbox to align items horizontally */
-  justify-content: space-between; /* Space items evenly */
-  margin-bottom: 10px; /* Space below the gender selection */
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
 }
 
 .gender-button {
-  flex: 1; /* Allow buttons to take equal space */
-  padding: 10px 0; /* Add vertical padding for button appearance */
-  border: 1px solid #ccc; /* Light border */
-  border-radius: 5px; /* Rounded corners */
-  background-color: transparent; /* Transparent background */
-  color: white; /* Text color */
-  cursor: pointer; /* Pointer cursor on hover */
-  transition: background-color 0.3s, border-color 0.3s; /* Smooth transition */
-  text-align: center; /* Center text inside the button */
+  flex: 1;
+  padding: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: transparent;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s, border-color 0.3s;
+  text-align: center;
 }
 
 .gender-button:hover {
-  background-color: rgba(255, 255, 255, 0.2); /* Change background on hover */
+  background-color: rgba(255, 255, 255, 0.2);
 }
 
 .gender-button.active {
-  background-color: #f0a500; /* Active button color */
-  border-color: #f0a500; /* Active border color */
+  background-color: #f0a500;
+  border-color: #f0a500;
 }
 
 /* Dropdown Styles */
 .common-select {
-  width: 100%; /* Change to 100% to ensure full width */
-  padding: 10px; /* Padding inside dropdown */
-  border: 1px solid #ccc; /* Light border */
-  border-radius: 5px; /* Rounded corners for dropdown */
-  background-color: #ffffff; /* White background for dropdown */
-  margin-bottom: 10px; /* Space below dropdown */
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #ffffff;
+  margin-bottom: 10px;
 }
 
 /* success messafge after updating the profile infromation*/
@@ -1410,21 +1443,15 @@ th {
   align-items: center;
   position: relative;
   padding: 20px;
-  background: rgb(25, 25, 25) url('components/img/logo.png') center center no-repeat;
-  background-size: 150% auto;
-  background-position: center;
-  background-blend-mode: overlay;
+  /* Removing background properties as they're now in body */
 }
 
 .dashboard-content {
   width: 100%;
   max-width: 600px;
   z-index: 1;
-  background-color: rgba(35, 35, 35, 0.85);
   padding: 20px;
   border-radius: 12px;
-  backdrop-filter: blur(5px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .landing-form .logo {

@@ -1,30 +1,57 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
+import { FaHome, FaDumbbell, FaComments, FaChartLine, FaUser, FaCalendarAlt } from 'react-icons/fa';
 
 const Layout = ({ children }) => {
+  const location = useLocation();
+
   return (
     <div>
-      <nav className="bottom-nav">
-        <Link to="/ClientDashboard" className="nav-icon">
-          <span role="img" aria-label="Home">🏠</span> {/* Home Icon */}
+      <nav className="trainer-nav">
+        <Link 
+          to="/ClientDashboard" 
+          className={location.pathname === '/ClientDashboard' ? 'active' : ''}
+        >
+          <FaHome />
+          <span>Home</span>
         </Link>
-        <Link to="/ClientWorkouts" className="nav-icon">
-          <span role="img" aria-label="Workouts">🏋️‍♂️</span> {/* Workouts Icon */}
+        <Link 
+          to="/ClientWorkouts" 
+          className={location.pathname === '/ClientWorkouts' ? 'active' : ''}
+        >
+          <FaDumbbell />
+          <span>Workouts</span>
         </Link>
-        <Link to="/ClientAIChat" className="nav-icon">
-          <span role="img" aria-label="Nutrition">💬</span> {/* Nutrition Icon */}
+        <Link 
+          to="/ClientAIChat" 
+          className={location.pathname === '/ClientAIChat' ? 'active' : ''}
+        >
+          <FaComments />
+          <span>Chat</span>
         </Link>
-        <Link to="/ClientProgress" className="nav-icon">
-          <span role="img" aria-label="Progress">📈</span> {/* Progress Icon */}
+        <Link 
+          to="/ClientProgress" 
+          className={location.pathname === '/ClientProgress' ? 'active' : ''}
+        >
+          <FaChartLine />
+          <span>Progress</span>
         </Link>
-        <Link to="/ClientProfile" className="nav-icon">
-          <span role="img" aria-label="Profile">👤</span>  {/* Profile Icon */}
+        <Link 
+          to="/ClientProfile" 
+          className={location.pathname === '/ClientProfile' ? 'active' : ''}
+        >
+          <FaUser />
+          <span>Profile</span>
         </Link>
-        <Link to="/ClientAppointment" className="nav-icon">
-          <span role="img" aria-label="Appointment">📅</span>  {/* Appointment Icon */}
+        <Link 
+          to="/ClientAppointment" 
+          className={location.pathname === '/ClientAppointment' ? 'active' : ''}
+        >
+          <FaCalendarAlt />
+          <span>Schedule</span>
         </Link>
       </nav>
-      {children} {/* Render the current view here */}
+      {children}
     </div>
   );
 };

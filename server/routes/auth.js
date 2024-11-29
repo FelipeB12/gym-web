@@ -297,6 +297,17 @@ router.post('/appointments', auth, async (req, res) => {
             return res.status(404).json({ msg: 'Client not found' });
         }
 
+        // Check if client already has a future appointment
+        const hasActiveAppointment = client.appointments?.some(apt => 
+            apt.status !== 'completed' && apt.status !== 'cancelled'
+        );
+
+        if (hasActiveAppointment) {
+            return res.status(400).json({ 
+                msg: 'You already have an active appointment. Please cancel it before booking a new one.' 
+            });
+        }
+
         // Find trainer (assuming there's only one trainer for now)
         const trainer = await User.findOne({ role: 'trainer' });
         if (!trainer) {

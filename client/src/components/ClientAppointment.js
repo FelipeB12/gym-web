@@ -7,7 +7,22 @@ const ClientAppointment = () => {
     const [appointments, setAppointments] = useState([]);
     const [error, setError] = useState('');
     
-    const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+    // Generate next 7 days for the dropdown
+    const generateDays = () => {
+        const days = [];
+        for (let i = 0; i < 7; i++) {
+            const date = new Date();
+            date.setDate(date.getDate() + i);
+            days.push(date.toLocaleDateString('es-ES', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric'
+            }));
+        }
+        return days;
+    };
+
+    const days = generateDays();
     const hours = ['09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00'];
 
     const fetchAppointments = async () => {
@@ -36,6 +51,15 @@ const ClientAppointment = () => {
     const handleBook = async () => {
         if (selectedDay && selectedHour) {
             try {
+                const hasActiveAppointment = appointments.some(apt => 
+                    apt.status !== 'completed' && apt.status !== 'cancelled'
+                );
+
+                if (hasActiveAppointment) {
+                    alert('You already have an active appointment. Please cancel it before booking a new one.');
+                    return;
+                }
+
                 const token = localStorage.getItem('token');
                 const response = await axios.post(
                     'http://localhost:5002/api/auth/appointments',
@@ -49,7 +73,7 @@ const ClientAppointment = () => {
                 );
 
                 if (response.data.appointment) {
-                    fetchAppointments(); // Refresh appointments after booking
+                    fetchAppointments();
                     setSelectedDay('');
                     setSelectedHour('');
                     alert('Appointment booked successfully!');
@@ -93,7 +117,7 @@ const ClientAppointment = () => {
                     onChange={(e) => setSelectedDay(e.target.value)} 
                     className="appointment-select"
                 >
-                    <option value="" disabled>Select Day</option>
+                    <option value="" disabled>Select Date</option>
                     {days.map((day, index) => (
                         <option key={index} value={day}>{day}</option>
                     ))}
