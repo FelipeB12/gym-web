@@ -6,7 +6,7 @@ import ClientAIChat from './ClientAIChat';
 import ClientAppointment from './ClientAppointment';
 import ClientProgress from './ClientProgress';
 
-const ClientDashboard = ({ userName, membership }) => {
+const ClientDashboard = ({ userName, membership, gymType }) => {
   const navigate = useNavigate();
   
   const handleCircleClick = (e) => {
@@ -17,15 +17,10 @@ const ClientDashboard = ({ userName, membership }) => {
     <div className="dashboard-container">
       <div className="dashboard-content">
         <div className="header">
-          <div className="member-id">Trigs 9999999</div>
+          <div className="member-id">{gymType || 'GYM-NAME'}</div>
           <div className="days-left">Días de membresía: {membership} days</div>
         </div>
-        <div className="title">Asistencia Semanal</div>
-        <div className="week-circles">
-          {[...Array(7)].map((_, index) => (
-            <div key={index} className="circle" onClick={handleCircleClick}></div>
-          ))}
-        </div>
+
         
         <button className="button" onClick={() => navigate('/clientworkouts')}>
           Empezar
