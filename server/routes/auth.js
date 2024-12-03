@@ -286,6 +286,50 @@ router.post('/workouts', auth, async (req, res) => {
     // ... existing workout post code ...
 });
 
+// Get appointments (works for both trainer and client)
+router.get('/appointments', auth, async (req, res) => {
+    try {
+        console.log('Server: Fetching appointments for user:', req.user.id);
+        const user = await User.findById(req.user.id);
+        
+        if (!user) {
+            console.log('Server: User not found');
+            return res.status(404).json({ msg: 'User not found' });
+        }
+
+        // If user is a trainer, get all appointments from all clients
+        if (user.role === 'trainer') {
+            console.log('Server: User is trainer, fetching all client appointments');
+            const clients = await User.find({ role: 'client' });
+            
+            let allAppointments = [];
+            clients.forEach(client => {
+                if (client.appointments) {
+                    console.log('Server: Found appointments for client:', client.name);
+                    allAppointments = allAppointments.concat(
+                        client.appointments.map(apt => ({
+                            ...apt.toObject(),
+                            clientName: client.name,
+                            clientId: client._id
+                        }))
+                    );
+                }
+            });
+
+            console.log('Server: Sending all appointments:', allAppointments);
+            return res.json({ appointments: allAppointments });
+        }
+
+        console.log('Server: User is client, sending their appointments:', user.appointments);
+        res.json({ 
+            appointments: user.appointments || [] 
+        });
+    } catch (err) {
+        console.error('Server: Error fetching appointments:', err);
+        res.status(500).json({ msg: 'Server error' });
+    }
+});
+
 // Book appointment
 router.post('/appointments', auth, async (req, res) => {
     try {
@@ -297,7 +341,7 @@ router.post('/appointments', auth, async (req, res) => {
             return res.status(404).json({ msg: 'Client not found' });
         }
 
-        // Check if client already has a future appointment
+        // Check if client already has a pending or confirmed appointment
         const hasActiveAppointment = client.appointments?.some(apt => 
             apt.status !== 'completed' && apt.status !== 'cancelled'
         );
@@ -308,14 +352,18 @@ router.post('/appointments', auth, async (req, res) => {
             });
         }
 
-        // Find trainer (assuming there's only one trainer for now)
+        // Find trainer
         const trainer = await User.findOne({ role: 'trainer' });
         if (!trainer) {
             return res.status(404).json({ msg: 'No trainer found' });
         }
 
+        // Create new appointment with ObjectId
+        const appointmentId = new mongoose.Types.ObjectId();
+
         // Create appointment object
         const appointment = {
+            _id: appointmentId,
             date,
             time,
             clientId: client._id,
@@ -337,6 +385,8 @@ router.post('/appointments', auth, async (req, res) => {
             client.save()
         ]);
 
+        console.log('New appointment created:', appointment);
+
         res.json({ 
             msg: 'Appointment booked successfully', 
             appointment 
@@ -344,32 +394,6 @@ router.post('/appointments', auth, async (req, res) => {
     } catch (err) {
         console.error('Error booking appointment:', err);
         res.status(500).json({ msg: 'Server error', error: err.message });
-    }
-});
-
-// Get appointments (works for both trainer and client)
-router.get('/appointments', auth, async (req, res) => {
-    try {
-        const user = await User.findById(req.user.id);
-        if (!user) {
-            return res.status(404).json({ msg: 'User not found' });
-        }
-
-        // If user is a trainer, get all appointments
-        if (user.role === 'trainer') {
-            // Return trainer's appointments directly
-            return res.json({ 
-                appointments: user.appointments || [] 
-            });
-        }
-
-        // If user is a client, return only their appointments
-        res.json({ 
-            appointments: user.appointments || [] 
-        });
-    } catch (err) {
-        console.error('Error fetching appointments:', err);
-        res.status(500).json({ msg: 'Server error' });
     }
 });
 

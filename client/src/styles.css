@@ -2134,3 +2134,232 @@ select {
   border-radius: 4px;
   margin-bottom: 20px;
 }
+
+.accept-button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 5px 10px;
+    margin-right: 5px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.reject-button {
+    background-color: #f44336;
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.appointments-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.appointments-table th,
+.appointments-table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.appointments-table th {
+    background-color: #f5f5f5;
+}
+
+.refresh-button {
+    background-color: #2196F3;
+    color: white;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-bottom: 20px;
+}
+
+.trainer-schedule {
+    padding: 20px;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.table-container {
+    background-color: rgba(35, 35, 35, 0.5);
+    border-radius: 8px;
+    padding: 15px;
+    margin-top: 20px;
+}
+
+.appointments-table {
+    width: 100%;
+    border-collapse: collapse;
+    color: white;
+}
+
+.appointments-table th,
+.appointments-table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.appointments-table th {
+    background-color: rgba(60, 88, 70, 0.3);
+    font-weight: bold;
+}
+
+.appointments-table tr:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.action-buttons {
+    display: flex;
+    gap: 8px;
+}
+
+.accept-button,
+.reject-button {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background-color 0.3s;
+}
+
+.accept-button {
+    background-color: #3c5846;
+    color: white;
+}
+
+.accept-button:hover {
+    background-color: #4a6a54;
+}
+
+.reject-button {
+    background-color: #dc3545;
+    color: white;
+}
+
+.reject-button:hover {
+    background-color: #c82333;
+}
+
+.refresh-button {
+    background-color: #3c5846;
+    color: white;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-bottom: 20px;
+    width: 100%;
+    transition: background-color 0.3s;
+}
+
+.refresh-button:hover {
+    background-color: #4a6a54;
+}
+
+.trainer-schedule {
+    padding: 20px;
+    max-width: 1000px;
+    margin: 0 auto;
+    color: white;
+}
+
+.trainer-schedule-title {
+    color: white;
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 24px;
+}
+
+.refresh-button {
+    background-color: #3c5846;
+    color: white;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100%;
+    margin-bottom: 20px;
+    transition: background-color 0.3s;
+}
+
+.refresh-button:hover {
+    background-color: #4a6a54;
+}
+/*
+.table-container {
+    background-color: rgba(35, 35, 35, 0.9);
+    border-radius: 8px;
+    padding: 20px;
+    margin-top: 20px;
+}
+
+.no-appointments {
+    text-align: center;
+    color: white;
+    padding: 20px;
+}
+
+.appointments-table {
+    width: 100%;
+    border-collapse: collapse;
+    color: white;
+}
+
+.appointments-table th,
+.appointments-table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    color: white;
+}
+
+.appointments-table th {
+    background-color: rgba(60, 88, 70, 0.3);
+    font-weight: bold;
+}
+
+.appointments-table tr:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.action-buttons {
+    display: flex;
+    gap: 8px;
+}
+
+.accept-button,
+.reject-button {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background-color 0.3s;
+}
+
+.accept-button {
+    background-color: #3c5846;
+    color: white;
+}
+
+.accept-button:hover {
+    background-color: #4a6a54;
+}
+
+.reject-button {
+    background-color: #dc3545;
+    color: white;
+}
+
+.reject-button:hover {
+    background-color: #c82333;
+}*/
