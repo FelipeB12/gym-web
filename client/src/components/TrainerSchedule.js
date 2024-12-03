@@ -15,7 +15,6 @@ const TrainerSchedule = () => {
                 return;
             }
 
-            console.log('Fetching appointments with token:', token);
             const response = await axios.get(
                 'http://localhost:5002/api/auth/appointments',
                 {
@@ -23,21 +22,14 @@ const TrainerSchedule = () => {
                 }
             );
 
-            console.log('Full response:', response);
-            console.log('Response data:', response.data);
-            console.log('Raw appointments:', response.data.appointments);
-
             if (response.data && response.data.appointments) {
                 const today = new Date();
                 today.setHours(0, 0, 0, 0);
 
                 const futureAppointments = response.data.appointments.filter(apt => {
-                    console.log('Processing appointment:', apt);
                     const [day, month, year] = apt.date.split('/');
                     const appointmentDate = new Date(year, month - 1, day);
-                    const isFuture = appointmentDate >= today;
-                    console.log('Appointment date:', appointmentDate, 'Is future:', isFuture);
-                    return isFuture;
+                    return appointmentDate >= today;
                 }).sort((a, b) => {
                     const [dayA, monthA, yearA] = a.date.split('/');
                     const [dayB, monthB, yearB] = b.date.split('/');
@@ -49,11 +41,7 @@ const TrainerSchedule = () => {
                     return a.time.localeCompare(b.time);
                 });
 
-                console.log('Setting appointments state with:', futureAppointments);
                 setAppointments(futureAppointments);
-            } else {
-                console.log('No appointments found in response');
-                setAppointments([]);
             }
         } catch (error) {
             console.error('Error fetching appointments:', error);
@@ -66,18 +54,14 @@ const TrainerSchedule = () => {
     const handleStatusUpdate = async (appointmentId, newStatus) => {
         try {
             const token = localStorage.getItem('token');
-            const response = await axios.put(
+            await axios.put(
                 `http://localhost:5002/api/auth/appointments/${appointmentId}`,
                 { status: newStatus },
                 {
                     headers: { Authorization: `Bearer ${token}` }
                 }
             );
-
-            if (response.data.success) {
-                fetchAppointments();
-                alert(`Appointment ${newStatus} successfully`);
-            }
+            fetchAppointments();
         } catch (error) {
             console.error('Error updating appointment status:', error);
             alert('Failed to update appointment status');
@@ -85,30 +69,16 @@ const TrainerSchedule = () => {
     };
 
     useEffect(() => {
-        console.log('Component mounted, fetching appointments...');
         fetchAppointments();
         const intervalId = setInterval(fetchAppointments, 30000);
         return () => clearInterval(intervalId);
     }, []);
 
-    useEffect(() => {
-        console.log('Appointments state updated:', appointments);
-    }, [appointments]);
-
-    if (loading) {
-        console.log('Rendering loading state');
-        return <div className="trainer-schedule"><h2>Loading appointments...</h2></div>;
-    }
-    
-    if (error) {
-        console.log('Rendering error state:', error);
-        return <div className="trainer-schedule"><h2>Error: {error}</h2></div>;
-    }
-
-    console.log('Rendering appointments table with:', appointments);
+    if (loading) return <div className="trainer-schedule"><h2>Loading appointments...</h2></div>;
+    if (error) return <div className="trainer-schedule"><h2>Error: {error}</h2></div>;
 
     return (
-        <div >
+        <div className="trainer-schedule">
             <h2 className="trainer-schedule-title">
                 Pending Appointments
             </h2>
@@ -120,51 +90,48 @@ const TrainerSchedule = () => {
                 Refresh Appointments
             </button>
 
-            <div className="table-container">
+            <div className="appointments-container">
                 {appointments.length === 0 ? (
                     <p className="no-appointments">
                         No pending appointments
                     </p>
                 ) : (
-                    <table className="appointments-table">
-                        <thead>
-                            <tr>
-                                <th>Client Name</th>
-                                <th>Date</th>
-                                <th>Time</th>
-                                <th>Status</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {appointments.map((appointment, index) => (
-                                <tr key={appointment._id || index}>
-                                    <td>{appointment.clientName}</td>
-                                    <td>{appointment.date}</td>
-                                    <td>{appointment.time}</td>
-                                    <td>{appointment.status}</td>
-                                    <td>
-                                        {appointment.status === 'pending' && (
-                                            <div className="action-buttons">
-                                                <button
-                                                    onClick={() => handleStatusUpdate(appointment._id, 'confirmed')}
-                                                    className="accept-button"
-                                                >
-                                                    Accept
-                                                </button>
-                                                <button
-                                                    onClick={() => handleStatusUpdate(appointment._id, 'cancelled')}
-                                                    className="reject-button"
-                                                >
-                                                    Reject
-                                                </button>
-                                            </div>
-                                        )}
-                                    </td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
+                    appointments.map((appointment, index) => (
+                        <div key={appointment._id || index} className="appointment-card">
+                            <div className="appointment-detail">
+                                <span className="detail-label">Client:</span>
+                                <span className="detail-value">{appointment.clientName}</span>
+                            </div>
+                            <div className="appointment-detail">
+                                <span className="detail-label">Date:</span>
+                                <span className="detail-value">{appointment.date}</span>
+                            </div>
+                            <div className="appointment-detail">
+                                <span className="detail-label">Time:</span>
+                                <span className="detail-value">{appointment.time}</span>
+                            </div>
+                            <div className="appointment-detail">
+                                <span className="detail-label">Status:</span>
+                                <span className="detail-value">{appointment.status}</span>
+                            </div>
+                            {appointment.status === 'pending' && (
+                                <div className="action-buttons">
+                                    <button
+                                        onClick={() => handleStatusUpdate(appointment._id, 'confirmed')}
+                                        className="accept-button"
+                                    >
+                                        Accept
+                                    </button>
+                                    <button
+                                        onClick={() => handleStatusUpdate(appointment._id, 'cancelled')}
+                                        className="reject-button"
+                                    >
+                                        Reject
+                                    </button>
+                                </div>
+                            )}
+                        </div>
+                    ))
                 )}
             </div>
         </div>

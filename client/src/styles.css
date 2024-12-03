@@ -1587,7 +1587,6 @@ th {
 
 .appointments-table {
     width: 100%;
-    border-collapse: collapse;
     margin-top: 20px;
 }
 
@@ -1657,374 +1656,53 @@ th {
 /* TRAINER SCHEDULE STYLES */
 .trainer-schedule {
   padding: 20px;
-  max-width: 1000px;
+  max-width: 600px;
   margin: 0 auto;
-  border-radius: 10px;
+  color: white;
 }
 
-.trainer-schedule h2 {
+.trainer-schedule-title {
   color: white;
   text-align: center;
   margin-bottom: 20px;
+  font-size: 24px;
 }
 
 .refresh-button {
-  background-color: #3c5846;
+  background-color: #2196F3;
   color: white;
+  padding: 10px;
   border: none;
-  padding: 10px 20px;
-  border-radius: 5px;
+  border-radius: 4px;
   cursor: pointer;
-  margin-bottom: 20px;
   width: 100%;
+  margin-bottom: 20px;
   transition: background-color 0.3s;
 }
 
 .refresh-button:hover {
-  background-color: #a8b8ca;
+  background-color: #1976D2;
 }
 
-.appointments-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 20px;
-  background-color: rgb(45, 45, 45);
-  border-radius: 8px;
-  overflow: hidden;
-}
-
-.appointments-table th,
-.appointments-table td {
-  padding: 15px;
-  text-align: left;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  color: white;
-}
-
-.appointments-table th {
-  background-color: rgb(55, 55, 55);
-  font-weight: 600;
-  text-transform: uppercase;
-  font-size: 0.9em;
-}
-
-.appointments-table tr:hover {
-  background-color: rgba(255, 255, 255, 0.05);
-}
-
-.confirm-button,
-.cancel-button {
-  padding: 8px 16px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-weight: 500;
-  transition: all 0.3s ease;
-  margin: 0 5px;
-}
-
-.confirm-button {
-  background-color: #3c5846;
-  color: white;
-}
-
-.confirm-button:hover {
-  background-color: #4a6a54;
-}
-
-.cancel-button {
-  background-color: #dc3545;
-  color: white;
-}
-
-.cancel-button:hover {
-  background-color: #c82333;
-}
-
-/* Status styles */
-.appointments-table td:nth-child(4) {
-  text-transform: capitalize;
-}
-
-.status-pending {
-  color: #ffc107;
-}
-
-.status-confirmed {
-  color: #28a745;
-}
-
-.status-cancelled {
-  color: #dc3545;
-}
-
-/* Responsive styles for all containers */
-.container, 
-.appointment-container,
-.chat-container,
-.profile-form,
-.common-form {
-  width: 90%;
-  max-width: 600px;
-  margin: 20px auto;
-  padding: 20px;
-}
-
-/* Responsive table styles */
-.appointments-table,
-.progress-table {
-  width: 100%;
-  overflow-x: auto;
-}
-
-/* Responsive form elements */
-.appointment-selection {
+.appointments-container {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  width: 100%;
+  gap: 15px;
 }
 
-.appointment-select,
-.common-form input,
-.common-form select,
-.common-form textarea {
-  padding: 12px;
-  margin-bottom: 10px;
-}
-
-/* Responsive buttons */
-.book-button,
-.delete-button,
-.submit-button,
-.common-form button {
-  width: 100%;
-  padding: 12px;
-  margin: 10px 0;
-}
-
-/* Media queries for different screen sizes */
-@media (min-width: 768px) {
-  .appointment-selection {
-    flex-direction: row;
-    align-items: center;
-  }
-
-  .appointment-select {
-    width: 40%;
-  }
-
-  .book-button {
-    width: auto;
-    margin: 0;
-  }
-}
-
-@media (max-width: 480px) {
-  .container,
-  .appointment-container,
-  .chat-container,
-  .profile-form,
-  .common-form {
-    padding: 15px;
-    margin: 10px auto;
-  }
-
-  .common-title {
-    font-size: 1.2rem;
-  }
-
-  .message {
-    max-width: 90%;
-    padding: 8px 12px;
-  }
-
-  .trainer-nav,
-  .bottom-nav {
-    padding: 10px 5px;
-  }
-
-  .trainer-nav a,
-  .bottom-nav a {
-    font-size: 0.7rem;
-  }
-
-  .trainer-nav svg {
-    font-size: 1.2rem;
-  }
-}
-
-/* Responsive table for mobile */
-@media (max-width: 600px) {
-  .appointments-table th,
-  .appointments-table td,
-  .progress-table th,
-  .progress-table td {
-    padding: 8px 5px;
-    font-size: 0.9rem;
-  }
-
-  .delete-button {
-    padding: 6px 10px;
-    font-size: 0.8rem;
-  }
-
-  /* Stack table headers for better mobile view */
-  .appointments-table thead {
-    display: none;
-  }
-
-  .appointments-table tr {
-    display: block;
-    margin-bottom: 15px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 5px;
-  }
-
-  .appointments-table td {
-    display: block;
-    text-align: right;
-    padding: 10px;
-    position: relative;
-    padding-left: 50%;
-  }
-
-  .appointments-table td::before {
-    content: attr(data-label);
-    position: absolute;
-    left: 10px;
-    width: 45%;
-    text-align: left;
-    font-weight: bold;
-  }
-}
-
-/* Ensure content doesn't overlap with bottom navigation */
-body {
-  padding-bottom: 70px;
-}
-
-.chat-container {
-  height: calc(100vh - 140px);
-  margin-bottom: 70px;
-}
-
-/* Responsive input containers */
-.input-container {
-  position: fixed;
-  bottom: 70px;
-  left: 0;
-  right: 0;
-  padding: 10px;
-  background: transparent;
-}
-
-/* Ensure forms don't overflow on small screens */
-.form-group {
-  margin-bottom: 15px;
-}
-
-.form-group label {
-  display: block;
-  margin-bottom: 5px;
-}
-
-/* Make select dropdowns more touch-friendly on mobile */
-select {
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
-  background-repeat: no-repeat;
-  background-position: right 10px center;
-  background-size: 20px;
-  padding-right: 30px;
-}
-
-/* Appointments table styles */
-.appointments-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin: 20px 0;
-  border-radius: 8px;
-  overflow: hidden;
-}
-
-.appointments-table th,
-.appointments-table td {
-  padding: 12px;
-  text-align: left;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-/* Mobile responsive table */
-@media screen and (max-width: 768px) {
-  .appointments-table thead {
-    display: none;
-  }
-
-  .appointments-table tr {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 20px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 8px;
-    padding: 15px;
-  }
-
-  .appointments-table td {
-    border: none;
-    padding: 8px 0;
-    text-align: center;
-  }
-
-  .appointments-table td::before {
-    content: attr(data-label);
-    font-weight: bold;
-    display: block;
-    margin-bottom: 5px;
-    color: rgba(255, 255, 255, 0.7);
-  }
-
-  .delete-button {
-    width: 100%;
-    max-width: 200px;
-    margin: 10px auto 0;
-    padding: 10px;
-  }
-
-  .appointments-table td:last-child {
-    padding-top: 15px;
-    margin-top: 10px;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-  }
-}
-
-/* Appointment card styles */
-.current-appointments {
-  margin-top: 30px;
-  text-align: center;
-}
-
-.appointments-table {
-  display: none; /* Hide the table structure */
-}
-
-/* Card layout for appointment */
 .appointment-card {
-  background-color: rgba(35, 35, 35, 0.5);
-  border-radius: 10px;
-  padding: 20px;
-  margin: 20px auto;
-  max-width: 300px;
+  background-color: rgba(35, 35, 35, 0.9);
+  border-radius: 8px;
+  padding: 15px;
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .appointment-detail {
-  margin: 10px 0;
   display: flex;
-  flex-direction: column;
-  gap: 5px;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  padding: 4px 0;
 }
 
 .detail-label {
@@ -2033,333 +1711,72 @@ select {
 }
 
 .detail-value {
-  font-size: 1.1rem;
+  color: white;
   font-weight: 500;
 }
 
-.delete-button {
-  width: 100%;
-  padding: 10px;
-  margin-top: 15px;
-  background-color: rgba(220, 53, 69, 0.8);
+.action-buttons {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+  justify-content: flex-end;
+}
+
+.accept-button,
+.reject-button {
+  padding: 6px 12px;
   border: none;
-  border-radius: 5px;
-  color: white;
+  border-radius: 4px;
   cursor: pointer;
+  color: white;
+  font-size: 0.9rem;
   transition: background-color 0.3s;
 }
 
-.delete-button:hover {
-  background-color: rgba(220, 53, 69, 1);
-}
-
-.delete-button:disabled {
-  background-color: rgba(108, 117, 125, 0.8);
-  cursor: not-allowed;
-}
-/* EDIT PROGRESS STYLES */
-.edit-progress-container {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 20px;
-}
-
-.measurements-form {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-.measurements-section {
-  padding: 20px;
-  border-radius: 8px;
-}
-
-.measurements-section h3 {
-  margin-top: 0;
-  margin-bottom: 15px;
-}
-
-.form-group {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 10px;
-}
-
-.form-group label {
-  flex: 1;
-  margin-right: 10px;
-}
-
-.form-group input {
-  width: 100px;
-  padding: 5px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 4px;
-  background-color: transparent;
-  color: white;
-}
-
-.form-group input:focus {
-  outline: none;
-  border-color: rgba(255, 255, 255, 0.3);
-}
-
-/* Remove spinner arrows from number inputs */
-.form-group input[type="number"]::-webkit-inner-spin-button,
-.form-group input[type="number"]::-webkit-outer-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-
-.submit-button {
-  padding: 10px 20px;
-  background-color: #4CAF50;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 16px;
-}
-
-.submit-button:hover {
-  background-color: #45a049;
-}
-
-.success-message {
-  background-color: #dff0d8;
-  color: #3c763d;
-  padding: 10px;
-  border-radius: 4px;
-  margin-bottom: 20px;
-}
-
 .accept-button {
-    background-color: #4CAF50;
-    color: white;
-    padding: 5px 10px;
-    margin-right: 5px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-.reject-button {
-    background-color: #f44336;
-    color: white;
-    padding: 5px 10px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-.appointments-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-}
-
-.appointments-table th,
-.appointments-table td {
-    padding: 12px;
-    text-align: left;
-    border-bottom: 1px solid #ddd;
-}
-
-.appointments-table th {
-    background-color: #f5f5f5;
-}
-
-.refresh-button {
-    background-color: #2196F3;
-    color: white;
-    padding: 8px 16px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    margin-bottom: 20px;
-}
-
-.trainer-schedule {
-    padding: 20px;
-    max-width: 1000px;
-    margin: 0 auto;
-}
-
-.table-container {
-    background-color: rgba(35, 35, 35, 0.5);
-    border-radius: 8px;
-    padding: 15px;
-    margin-top: 20px;
-}
-
-.appointments-table {
-    width: 100%;
-    border-collapse: collapse;
-    color: white;
-}
-
-.appointments-table th,
-.appointments-table td {
-    padding: 12px;
-    text-align: left;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.appointments-table th {
-    background-color: rgba(60, 88, 70, 0.3);
-    font-weight: bold;
-}
-
-.appointments-table tr:hover {
-    background-color: rgba(255, 255, 255, 0.05);
-}
-
-.action-buttons {
-    display: flex;
-    gap: 8px;
-}
-
-.accept-button,
-.reject-button {
-    padding: 6px 12px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-weight: 500;
-    transition: background-color 0.3s;
-}
-
-.accept-button {
-    background-color: #3c5846;
-    color: white;
+  background-color: #3c5846;
 }
 
 .accept-button:hover {
-    background-color: #4a6a54;
+  background-color: #4a6a54;
 }
 
 .reject-button {
-    background-color: #dc3545;
-    color: white;
+  background-color: #dc3545;
 }
 
 .reject-button:hover {
-    background-color: #c82333;
-}
-
-.refresh-button {
-    background-color: #3c5846;
-    color: white;
-    padding: 8px 16px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    margin-bottom: 20px;
-    width: 100%;
-    transition: background-color 0.3s;
-}
-
-.refresh-button:hover {
-    background-color: #4a6a54;
-}
-
-.trainer-schedule {
-    padding: 20px;
-    max-width: 1000px;
-    margin: 0 auto;
-    color: white;
-}
-
-.trainer-schedule-title {
-    color: white;
-    text-align: center;
-    margin-bottom: 20px;
-    font-size: 24px;
-}
-
-.refresh-button {
-    background-color: #3c5846;
-    color: white;
-    padding: 8px 16px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    width: 100%;
-    margin-bottom: 20px;
-    transition: background-color 0.3s;
-}
-
-.refresh-button:hover {
-    background-color: #4a6a54;
-}
-/*
-.table-container {
-    background-color: rgba(35, 35, 35, 0.9);
-    border-radius: 8px;
-    padding: 20px;
-    margin-top: 20px;
+  background-color: #c82333;
 }
 
 .no-appointments {
+  text-align: center;
+  color: white;
+  padding: 20px;
+  background-color: rgba(35, 35, 35, 0.9);
+  border-radius: 8px;
+}
+
+/* Responsive styles */
+@media (max-width: 600px) {
+  .trainer-schedule {
+    padding: 10px;
+  }
+
+  .appointment-detail {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+
+  .action-buttons {
+    flex-direction: row;
+    justify-content: stretch;
+  }
+
+  .accept-button,
+  .reject-button {
+    flex: 1;
     text-align: center;
-    color: white;
-    padding: 20px;
+  }
 }
-
-.appointments-table {
-    width: 100%;
-    border-collapse: collapse;
-    color: white;
-}
-
-.appointments-table th,
-.appointments-table td {
-    padding: 12px;
-    text-align: left;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    color: white;
-}
-
-.appointments-table th {
-    background-color: rgba(60, 88, 70, 0.3);
-    font-weight: bold;
-}
-
-.appointments-table tr:hover {
-    background-color: rgba(255, 255, 255, 0.05);
-}
-
-.action-buttons {
-    display: flex;
-    gap: 8px;
-}
-
-.accept-button,
-.reject-button {
-    padding: 6px 12px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-weight: 500;
-    transition: background-color 0.3s;
-}
-
-.accept-button {
-    background-color: #3c5846;
-    color: white;
-}
-
-.accept-button:hover {
-    background-color: #4a6a54;
-}
-
-.reject-button {
-    background-color: #dc3545;
-    color: white;
-}
-
-.reject-button:hover {
-    background-color: #c82333;
-}*/
