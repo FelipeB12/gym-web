@@ -1780,3 +1780,36 @@ th {
     text-align: center;
   }
 }
+
+/* Add these styles for the search functionality */
+.search-box {
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+.search-input {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    background-color: rgba(35, 35, 35, 0.9);
+    color: white;
+    font-size: 1rem;
+}
+
+.search-input::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.search-input:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(33, 150, 243, 0.5);
+}
+
+/* Update Link styles to match buttons */
+.action-buttons .accept-button,
+.action-buttons .reject-button {
+    text-decoration: none;
+    text-align: center;
+    display: inline-block;
+}

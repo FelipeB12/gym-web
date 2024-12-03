@@ -50,13 +50,13 @@ const TrainerSearch = () => {
   };
 
   return (
-    <div className="search-container">
-      <h2>Client Search</h2>
+    <div className="trainer-schedule">
+      <h2 className="trainer-schedule-title">Buscar usuario</h2>
       
       <div className="search-box">
         <input
           type="text"
-          placeholder="Search by email..."
+          placeholder="Buscar por email..."
           value={searchEmail}
           onChange={handleSearchChange}
           className="search-input"
@@ -65,41 +65,36 @@ const TrainerSearch = () => {
 
       {error && <p className="error-message">{error}</p>}
 
-      <div className="users-table">
-        {filteredUsers.length > 0 ? (
-          <table>
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredUsers.map(user => (
-                <tr key={user._id}>
-                  <td>{user.name}</td>
-                  <td>{user.email}</td>
-                  <td className="action-buttons">
-                    <Link 
-                      to={`/TrainerDashboard/edit-routine/${user._id}`}
-                      className="edit-routine-link"
-                    >
-                      Edit Routine
-                    </Link>
-                    <Link 
-                      to={`/TrainerDashboard/edit-progress/${user._id}`}
-                      className="edit-progress-link"
-                    >
-                      Editar Progreso
-                    </Link>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+      <div className="appointments-container">
+        {filteredUsers.length === 0 ? (
+          <p className="no-appointments">No clients found</p>
         ) : (
-          <p>No clients found</p>
+          filteredUsers.map(user => (
+            <div key={user._id} className="appointment-card">
+              <div className="appointment-detail">
+                <span className="detail-label">Name:</span>
+                <span className="detail-value">{user.name}</span>
+              </div>
+              <div className="appointment-detail">
+                <span className="detail-label">Email:</span>
+                <span className="detail-value">{user.email}</span>
+              </div>
+              <div className="action-buttons">
+                <Link 
+                  to={`/TrainerDashboard/edit-routine/${user._id}`}
+                  className="accept-button"
+                >
+                  Edit Routine
+                </Link>
+                <Link 
+                  to={`/TrainerDashboard/edit-progress/${user._id}`}
+                  className="reject-button"
+                >
+                  Edit Progress
+                </Link>
+              </div>
+            </div>
+          ))
         )}
       </div>
     </div>

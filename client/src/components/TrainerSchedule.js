@@ -74,44 +74,44 @@ const TrainerSchedule = () => {
         return () => clearInterval(intervalId);
     }, []);
 
-    if (loading) return <div className="trainer-schedule"><h2>Loading appointments...</h2></div>;
+    if (loading) return <div className="trainer-schedule"><h2>Cargando citas...</h2></div>;
     if (error) return <div className="trainer-schedule"><h2>Error: {error}</h2></div>;
 
     return (
         <div className="trainer-schedule">
             <h2 className="trainer-schedule-title">
-                Pending Appointments
+                Citas
             </h2>
             
             <button 
                 onClick={fetchAppointments} 
                 className="refresh-button"
             >
-                Refresh Appointments
+                Actualizar 
             </button>
 
             <div className="appointments-container">
                 {appointments.length === 0 ? (
                     <p className="no-appointments">
-                        No pending appointments
+                        No citas pendientes
                     </p>
                 ) : (
                     appointments.map((appointment, index) => (
                         <div key={appointment._id || index} className="appointment-card">
                             <div className="appointment-detail">
-                                <span className="detail-label">Client:</span>
+                                <span className="detail-label">Cliente:</span>
                                 <span className="detail-value">{appointment.clientName}</span>
                             </div>
                             <div className="appointment-detail">
-                                <span className="detail-label">Date:</span>
+                                <span className="detail-label">Fecha:</span>
                                 <span className="detail-value">{appointment.date}</span>
                             </div>
                             <div className="appointment-detail">
-                                <span className="detail-label">Time:</span>
+                                <span className="detail-label">Hora:</span>
                                 <span className="detail-value">{appointment.time}</span>
                             </div>
                             <div className="appointment-detail">
-                                <span className="detail-label">Status:</span>
+                                <span className="detail-label">Estado:</span>
                                 <span className="detail-value">{appointment.status}</span>
                             </div>
                             {appointment.status === 'pending' && (
@@ -120,13 +120,13 @@ const TrainerSchedule = () => {
                                         onClick={() => handleStatusUpdate(appointment._id, 'confirmed')}
                                         className="accept-button"
                                     >
-                                        Accept
+                                        Aceptar
                                     </button>
                                     <button
                                         onClick={() => handleStatusUpdate(appointment._id, 'cancelled')}
                                         className="reject-button"
                                     >
-                                        Reject
+                                        rechazar
                                     </button>
                                 </div>
                             )}
