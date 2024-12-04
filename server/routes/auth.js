@@ -228,23 +228,87 @@ router.post('/appointments', auth, async (req, res) => {
 // Delete appointment
 router.delete('/appointments/:id', auth, async (req, res) => {
   try {
+    console.log('Attempting to delete appointment:', req.params.id);
+    
     const appointment = await Appointment.findById(req.params.id);
     
     if (!appointment) {
+      console.log('Appointment not found');
       return res.status(404).json({ msg: 'Appointment not found' });
     }
 
     // Check if the appointment belongs to the user
     if (appointment.userId.toString() !== req.user.id) {
+      console.log('User not authorized to delete this appointment');
       return res.status(401).json({ msg: 'Not authorized' });
     }
 
-    await appointment.remove();
+    // Use findByIdAndDelete instead of remove()
+    await Appointment.findByIdAndDelete(req.params.id);
+    console.log('Appointment deleted successfully');
+    
     res.json({ success: true });
   } catch (err) {
-    console.error(err.message);
-    res.status(500).json({ msg: 'Server Error' });
+    console.error('Error deleting appointment:', err);
+    res.status(500).json({ msg: 'Server Error', error: err.message });
   }
+});
+
+// Get all appointments (for trainers)
+router.get('/trainer/appointments', auth, async (req, res) => {
+    try {
+        // Verify that the user is a trainer
+        const trainer = await User.findById(req.user.id);
+        if (trainer.role !== 'trainer') {
+            return res.status(403).json({ msg: 'Not authorized as trainer' });
+        }
+
+        // Get all appointments and populate with user information
+        const appointments = await Appointment.find()
+            .populate('userId', 'name email')
+            .sort({ date: 1, time: 1 });
+
+        // Transform the data to include userName
+        const formattedAppointments = appointments.map(apt => ({
+            _id: apt._id,
+            date: apt.date,
+            time: apt.time,
+            status: apt.status,
+            userName: apt.userId.name,
+            userEmail: apt.userId.email
+        }));
+
+        res.json({ appointments: formattedAppointments });
+    } catch (err) {
+        console.error('Error in GET /trainer/appointments:', err);
+        res.status(500).json({ msg: 'Server Error' });
+    }
+});
+
+// Update appointment status (for trainers)
+router.put('/trainer/appointments/:id', auth, async (req, res) => {
+    try {
+        // Verify that the user is a trainer
+        const trainer = await User.findById(req.user.id);
+        if (trainer.role !== 'trainer') {
+            return res.status(403).json({ msg: 'Not authorized as trainer' });
+        }
+
+        const { status } = req.body;
+        const appointment = await Appointment.findById(req.params.id);
+
+        if (!appointment) {
+            return res.status(404).json({ msg: 'Appointment not found' });
+        }
+
+        appointment.status = status;
+        await appointment.save();
+
+        res.json({ appointment });
+    } catch (err) {
+        console.error('Error in PUT /trainer/appointments:', err);
+        res.status(500).json({ msg: 'Server Error' });
+    }
 });
 
 module.exports = router;

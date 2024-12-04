@@ -96,23 +96,26 @@ const ClientAppointment = () => {
     };
 
     const handleDelete = async (appointmentId) => {
-        if (window.confirm('Are you sure you want to delete this appointment?')) {
+        if (window.confirm('¿Estás seguro de que quieres eliminar esta cita?')) {
             try {
                 const token = localStorage.getItem('token');
                 const response = await axios.delete(
                     `http://localhost:5002/api/auth/appointments/${appointmentId}`,
                     {
-                        headers: { Authorization: `Bearer ${token}` }
+                        headers: { 
+                            Authorization: `Bearer ${token}`,
+                            'Content-Type': 'application/json'
+                        }
                     }
                 );
 
                 if (response.data.success) {
                     fetchAppointments(); // Refresh appointments after deletion
-                    alert('Appointment deleted successfully!');
+                    alert('Cita eliminada con éxito');
                 }
             } catch (error) {
                 console.error('Error deleting appointment:', error);
-                alert('Failed to delete appointment');
+                alert(error.response?.data?.msg || 'Error al eliminar la cita');
             }
         }
     };
