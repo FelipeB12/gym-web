@@ -28,19 +28,29 @@ const ClientAppointment = () => {
     const fetchAppointments = async () => {
         try {
             const token = localStorage.getItem('token');
+            if (!token) {
+                setError('No authentication token found');
+                return;
+            }
+
+            console.log('Fetching appointments with token:', token);
             const response = await axios.get(
                 'http://localhost:5002/api/auth/appointments',
                 {
-                    headers: { Authorization: `Bearer ${token}` }
+                    headers: { 
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    }
                 }
             );
 
+            console.log('Appointments response:', response.data);
             if (response.data && response.data.appointments) {
                 setAppointments(response.data.appointments);
             }
         } catch (error) {
             console.error('Error fetching appointments:', error);
-            setError('Failed to load appointments');
+            setError(error.response?.data?.msg || 'Failed to load appointments');
         }
     };
 
