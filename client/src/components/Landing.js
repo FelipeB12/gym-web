@@ -42,6 +42,8 @@ const Landing = ({ onLogin }) => {
         // Redirect based on role
         if (userResponse.data.role === 'trainer') {
           navigate('/TrainerDashboard');
+        } else if (userResponse.data.role === 'admin') {
+          navigate('/admin/home');
         } else {
           navigate('/ClientDashboard');
         }

@@ -13,6 +13,7 @@ import ClientProgress from './components/ClientProgress';
 import ClientAppointment from './components/ClientAppointment';
 import Layout from './components/Layout';
 import TrainerEditClientProgress from './components/TrainerEditClientProgress';
+import AdminDashboard from './components/AdminDashboard';
 import './styles.css';
 
 const App = () => {
@@ -149,6 +150,20 @@ const App = () => {
                 userRole === 'trainer' ? (
                   <Layout>
                     <TrainerEditClientProgress />
+                  </Layout>
+                ) : <Navigate to="/" replace />
+              ) : (
+                <Navigate to="/" replace />
+              )
+            }
+          />
+          <Route
+            path="/admin/*"
+            element={
+              isAuthenticated ? (
+                userRole === 'admin' ? (
+                  <Layout>
+                    <AdminDashboard />
                   </Layout>
                 ) : <Navigate to="/" replace />
               ) : (
