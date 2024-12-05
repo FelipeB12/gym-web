@@ -311,4 +311,25 @@ router.put('/trainer/appointments/:id', auth, async (req, res) => {
     }
 });
 
+// Get specific client by ID (for trainers)
+router.get('/clients/:userId', auth, async (req, res) => {
+  try {
+    // Verify that the requesting user is a trainer
+    const trainer = await User.findById(req.user.id);
+    if (!trainer || trainer.role !== 'trainer') {
+      return res.status(403).json({ msg: 'Not authorized to view client data' });
+    }
+
+    const client = await User.findById(req.params.userId).select('-password');
+    if (!client) {
+      return res.status(404).json({ msg: 'Client not found' });
+    }
+
+    res.json(client);
+  } catch (err) {
+    console.error('Error in GET /clients/:userId:', err);
+    res.status(500).json({ msg: 'Server Error' });
+  }
+});
+
 module.exports = router;

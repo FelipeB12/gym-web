@@ -72,7 +72,12 @@ const TrainerEditClientRoutine = () => {
     const fetchClientData = async () => {
       try {
         const token = localStorage.getItem('token');
-        const response = await axios.get(`http://localhost:5002/api/auth/user/${userId}`, {
+        if (!token) {
+          setError('No authentication token found');
+          return;
+        }
+
+        const response = await axios.get(`http://localhost:5002/api/auth/clients/${userId}`, {
           headers: {
             'Authorization': `Bearer ${token}`
           }
@@ -80,6 +85,7 @@ const TrainerEditClientRoutine = () => {
         setClient(response.data);
         setLoading(false);
       } catch (err) {
+        console.error('Error fetching client data:', err);
         setError('Error fetching client data: ' + (err.response?.data?.message || err.message));
         setLoading(false);
       }
