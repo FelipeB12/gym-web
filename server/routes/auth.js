@@ -332,4 +332,107 @@ router.get('/clients/:userId', auth, async (req, res) => {
   }
 });
 
+// Get client measurements
+router.get('/clients/:userId/measurements', auth, async (req, res) => {
+  console.log('Accessing measurements route with userId:', req.params.userId);
+  try {
+    // Verify trainer authorization
+    const trainer = await User.findById(req.user.id);
+    console.log('Trainer data:', trainer);
+    
+    if (!trainer || trainer.role !== 'trainer') {
+      console.log('Authorization failed - Not a trainer');
+      return res.status(403).json({ msg: 'Not authorized to view client measurements' });
+    }
+
+    // Find client
+    console.log('Looking for client with ID:', req.params.userId);
+    const client = await User.findById(req.params.userId);
+    
+    if (!client) {
+      console.log('Client not found in database');
+      return res.status(404).json({ msg: 'Client not found' });
+    }
+    
+    console.log('Client found:', client.name);
+    console.log('Client measurements:', client.measurements);
+
+    // Initialize empty measurements if none exist
+    if (!client.measurements) {
+      console.log('No measurements found, initializing empty array');
+      client.measurements = [{
+        date: new Date().toLocaleDateString('es-ES'),
+        values: {
+          peso: 0,
+          grasaCorporal: 0,
+          pecho: 0,
+          bicepDerecho: 0,
+          bicepIzquierdo: 0,
+          espalda: 0,
+          cintura: 0,
+          gluteos: 0,
+          musloDerecho: 0,
+          musloIzquierdo: 0,
+          gemeloDerecho: 0,
+          gemeloIzquierdo: 0
+        }
+      }];
+      await client.save();
+    }
+
+    res.json({ 
+      measurements: client.measurements,
+      clientName: client.name // Include client name for UI feedback
+    });
+  } catch (err) {
+    console.error('Error in measurements route:', err);
+    if (err.kind === 'ObjectId') {
+      return res.status(404).json({ msg: 'Invalid user ID format' });
+    }
+    res.status(500).json({ msg: 'Server Error', error: err.message });
+  }
+});
+
+// Update client measurements
+router.post('/measurements/:userId', auth, async (req, res) => {
+  console.log('Updating measurements for userId:', req.params.userId);
+  console.log('Received measurement data:', req.body);
+  
+  try {
+    const trainer = await User.findById(req.user.id);
+    if (!trainer || trainer.role !== 'trainer') {
+      return res.status(403).json({ msg: 'Not authorized to update measurements' });
+    }
+
+    const client = await User.findById(req.params.userId);
+    if (!client) {
+      return res.status(404).json({ msg: 'Client not found' });
+    }
+
+    const { measurement } = req.body;
+    
+    // Initialize measurements array if it doesn't exist
+    if (!client.measurements) {
+      client.measurements = [];
+    }
+
+    // Add new measurement
+    client.measurements.push(measurement);
+
+    await client.save();
+    console.log('Measurements updated successfully');
+    
+    res.json({ 
+      msg: 'Measurements updated successfully',
+      measurements: client.measurements
+    });
+  } catch (err) {
+    console.error('Error updating measurements:', err);
+    if (err.kind === 'ObjectId') {
+      return res.status(404).json({ msg: 'Invalid user ID format' });
+    }
+    res.status(500).json({ msg: 'Server Error', error: err.message });
+  }
+});
+
 module.exports = router;

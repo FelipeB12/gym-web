@@ -26,22 +26,40 @@ const TrainerEditClientProgress = () => {
     const fetchClientData = async () => {
       try {
         const token = localStorage.getItem('token');
-        const response = await axios.get(`http://localhost:5002/api/auth/user/${userId}`, {
-          headers: {
-            'Authorization': `Bearer ${token}`
+        if (!token) {
+          setError('No authentication token found');
+          return;
+        }
+
+        console.log('Fetching measurements for userId:', userId);
+        const response = await axios.get(
+          `http://localhost:5002/api/auth/clients/${userId}/measurements`,
+          {
+            headers: {
+              'Authorization': `Bearer ${token}`
+            }
           }
-        });
+        );
+
+        console.log('Received response:', response.data);
         
-        // Get the latest measurements
-        const latestMeasurements = response.data.measurements[response.data.measurements.length - 1].values;
-        setMeasurements(latestMeasurements);
+        if (response.data.measurements && response.data.measurements.length > 0) {
+          const latestMeasurements = response.data.measurements[response.data.measurements.length - 1].values;
+          setMeasurements(latestMeasurements);
+        } else {
+          console.log('No measurements found, using default values');
+          // Keep the default empty values set in initial state
+        }
       } catch (err) {
-        setError('Error fetching client data');
-        console.error(err);
+        console.error('Error details:', err.response || err);
+        const errorMessage = err.response?.data?.msg || 'Error fetching client data';
+        setError(errorMessage);
       }
     };
 
-    fetchClientData();
+    if (userId) {
+      fetchClientData();
+    }
   }, [userId]);
 
   const handleChange = (e) => {
