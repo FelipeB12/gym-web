@@ -85,7 +85,7 @@ const AdminSearch = () => {
                     <div key={trainer._id} className="trainer-card">
                         <h3>{trainer.name}</h3>
                         <p>Email: {trainer.email}</p>
-                        <p>Usuarios: {trainer.estimatedUsers || 'No especificado'}</p>
+                        <p>Usuarios Actuales: {trainer.clientCount || 0}</p>
                         <p>Status: <span className={`status-${trainer.status}`}>{trainer.status}</span></p>
                         <button
                             onClick={() => handleStatusUpdate(trainer._id, trainer.status === 'active' ? 'inactive' : 'active')}

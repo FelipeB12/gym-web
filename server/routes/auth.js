@@ -506,28 +506,37 @@ router.put('/trainer-status/:trainerId', auth, async (req, res) => {
     }
 });
 
-// Get all trainers (for admin)
+// Get all trainers with client count
 router.get('/trainers', auth, async (req, res) => {
-    console.log('Trainers route accessed');
     try {
         // Verify that the requesting user is an admin
         const admin = await User.findById(req.user.id);
-        console.log('User attempting to access trainers:', admin);
-        
         if (!admin || admin.role !== 'admin') {
-            console.log('Authorization failed - Not an admin');
             return res.status(403).json({ msg: 'Not authorized to view trainers list' });
         }
 
-        // Fetch all trainers and sort by creation date (newest first)
+        // Fetch all trainers
         const trainers = await User.find({ role: 'trainer' })
             .select('-password')
-            .sort({ _id: -1 }); // MongoDB ObjectIds contain a timestamp, so sorting by _id will sort by creation date
-        
-        console.log('Trainers found:', trainers.length);
-        res.json(trainers);
+            .sort({ name: 1 });
+
+        // For each trainer, count their clients
+        const trainersWithClientCount = await Promise.all(trainers.map(async (trainer) => {
+            const clientCount = await User.countDocuments({
+                role: 'client',
+                gymType: trainer._id.toString()
+            });
+
+            return {
+                ...trainer.toObject(),
+                clientCount
+            };
+        }));
+
+        console.log('Trainers with client count:', trainersWithClientCount);
+        res.json(trainersWithClientCount);
     } catch (err) {
-        console.error('Error in trainers route:', err);
+        console.error('Error fetching trainers:', err);
         res.status(500).json({ msg: 'Server Error' });
     }
 });
