@@ -9,7 +9,8 @@ const TrainerProfile = () => {
     newPassword: '',
     confirmPassword: ''
   });
-
+  const [clientCount, setClientCount] = useState(0);
+  const [estimatedUsers, setEstimatedUsers] = useState(0);
   const [errors, setErrors] = useState({});
   const [successMessage, setSuccessMessage] = useState('');
 
@@ -23,6 +24,16 @@ const TrainerProfile = () => {
           }
         });
 
+        // Fetch client count for this trainer
+        const clientsResponse = await axios.get('http://localhost:5002/api/auth/trainer-stats', {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+
+        setClientCount(clientsResponse.data.clientCount);
+        setEstimatedUsers(data.estimatedUsers || 0);
+        
         setFormData(prevState => ({
           ...prevState,
           name: data.name || '',
@@ -130,6 +141,17 @@ const TrainerProfile = () => {
 
   return (
     <div className="container">
+      <div className="stats-container">
+        <div className="stats-box">
+          <h3>Usuarios Actuales</h3>
+          <p className="stats-number">{clientCount}</p>
+        </div>
+        <div className="stats-box">
+          <h3>Usuarios Estimados</h3>
+          <p className="stats-number">{estimatedUsers}</p>
+        </div>
+      </div>
+
       <form className="common-form" onSubmit={handleSubmit}>
         <h1 className="common-title">My Profile</h1>
         

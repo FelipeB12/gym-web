@@ -632,4 +632,29 @@ router.get('/trainer/:trainerId', async (req, res) => {
     }
 });
 
+// Get trainer stats
+router.get('/trainer-stats', auth, async (req, res) => {
+    try {
+        // Verify that the requesting user is a trainer
+        const trainer = await User.findById(req.user.id);
+        if (!trainer || trainer.role !== 'trainer') {
+            return res.status(403).json({ msg: 'Not authorized' });
+        }
+
+        // Count clients for this trainer
+        const clientCount = await User.countDocuments({
+            role: 'client',
+            gymType: trainer._id.toString()
+        });
+
+        res.json({
+            clientCount,
+            estimatedUsers: trainer.estimatedUsers
+        });
+    } catch (err) {
+        console.error('Error fetching trainer stats:', err);
+        res.status(500).json({ msg: 'Server Error' });
+    }
+});
+
 module.exports = router;

@@ -1864,3 +1864,30 @@ th {
     color: #f44336;
     margin: 10px 0;
 }
+/* styles for the trainer profile page*/
+.stats-container {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 2rem;
+  padding: 1rem;
+}
+
+.stats-box {
+  border-radius: 8px;
+  padding: 10px;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.4);
+}
+
+.stats-box h3 {
+  margin: 0;
+  color: #ffffff;
+  font-size: 1rem;
+}
+
+.stats-number {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #ffffff;
+  margin: 0.5rem 0 0;
+}
