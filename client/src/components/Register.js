@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 
@@ -7,8 +7,9 @@ const Register = () => {
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
   const [error, setError] = useState('');
-  const [successMessage, setSuccessMessage] = useState(''); // New state for success message
-  const [gymType, setGymType] = useState('test-gym');
+  const [successMessage, setSuccessMessage] = useState('');
+  const [gymType, setGymType] = useState('');
+  const [activeTrainers, setActiveTrainers] = useState([]);
   const [gender, setGender] = useState('male');
   const [age, setAge] = useState('');
   const [height, setHeight] = useState('');
@@ -16,6 +17,23 @@ const Register = () => {
   const [objective, setObjective] = useState('strength');
   const [medicalCondition, setMedicalCondition] = useState('');
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchActiveTrainers = async () => {
+      try {
+        const response = await axios.get('http://localhost:5002/api/auth/active-trainers');
+        setActiveTrainers(response.data);
+        if (response.data.length > 0) {
+          setGymType(response.data[0]._id);
+        }
+      } catch (err) {
+        console.error('Error fetching active trainers:', err);
+        setError('Error loading available gyms');
+      }
+    };
+
+    fetchActiveTrainers();
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -44,12 +62,10 @@ const Register = () => {
         withCredentials: true
       });
       
-      // Set success message
       setSuccessMessage('Usuario registrado correctamente');
 
-      // Redirect to landing page after 2 seconds
       setTimeout(() => {
-        navigate('/'); // Redirect to Landing page
+        navigate('/');
       }, 2000);
 
     } catch (error) {
@@ -99,9 +115,14 @@ const Register = () => {
             value={gymType}
             onChange={(e) => setGymType(e.target.value)}
             className="common-select"
+            required
           >
-            <option value="prueba-gratis">Prueba Gratis</option>
-            <option value="test-gym">Test Gym</option>  
+            <option value="">Selecciona un gimnasio</option>
+            {activeTrainers.map(trainer => (
+              <option key={trainer._id} value={trainer._id}>
+                {trainer.name}
+              </option>
+            ))}
           </select>
 
           <p className='title'>Información de progreso</p>

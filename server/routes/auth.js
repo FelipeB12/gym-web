@@ -44,8 +44,7 @@ router.post('/login', async (req, res) => {
       name: user.name,
       email: user.email,
       gymType: user.gymType,
-      membership: user.membership,
-      status: user.status
+      membership: user.membership
     };
 
     jwt.sign(
@@ -529,6 +528,24 @@ router.get('/trainers', auth, async (req, res) => {
         res.json(trainers);
     } catch (err) {
         console.error('Error in trainers route:', err);
+        res.status(500).json({ msg: 'Server Error' });
+    }
+});
+
+// Get active trainers for client registration
+router.get('/active-trainers', async (req, res) => {
+    try {
+        const activeTrainers = await User.find({
+            role: 'trainer',
+            status: 'active'
+        })
+        .select('_id name') // Only send necessary fields
+        .sort({ name: 1 }); // Sort alphabetically by name
+
+        console.log('Active trainers found:', activeTrainers.length);
+        res.json(activeTrainers);
+    } catch (err) {
+        console.error('Error fetching active trainers:', err);
         res.status(500).json({ msg: 'Server Error' });
     }
 });
