@@ -143,13 +143,19 @@ router.post('/register-trainer', async (req, res) => {
       return res.status(400).json({ msg: 'Trainer already exists' });
     }
 
-    // Create new trainer
+    // Create new trainer with only required fields
     trainer = new User({
       name: gymName,
       email,
       password,
       role: 'trainer',
-      estimatedUsers
+      estimatedUsers,
+      // Set default values for client-required fields
+      gender: 'not_applicable',
+      age: 0,
+      height: 0,
+      weight: 0,
+      objective: 'not_applicable'
     });
 
     // Hash password
@@ -176,8 +182,8 @@ router.post('/register-trainer', async (req, res) => {
       }
     );
   } catch (err) {
-    console.error(err.message);
-    res.status(500).send('Server error');
+    console.error('Registration error:', err.message);
+    res.status(500).json({ error: err.message });
   }
 });
 
@@ -433,6 +439,90 @@ router.post('/measurements/:userId', auth, async (req, res) => {
     }
     res.status(500).json({ msg: 'Server Error', error: err.message });
   }
+});
+
+// Add this new route handler for updating trainer status
+router.put('/trainer-status/:trainerId', auth, async (req, res) => {
+    try {
+        console.log('Received request to update trainer status:', {
+            trainerId: req.params.trainerId,
+            requestedStatus: req.body.status,
+            requestingUserId: req.user.id
+        });
+
+        // Verify that the requesting user is an admin
+        const admin = await User.findById(req.user.id);
+        console.log('Admin check:', {
+            userFound: !!admin,
+            userRole: admin?.role
+        });
+
+        if (!admin || admin.role !== 'admin') {
+            return res.status(403).json({ msg: 'Not authorized to update trainer status' });
+        }
+
+        const trainer = await User.findById(req.params.trainerId);
+        console.log('Trainer check:', {
+            trainerFound: !!trainer,
+            trainerRole: trainer?.role,
+            currentStatus: trainer?.status
+        });
+
+        if (!trainer) {
+            return res.status(404).json({ msg: 'Trainer not found' });
+        }
+
+        if (trainer.role !== 'trainer') {
+            return res.status(400).json({ msg: 'User is not a trainer' });
+        }
+
+        trainer.status = req.body.status;
+        await trainer.save();
+
+        console.log('Status updated successfully:', {
+            trainerId: trainer._id,
+            newStatus: trainer.status
+        });
+
+        res.json({ trainer });
+    } catch (err) {
+        console.error('Detailed error in trainer status update:', {
+            error: err.message,
+            stack: err.stack,
+            trainerId: req.params.trainerId,
+            requestedStatus: req.body.status
+        });
+        res.status(500).json({ 
+            msg: 'Server error',
+            error: err.message
+        });
+    }
+});
+
+// Get all trainers (for admin)
+router.get('/trainers', auth, async (req, res) => {
+    console.log('Trainers route accessed');
+    try {
+        // Verify that the requesting user is an admin
+        const admin = await User.findById(req.user.id);
+        console.log('User attempting to access trainers:', admin);
+        
+        if (!admin || admin.role !== 'admin') {
+            console.log('Authorization failed - Not an admin');
+            return res.status(403).json({ msg: 'Not authorized to view trainers list' });
+        }
+
+        // Fetch all trainers and sort by creation date (newest first)
+        const trainers = await User.find({ role: 'trainer' })
+            .select('-password')
+            .sort({ _id: -1 }); // MongoDB ObjectIds contain a timestamp, so sorting by _id will sort by creation date
+        
+        console.log('Trainers found:', trainers.length);
+        res.json(trainers);
+    } catch (err) {
+        console.error('Error in trainers route:', err);
+        res.status(500).json({ msg: 'Server Error' });
+    }
 });
 
 module.exports = router;

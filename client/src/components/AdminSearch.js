@@ -9,13 +9,24 @@ const AdminSearch = () => {
     const fetchTrainers = async () => {
         try {
             const token = localStorage.getItem('token');
+            console.log('Fetching trainers with token:', token ? 'Present' : 'Missing');
+            
             const response = await axios.get('http://localhost:5002/api/auth/trainers', {
-                headers: { Authorization: `Bearer ${token}` }
+                headers: { 
+                    Authorization: `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
             });
+            
+            console.log('Trainers response:', response.data);
             setTrainers(response.data);
         } catch (err) {
-            console.error('Error fetching trainers:', err);
-            setError('Failed to load trainers');
+            console.error('Error fetching trainers:', {
+                message: err.message,
+                response: err.response?.data,
+                status: err.response?.status
+            });
+            setError(`Failed to load trainers: ${err.response?.data?.msg || err.message}`);
         }
     };
 
@@ -26,16 +37,31 @@ const AdminSearch = () => {
     const handleStatusUpdate = async (trainerId, newStatus) => {
         try {
             const token = localStorage.getItem('token');
-            await axios.put(
+            console.log('Updating trainer status:', {
+                trainerId,
+                newStatus,
+                token: token ? 'Present' : 'Missing'
+            });
+
+            const response = await axios.put(
                 `http://localhost:5002/api/auth/trainer-status/${trainerId}`,
                 { status: newStatus },
                 {
-                    headers: { Authorization: `Bearer ${token}` }
+                    headers: { 
+                        Authorization: `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    }
                 }
             );
+            
+            console.log('Server response:', response.data);
             fetchTrainers(); // Refresh the trainers list
         } catch (err) {
-            console.error('Error updating trainer status:', err);
+            console.error('Error details:', {
+                message: err.message,
+                response: err.response?.data,
+                status: err.response?.status
+            });
             setError('Failed to update trainer status');
         }
     };
@@ -59,6 +85,7 @@ const AdminSearch = () => {
                     <div key={trainer._id} className="trainer-card">
                         <h3>{trainer.name}</h3>
                         <p>Email: {trainer.email}</p>
+                        <p>Usuarios: {trainer.estimatedUsers || 'No especificado'}</p>
                         <p>Status: <span className={`status-${trainer.status}`}>{trainer.status}</span></p>
                         <button
                             onClick={() => handleStatusUpdate(trainer._id, trainer.status === 'active' ? 'inactive' : 'active')}

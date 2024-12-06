@@ -14,6 +14,7 @@ import ClientAppointment from './components/ClientAppointment';
 import Layout from './components/Layout';
 import TrainerEditClientProgress from './components/TrainerEditClientProgress';
 import AdminDashboard from './components/AdminDashboard';
+import RegisterTrainer from './components/RegisterTrainer';
 import './styles.css';
 
 const App = () => {
@@ -171,6 +172,7 @@ const App = () => {
               )
             }
           />
+          <Route path="/register-trainer" element={<RegisterTrainer />} />
         </Routes>
       </div>
     </Router>

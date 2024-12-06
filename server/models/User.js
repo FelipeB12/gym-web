@@ -61,8 +61,13 @@ const UserSchema = new mongoose.Schema({
         type: String,
         default: 'client'
     },
+    estimatedUsers: {
+        type: Number,
+        required: function() { return this.role === 'trainer'; }
+    },
     gymType: {
         type: String,
+        required: function() { return this.role === 'client'; },
         default: 'test-gym'
     },
     membership: {
@@ -71,23 +76,23 @@ const UserSchema = new mongoose.Schema({
     },
     gender: {
         type: String,
-        required: true
+        required: function() { return this.role === 'client'; }
     },
     age: {
         type: Number,
-        required: true
+        required: function() { return this.role === 'client'; }
     },
     height: {
         type: Number,
-        required: true
+        required: function() { return this.role === 'client'; }
     },
     weight: {
         type: Number,
-        required: true
+        required: function() { return this.role === 'client'; }
     },
     objective: {
         type: String,
-        required: true
+        required: function() { return this.role === 'client'; }
     },
     medicalCondition: {
         type: String,
@@ -95,7 +100,12 @@ const UserSchema = new mongoose.Schema({
     },
     measurements: [MeasurementSchema],
     routine: [RoutineSchema],
-    appointments: [AppointmentSchema]
+    appointments: [AppointmentSchema],
+    status: {
+        type: String,
+        enum: ['active', 'inactive'],
+        default: 'active'
+    }
 });
 
 module.exports = mongoose.model('User', UserSchema);

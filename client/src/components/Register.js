@@ -66,8 +66,11 @@ const Register = () => {
       <div className="landing-form common-form">
         <form onSubmit={handleSubmit}>
           <h2 className="common-title">GYM APP</h2>
+          <div className="link-container">
+            <Link to="/register-trainer" className="link">Registrarme como GYM</Link>
+          </div>
           {error && <p className="error-message">{error}</p>}
-          {successMessage && <p className="success-message">{successMessage}</p>} {/* Display success message */}
+          {successMessage && <p className="success-message">{successMessage}</p>}
           <input
             type="text"
             placeholder="Nombre"
