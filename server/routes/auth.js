@@ -550,4 +550,77 @@ router.get('/active-trainers', async (req, res) => {
     }
 });
 
+// Update user profile
+router.put('/user', auth, async (req, res) => {
+    try {
+        const user = await User.findById(req.user.id);
+        if (!user) {
+            return res.status(404).json({ msg: 'User not found' });
+        }
+
+        const {
+            name,
+            email,
+            gymType,
+            gender,
+            age,
+            height,
+            objective,
+            medicalCondition,
+            currentPassword,
+            newPassword
+        } = req.body;
+
+        // If password change is requested, verify current password
+        if (newPassword) {
+            const isMatch = await bcrypt.compare(currentPassword, user.password);
+            if (!isMatch) {
+                return res.status(400).json({ msg: 'Current password is incorrect' });
+            }
+            // Hash new password
+            const salt = await bcrypt.genSalt(10);
+            user.password = await bcrypt.hash(newPassword, salt);
+        }
+
+        // Update user fields
+        user.name = name || user.name;
+        user.email = email || user.email;
+        user.gymType = gymType || user.gymType;
+        user.gender = gender || user.gender;
+        user.age = age || user.age;
+        user.height = height || user.height;
+        user.objective = objective || user.objective;
+        user.medicalCondition = medicalCondition || user.medicalCondition;
+
+        await user.save();
+
+        // Return updated user without password
+        const updatedUser = await User.findById(user._id).select('-password');
+        res.json(updatedUser);
+
+    } catch (err) {
+        console.error('Error updating user:', err);
+        res.status(500).json({ msg: 'Server error', error: err.message });
+    }
+});
+
+// Get trainer name by ID
+router.get('/trainer/:trainerId', async (req, res) => {
+    try {
+        const trainer = await User.findOne({ 
+            _id: req.params.trainerId,
+            role: 'trainer'
+        }).select('name');
+        
+        if (!trainer) {
+            return res.status(404).json({ msg: 'Trainer not found' });
+        }
+        
+        res.json({ name: trainer.name });
+    } catch (err) {
+        console.error('Error fetching trainer:', err);
+        res.status(500).json({ msg: 'Server Error' });
+    }
+});
+
 module.exports = router;

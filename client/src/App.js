@@ -22,13 +22,15 @@ const App = () => {
   const [userRole, setUserRole] = useState(null);
   const [userName, setUserName] = useState('');
   const [membership, setMembership] = useState('');
+  const [gymType, setGymType] = useState('');
 
-  const handleLogin = (name, membership, role) => {
-    console.log('User logged in:', name, 'Role:', role);
+  const handleLogin = (name, membership, role, gymType) => {
+    console.log('User logged in:', name, 'Role:', role, 'GymType:', gymType);
     setIsAuthenticated(true);
     setUserName(name);
     setUserRole(role);
     setMembership(membership);
+    setGymType(gymType);
   };
 
   return (
@@ -50,7 +52,11 @@ const App = () => {
               isAuthenticated ? (
                 userRole === 'client' ? (
                   <Layout>
-                    <ClientDashboard userName={userName} membership={membership} />
+                    <ClientDashboard 
+                      userName={userName} 
+                      membership={membership}
+                      gymType={gymType}
+                    />
                   </Layout>
                 ) : <Navigate to="/" replace />
               ) : (
@@ -172,7 +178,6 @@ const App = () => {
               )
             }
           />
-          <Route path="/register-trainer" element={<RegisterTrainer />} />
         </Routes>
       </div>
     </Router>

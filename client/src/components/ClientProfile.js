@@ -10,7 +10,6 @@ const ClientProfile = () => {
     gender: '',
     age: '',
     height: '',
-    weight: '',
     objective: '',
     medicalCondition: '',
     currentPassword: '',
@@ -20,9 +19,10 @@ const ClientProfile = () => {
 
   const [errors, setErrors] = useState({});
   const [successMessage, setSuccessMessage] = useState('');
+  const [activeTrainers, setActiveTrainers] = useState([]);
 
   useEffect(() => {
-    const fetchUserData = async () => {
+    const fetchData = async () => {
       try {
         const token = localStorage.getItem('token');
         const { data } = await axios.get('http://localhost:5002/api/auth/user', {
@@ -30,6 +30,9 @@ const ClientProfile = () => {
             'Authorization': `Bearer ${token}`
           }
         });
+
+        const trainersResponse = await axios.get('http://localhost:5002/api/auth/active-trainers');
+        setActiveTrainers(trainersResponse.data);
 
         setFormData({
           name: data.name || '',
@@ -39,17 +42,16 @@ const ClientProfile = () => {
           gender: data.gender || '',
           age: data.age?.toString() || '',
           height: data.height?.toString() || '',
-          weight: data.weight?.toString() || '',
           objective: data.objective || '',
           medicalCondition: data.medicalCondition || ''
         });
       } catch (error) {
-        console.error('Error fetching user data:', error);
-        setErrors({ fetch: 'Error loading user data' });
+        console.error('Error fetching data:', error);
+        setErrors({ fetch: 'Error loading data' });
       }
     };
 
-    fetchUserData();
+    fetchData();
   }, []);
 
   const handleChange = (e) => {
@@ -81,10 +83,6 @@ const ClientProfile = () => {
     
     if (!formData.height || isNaN(formData.height)) {
       newErrors.height = 'La altura debe ser un número';
-    }
-    
-    if (!formData.weight || isNaN(formData.weight)) {
-      newErrors.weight = 'El peso debe ser un número';
     }
 
     if (formData.newPassword || formData.currentPassword || formData.confirmPassword) {
@@ -119,7 +117,6 @@ const ClientProfile = () => {
         gender: formData.gender,
         age: parseInt(formData.age),
         height: parseInt(formData.height),
-        weight: parseInt(formData.weight),
         objective: formData.objective,
         medicalCondition: formData.medicalCondition
       };
@@ -199,6 +196,24 @@ const ClientProfile = () => {
         </div>
 
         <div className="form-group">
+          <label htmlFor="gym">Entrenador:</label>
+          <select
+            id="gym"
+            value={formData.gym}
+            onChange={handleChange}
+            className={errors.gym ? 'error' : ''}
+          >
+            <option value="">Selecciona un entrenador</option>
+            {activeTrainers.map(trainer => (
+              <option key={trainer._id} value={trainer._id}>
+                {trainer.name}
+              </option>
+            ))}
+          </select>
+          {errors.gym && <div className="error-message">{errors.gym}</div>}
+        </div>
+
+        <div className="form-group">
           <label htmlFor="age">Edad:</label>
           <input
             type="number"
@@ -221,19 +236,6 @@ const ClientProfile = () => {
             className={errors.height ? 'error' : ''}
           />
           {errors.height && <div className="error-message">{errors.height}</div>}
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="weight">Peso (kg):</label>
-          <input
-            type="number"
-            id="weight"
-            placeholder="Peso en kg"
-            value={formData.weight}
-            onChange={handleChange}
-            className={errors.weight ? 'error' : ''}
-          />
-          {errors.weight && <div className="error-message">{errors.weight}</div>}
         </div>
 
         <div className="form-group">

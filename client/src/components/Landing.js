@@ -36,8 +36,15 @@ const Landing = ({ onLogin }) => {
           }
         });
 
-        // Pass the user's role along with name and membership
-        onLogin(userResponse.data.name, userResponse.data.membership, userResponse.data.role);
+        console.log('User data:', userResponse.data);
+
+        // Pass the gymType along with other user data
+        onLogin(
+          userResponse.data.name, 
+          userResponse.data.membership, 
+          userResponse.data.role,
+          userResponse.data.gymType
+        );
         
         // Redirect based on role
         if (userResponse.data.role === 'trainer') {
@@ -51,12 +58,7 @@ const Landing = ({ onLogin }) => {
         setError('Login failed: No token received');
       }
     } catch (err) {
-      // Handle inactive trainer error specifically
-      if (err.response?.status === 403) {
-        setError(err.response.data.msg);
-      } else {
-        setError('Invalid email or password');
-      }
+      setError('Invalid email or password');
       console.error('Login error:', err);
     }
   };
