@@ -24,7 +24,7 @@ const Landing = ({ onLogin }) => {
         }
       );
 
-      console.log('Login response:', response.data); // Log the response
+      console.log('Login response:', response.data);
 
       if (response.data && response.data.token) {
         localStorage.setItem('token', response.data.token);
@@ -51,7 +51,12 @@ const Landing = ({ onLogin }) => {
         setError('Login failed: No token received');
       }
     } catch (err) {
-      setError('Invalid email or password');
+      // Handle inactive trainer error specifically
+      if (err.response?.status === 403) {
+        setError(err.response.data.msg);
+      } else {
+        setError('Invalid email or password');
+      }
       console.error('Login error:', err);
     }
   };

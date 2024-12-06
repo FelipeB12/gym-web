@@ -23,6 +23,13 @@ router.post('/login', async (req, res) => {
       return res.status(400).json({ msg: 'Invalid email or password' });
     }
 
+    // Check if trainer is inactive
+    if (user.role === 'trainer' && user.status === 'inactive') {
+      return res.status(403).json({ 
+        msg: 'El usuario se encuentra inactivo, por favor contactar support@gymapp.com'
+      });
+    }
+
     // Create and return JWT
     const payload = {
       user: {
@@ -37,7 +44,8 @@ router.post('/login', async (req, res) => {
       name: user.name,
       email: user.email,
       gymType: user.gymType,
-      membership: user.membership
+      membership: user.membership,
+      status: user.status
     };
 
     jwt.sign(
