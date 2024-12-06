@@ -29,27 +29,16 @@ const Landing = ({ onLogin }) => {
       if (response.data && response.data.token) {
         localStorage.setItem('token', response.data.token);
         
-        // Fetch user data after login
-        const userResponse = await axios.get('http://localhost:5002/api/auth/user', {
-          headers: {
-            'Authorization': `Bearer ${response.data.token}`
-          }
-        });
-
-        console.log('User data:', userResponse.data);
-
-        // Pass the gymType along with other user data
         onLogin(
-          userResponse.data.name, 
-          userResponse.data.membership, 
-          userResponse.data.role,
-          userResponse.data.gymType
+          response.data.user.name, 
+          response.data.user.membership, 
+          response.data.user.role,
+          response.data.user.gymType
         );
         
-        // Redirect based on role
-        if (userResponse.data.role === 'trainer') {
+        if (response.data.user.role === 'trainer') {
           navigate('/TrainerDashboard');
-        } else if (userResponse.data.role === 'admin') {
+        } else if (response.data.user.role === 'admin') {
           navigate('/admin/home');
         } else {
           navigate('/ClientDashboard');
@@ -58,7 +47,11 @@ const Landing = ({ onLogin }) => {
         setError('Login failed: No token received');
       }
     } catch (err) {
-      setError('Invalid email or password');
+      if (err.response?.status === 403) {
+        setError(err.response.data.msg);
+      } else {
+        setError('Invalid email or password');
+      }
       console.error('Login error:', err);
     }
   };

@@ -178,6 +178,7 @@ const App = () => {
               )
             }
           />
+          <Route path="/register-trainer" element={<RegisterTrainer />} />
         </Routes>
       </div>
     </Router>

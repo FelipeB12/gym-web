@@ -141,57 +141,43 @@ router.post('/register', async (req, res) => {
 
 // Register trainer route
 router.post('/register-trainer', async (req, res) => {
-  try {
-    const { gymName, email, password, estimatedUsers } = req.body;
+    try {
+        const { gymName, email, password, estimatedUsers } = req.body;
 
-    // Check if trainer exists
-    let trainer = await User.findOne({ email });
-    if (trainer) {
-      return res.status(400).json({ msg: 'Trainer already exists' });
+        // Check if trainer already exists
+        let trainer = await User.findOne({ email });
+        if (trainer) {
+            return res.status(400).json({ msg: 'User already exists' });
+        }
+
+        // Create new trainer with inactive status
+        trainer = new User({
+            name: gymName,
+            email,
+            password,
+            role: 'trainer',
+            estimatedUsers,
+            status: 'inactive' // Explicitly set status to inactive
+        });
+
+        // Hash password
+        const salt = await bcrypt.genSalt(10);
+        trainer.password = await bcrypt.hash(password, salt);
+
+        // Save trainer
+        await trainer.save();
+
+        console.log('New trainer registered:', {
+            name: trainer.name,
+            email: trainer.email,
+            status: trainer.status
+        });
+
+        res.json({ msg: 'Trainer registered successfully. Pending activation.' });
+    } catch (err) {
+        console.error('Error registering trainer:', err);
+        res.status(500).json({ msg: 'Server error' });
     }
-
-    // Create new trainer with only required fields
-    trainer = new User({
-      name: gymName,
-      email,
-      password,
-      role: 'trainer',
-      estimatedUsers,
-      // Set default values for client-required fields
-      gender: 'not_applicable',
-      age: 0,
-      height: 0,
-      weight: 0,
-      objective: 'not_applicable'
-    });
-
-    // Hash password
-    const salt = await bcrypt.genSalt(10);
-    trainer.password = await bcrypt.hash(password, salt);
-
-    await trainer.save();
-
-    // Create and return JWT
-    const payload = {
-      user: {
-        id: trainer.id,
-        role: trainer.role
-      }
-    };
-
-    jwt.sign(
-      payload,
-      process.env.JWT_SECRET || 'your_jwt_secret',
-      { expiresIn: '24h' },
-      (err, token) => {
-        if (err) throw err;
-        res.json({ token });
-      }
-    );
-  } catch (err) {
-    console.error('Registration error:', err.message);
-    res.status(500).json({ error: err.message });
-  }
 });
 
 // Get appointments for logged-in user
