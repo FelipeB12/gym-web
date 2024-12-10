@@ -1988,3 +1988,69 @@ th {
     color: #666;
     padding: 20px;
 }
+
+/* Common styles for both navigation bars */
+.client-nav, .trainer-nav {
+    background-color: #333;
+    padding: 15px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+}
+
+/* Navigation links styling */
+.client-nav a, .trainer-nav a {
+    color: #fff;
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 0.9rem;
+    transition: color 0.3s ease;
+}
+
+/* Icon styling */
+.client-nav svg, .trainer-nav svg {
+    font-size: 1.5rem;
+    margin-bottom: 4px;
+}
+
+/* Text below icons */
+.client-nav span, .trainer-nav span {
+    font-size: 0.7rem;
+}
+
+/* Active link styling */
+.client-nav a.active, .trainer-nav a.active {
+    color: #8a2be2; /* Purple color for active items */
+}
+
+/* Hover effects */
+.client-nav a:hover, .trainer-nav a:hover {
+    color: #9f50e3;
+}
+
+/* Add padding to main content to prevent overlap with fixed navbar */
+.title {
+    padding-bottom: 80px; /* Adjust this value based on your navbar height */
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+    .client-nav, .trainer-nav {
+        padding: 10px 5px;
+    }
+
+    .client-nav svg, .trainer-nav svg {
+        font-size: 1.2rem;
+    }
+
+    .client-nav span, .trainer-nav span {
+        font-size: 0.6rem;
+    }
+}
