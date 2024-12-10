@@ -265,21 +265,30 @@ router.delete('/appointments/:id', auth, async (req, res) => {
   }
 });
 
-// Get all appointments (for trainers)
+// Get all appointments for trainer's clients
 router.get('/trainer/appointments', auth, async (req, res) => {
     try {
-        // Verify that the user is a trainer
+        // Verify that the requesting user is a trainer
         const trainer = await User.findById(req.user.id);
-        if (trainer.role !== 'trainer') {
+        if (!trainer || trainer.role !== 'trainer') {
             return res.status(403).json({ msg: 'Not authorized as trainer' });
         }
 
-        // Get all appointments and populate with user information
-        const appointments = await Appointment.find()
-            .populate('userId', 'name email')
-            .sort({ date: 1, time: 1 });
+        // Get all clients for this trainer
+        const trainerClients = await User.find({
+            role: 'client',
+            gymType: trainer._id.toString()
+        }).select('_id name');
 
-        // Transform the data to include userName
+        // Get client IDs
+        const clientIds = trainerClients.map(client => client._id);
+
+        // Find appointments for trainer's clients
+        const appointments = await Appointment.find({
+            userId: { $in: clientIds }
+        }).populate('userId', 'name email');
+
+        // Format appointments for frontend
         const formattedAppointments = appointments.map(apt => ({
             _id: apt._id,
             date: apt.date,
@@ -301,23 +310,28 @@ router.put('/trainer/appointments/:id', auth, async (req, res) => {
     try {
         // Verify that the user is a trainer
         const trainer = await User.findById(req.user.id);
-        if (trainer.role !== 'trainer') {
+        if (!trainer || trainer.role !== 'trainer') {
             return res.status(403).json({ msg: 'Not authorized as trainer' });
         }
 
-        const { status } = req.body;
-        const appointment = await Appointment.findById(req.params.id);
+        const appointment = await Appointment.findById(req.params.id)
+            .populate('userId', 'gymType');
 
         if (!appointment) {
             return res.status(404).json({ msg: 'Appointment not found' });
         }
 
-        appointment.status = status;
+        // Verify that the appointment belongs to one of the trainer's clients
+        if (appointment.userId.gymType !== trainer._id.toString()) {
+            return res.status(403).json({ msg: 'Not authorized to modify this appointment' });
+        }
+
+        appointment.status = req.body.status;
         await appointment.save();
 
         res.json({ appointment });
     } catch (err) {
-        console.error('Error in PUT /trainer/appointments:', err);
+        console.error('Error updating appointment:', err);
         res.status(500).json({ msg: 'Server Error' });
     }
 });

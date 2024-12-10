@@ -1,37 +1,54 @@
 import React, { useState, useEffect } from 'react';
-import axios from '../utils/axios';
+import axios from 'axios';
+import '../styles.css';
 
 const TrainerSchedule = () => {
     const [appointments, setAppointments] = useState([]);
     const [error, setError] = useState('');
+    const [loading, setLoading] = useState(true);
 
     const fetchAppointments = async () => {
         try {
             const token = localStorage.getItem('token');
-            const response = await axios.get('/api/auth/trainer/appointments', {
-                headers: { Authorization: `Bearer ${token}` }
-            });
+            const response = await axios.get(
+                'http://localhost:5002/api/auth/trainer/appointments',
+                {
+                    headers: { 
+                        Authorization: `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    }
+                }
+            );
             
-            console.log('Trainer appointments:', response.data);
             setAppointments(response.data.appointments);
+            setLoading(false);
         } catch (err) {
             console.error('Error fetching trainer appointments:', err);
             setError('Failed to load appointments');
+            setLoading(false);
         }
     };
 
     const handleAppointmentStatus = async (appointmentId, status) => {
         try {
             const token = localStorage.getItem('token');
-            await axios.put(`/api/auth/trainer/appointments/${appointmentId}`, 
+            await axios.put(
+                `http://localhost:5002/api/auth/trainer/appointments/${appointmentId}`,
                 { status },
-                { headers: { Authorization: `Bearer ${token}` }}
+                {
+                    headers: { 
+                        Authorization: `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    }
+                }
             );
-            fetchAppointments(); // Refresh the list
+
+            // Refresh appointments after update
+            fetchAppointments();
             alert(`Appointment ${status} successfully`);
         } catch (err) {
             console.error('Error updating appointment:', err);
-            alert('Failed to update appointment status');
+            setError('Failed to update appointment');
         }
     };
 
@@ -39,23 +56,28 @@ const TrainerSchedule = () => {
         fetchAppointments();
     }, []);
 
+    if (loading) return <div className="loading">Loading...</div>;
+    if (error) return <div className="error-message">{error}</div>;
+
     return (
-        <div className="schedule-container common-form">
-            <h1 className="common-title">Gestión de Citas</h1>
-            
-            {error && <p className="error-message">{error}</p>}
+        <div className="schedule-container">
+            <h2>Appointments Management</h2>
             
             <div className="appointments-list">
                 {appointments.length === 0 ? (
-                    <p>No hay citas pendientes</p>
+                    <p className="no-appointments">No pending appointments</p>
                 ) : (
-                    appointments.map((appointment, index) => (
-                        <div key={index} className="appointment-card">
+                    appointments.map((appointment) => (
+                        <div key={appointment._id} className="appointment-card">
                             <div className="appointment-info">
-                                <p><strong>Cliente:</strong> {appointment.userName}</p>
-                                <p><strong>Fecha:</strong> {appointment.date}</p>
-                                <p><strong>Hora:</strong> {appointment.time}</p>
-                                <p><strong>Estado:</strong> {appointment.status}</p>
+                                <h3>{appointment.userName}</h3>
+                                <p><strong>Date:</strong> {appointment.date}</p>
+                                <p><strong>Time:</strong> {appointment.time}</p>
+                                <p><strong>Status:</strong> 
+                                    <span className={`status-${appointment.status}`}>
+                                        {appointment.status}
+                                    </span>
+                                </p>
                             </div>
                             
                             {appointment.status === 'pending' && (
@@ -64,13 +86,13 @@ const TrainerSchedule = () => {
                                         onClick={() => handleAppointmentStatus(appointment._id, 'confirmed')}
                                         className="confirm-button"
                                     >
-                                        Confirmar
+                                        Accept
                                     </button>
                                     <button
                                         onClick={() => handleAppointmentStatus(appointment._id, 'cancelled')}
                                         className="cancel-button"
                                     >
-                                        Cancelar
+                                        Reject
                                     </button>
                                 </div>
                             )}
