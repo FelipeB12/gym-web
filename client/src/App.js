@@ -15,6 +15,7 @@ import Layout from './components/Layout';
 import TrainerEditClientProgress from './components/TrainerEditClientProgress';
 import AdminDashboard from './components/AdminDashboard';
 import RegisterTrainer from './components/RegisterTrainer';
+import TrainerEditClientRoutine from './components/TrainerEditClientRoutine';
 import './styles.css';
 
 const App = () => {
@@ -157,6 +158,20 @@ const App = () => {
                 userRole === 'trainer' ? (
                   <Layout>
                     <TrainerEditClientProgress />
+                  </Layout>
+                ) : <Navigate to="/" replace />
+              ) : (
+                <Navigate to="/" replace />
+              )
+            }
+          />
+          <Route
+            path="/TrainerDashboard/edit-routine/:userId"
+            element={
+              isAuthenticated ? (
+                userRole === 'trainer' ? (
+                  <Layout>
+                    <TrainerEditClientRoutine />
                   </Layout>
                 ) : <Navigate to="/" replace />
               ) : (

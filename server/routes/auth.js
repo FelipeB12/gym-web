@@ -75,13 +75,25 @@ router.get('/user', auth, async (req, res) => {
 
 // Get all clients (for trainers)
 router.get('/clients', auth, async (req, res) => {
-  try {
-    const clients = await User.find({ role: 'client' }).select('-password');
-    res.json(clients);
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).send('Server Error');
-  }
+    try {
+        // Verify that the requesting user is a trainer
+        const trainer = await User.findById(req.user.id);
+        if (!trainer || trainer.role !== 'trainer') {
+            return res.status(403).json({ msg: 'Not authorized to view clients' });
+        }
+
+        // Only fetch clients who have selected this trainer (using gymType)
+        const clients = await User.find({ 
+            role: 'client',
+            gymType: trainer._id.toString()  // Match clients where gymType equals trainer's ID
+        }).select('-password');
+
+        console.log(`Fetched ${clients.length} clients for trainer ${trainer._id}`);
+        res.json(clients);
+    } catch (err) {
+        console.error('Error fetching clients:', err);
+        res.status(500).send('Server Error');
+    }
 });
 
 // Register route
