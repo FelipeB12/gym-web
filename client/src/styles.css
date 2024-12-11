@@ -1,16 +1,120 @@
+:root {
+  --primary-color: #daee68;
+  --primary-hover: #7cdb70;
+  --background-dark: #1A1A1A;
+  --background-card: #232323;
+  --text-primary: #FFFFFF;
+  --text-secondary: rgba(255, 255, 255, 0.7);
+  --border-color: rgba(255, 255, 255, 0.1);
+  --success-color: #4CAF50;
+  --error-color: #dc3545;
+  --border-radius-lg: 12px;
+  --border-radius-md: 8px;
+  --border-radius-sm: 4px;
+  --transition: all 0.3s ease;
+}
+
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: rgb(25, 25, 25) url('components/img/logo.png') center center fixed;
+  background: var(--background-dark) url('components/img/logo.png') center center fixed;
   background-size: cover;
   background-position: center;
   background-blend-mode: overlay;
-  color: white;
+  color: var(--text-primary);
   padding-bottom: 70px;
+  margin: 0;
+  line-height: 1.5;
+  min-height: 100vh;
 }
+
+/* Common Form Styles */
+.common-form, .landing-form {
+  background-color: var(--background-card);
+  border-radius: var(--border-radius-lg);
+  padding: 2rem;
+  max-width: 400px;
+  margin: 2rem auto;
+  border: 1px solid var(--border-color);
+}
+
+.common-form input, .landing-form input,
+.common-form select, .common-form textarea {
+  width: 100%;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-md);
+  background-color: rgba(255, 255, 255, 0.05);
+  color: var(--text-primary);
+  font-size: 1rem;
+  transition: var(--transition);
+}
+
+.common-form input:focus, .landing-form input:focus,
+.common-form select:focus, .common-form textarea:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px rgba(123, 104, 238, 0.2);
+}
+
+/* Button Styles */
+.common-button, .submit-button, .book-button {
+  width: 100%;
+  padding: 1rem;
+  background-color: var(--primary-color);
+  color: var(--text-primary);
+  border: none;
+  border-radius: var(--border-radius-md);
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.common-button:hover, .submit-button:hover, .book-button:hover {
+  background-color: var(--primary-hover);
+  transform: translateY(-1px);
+}
+
+.common-button:disabled, .submit-button:disabled {
+  background-color: rgba(123, 104, 238, 0.5);
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Title and Text Styles */
+.title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  text-align: center;
+  margin: 1.5rem 0;
+}
+
+.error-message {
+  color: var(--error-color);
+  background-color: rgba(220, 53, 69, 0.1);
+  padding: 0.75rem;
+  border-radius: var(--border-radius-sm);
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+.success-message {
+  color: var(--success-color);
+  background-color: rgba(76, 175, 80, 0.1);
+  padding: 0.75rem;
+  border-radius: var(--border-radius-sm);
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  text-align: center;
+}
+
 /* LANDING CSS */
 /* Add styles for the Landing component */
 .landing-form {
@@ -255,59 +359,142 @@ body {
 /* client/src/styles.css */
 
 /* Profile Form Styles */
-.profile-form, .common-form {
-  border-radius: 10px;
-  padding: 20px;
-  max-width: 400px;
-  margin: 20px auto;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.profile-form input, .common-form input, 
-.common-form select, .common-form textarea {
-  padding: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 5px;
-  background-color: rgba(35, 35, 35, 0.5);
-  color: white;
-  transition: border-color 0.3s;
-}
-
-.profile-form input:focus, .common-form input:focus,
-.common-form select:focus, .common-form textarea:focus {
-  border-color: rgba(255, 255, 255, 0.3);
-  outline: none;
-}
-
-.profile-form .error-message, .common-form .error-message {
-  color: #ff4d4d;
-  font-size: 0.9rem;
-  margin-top: 5px;
-}
-
-.profile-form button, .common-form button {
+.profile-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  min-height: calc(100vh - 70px);
   width: 100%;
-  padding: 10px;
-  background-color: #3c5846;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: background-color 0.3s;
+  padding: 2rem 1rem;
+  box-sizing: border-box;
 }
 
-.profile-form button:hover, .common-form button:hover {
-  background-color: #a8b8ca;
+.profile-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: rgba(35, 35, 35, 0.5);
+  backdrop-filter: blur(10px);
+  border-radius: var(--border-radius-lg);
+  padding: 2rem;
+  width: calc(100% - 4rem); /* Account for padding */
+  max-width: 400px;
+  margin: 2rem auto;
+  border: 1px solid var(--border-color);
 }
 
-.success-message {
-  background-color: rgba(60, 88, 70, 0.2);
-  color: #4CAF50;
+.profile-form form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.profile-form .form-group {
+  width: 100%;
+  margin-bottom: 1.5rem;
+}
+
+.profile-form label {
+  display: block;
+  color: var(--text-secondary);
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+  width: 100%;
+  text-align: left;
+}
+
+.profile-form input,
+.profile-form select,
+.profile-form textarea {
+  width: 100%;
   padding: 1rem;
+  background-color: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-md);
+  color: var(--text-primary);
   margin-bottom: 1rem;
-  border-radius: 4px;
   text-align: center;
+  box-sizing: border-box;
+}
+
+.profile-form .gender-selection {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  width: 100%;
+}
+
+.profile-form button {
+  width: 100%;
+  margin-top: 1rem;
+}
+
+@media (max-width: 480px) {
+  .profile-container {
+    padding: 1rem 0.5rem;
+  }
+  
+  .profile-form {
+    width: calc(100% - 2rem);
+    padding: 1.5rem;
+    margin: 1rem auto;
+  }
+
+  .profile-section {
+    padding: 0 0.5rem;
+  }
+}
+
+.profile-form input:focus,
+.profile-form select:focus,
+.profile-form textarea:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px rgba(123, 104, 238, 0.2);
+}
+
+.profile-form .success-message,
+.profile-form .error-message {
+  width: 100%;
+  text-align: center;
+  margin: 1rem 0;
+}
+
+/* Profile Container */
+.profile-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+  min-height: calc(100vh - 70px);
+}
+
+/* Responsive adjustments for profile form */
+@media (max-width: 480px) {
+  .profile-form {
+    padding: 1.5rem;
+    margin: 1rem auto;
+  }
+
+  .profile-form input,
+  .profile-form select,
+  .profile-form textarea {
+    padding: 0.75rem;
+  }
+
+  .profile-form .gender-selection {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .profile-form .gender-option {
+    padding: 0.75rem;
+  }
 }
 
 
@@ -846,7 +1033,7 @@ tr[style*="cursor: pointer"][aria-expanded="true"] td::after {
 }
 
 .submit-button:hover {
-  background-color: #0056b3;
+  background-color: #5f7183;
 }
 
 .submit-button:disabled {
@@ -1516,6 +1703,7 @@ th {
   color: #dc3545;
   padding: 10px;
   margin: 10px 0;
+  background-color: #f8d7da;
   border-radius: 4px;
 }
 
@@ -1565,7 +1753,6 @@ th {
 }
 
 .dashboard-content {
-  width: 100%;
   max-width: 600px;
   z-index: 1;
   padding: 20px;
@@ -2032,7 +2219,7 @@ th {
 
 /* Hover effects */
 .client-nav a:hover, .trainer-nav a:hover {
-    color: #9f50e3;
+    color: #8c73a2;
 }
 
 /* Add padding to main content to prevent overlap with fixed navbar */
@@ -2053,4 +2240,1049 @@ th {
     .client-nav span, .trainer-nav span {
         font-size: 0.6rem;
     }
+}
+
+/* Navigation Styles */
+.client-nav, .trainer-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background-color: var(--background-card);
+  padding: 0.8rem 0;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+}
+
+.client-nav a, .trainer-nav a {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-decoration: none;
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+  padding: 0.5rem;
+  transition: var(--transition);
+}
+
+.client-nav a.active, .trainer-nav a.active {
+  color: var(--primary-color);
+}
+
+.client-nav svg, .trainer-nav svg {
+  font-size: 1.5rem;
+  margin-bottom: 0.2rem;
+}
+
+/* Dashboard Styles */
+.dashboard-container {
+  min-height: 100vh;
+  padding: 1.5rem;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.dashboard-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+}
+
+.user-greeting {
+  font-size: 1.2rem;
+  color: var(--text-primary);
+}
+
+.date-display {
+  display: flex;
+  gap: 0.5rem;
+  margin: 1.5rem 0;
+}
+
+.date-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0.5rem;
+  min-width: 3rem;
+  border-radius: var(--border-radius-md);
+  background-color: var(--background-card);
+  border: 1px solid var(--border-color);
+}
+
+.date-item.active {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.stat-card {
+  background-color: var(--background-card);
+  border-radius: var(--border-radius-md);
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  border: 1px solid var(--border-color);
+}
+
+.stat-title {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  margin-bottom: 0.5rem;
+}
+
+.stat-value {
+  font-size: 1.5rem;
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+/* Progress Bar Styles */
+.progress-bar {
+  width: 100%;
+  height: 0.5rem;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: var(--border-radius-sm);
+  margin-top: 0.5rem;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background-color: var(--primary-color);
+  border-radius: var(--border-radius-sm);
+  transition: width 0.3s ease;
+}
+
+/* Workout Type Selection */
+.workout-types {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+  gap: 0.5rem;
+  margin: 1rem 0;
+}
+
+.workout-type {
+  padding: 0.75rem;
+  text-align: center;
+  background-color: var(--background-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-md);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.workout-type.active {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+  color: var(--text-primary);
+}
+
+/* Difficulty Selection */
+.difficulty-levels {
+  display: flex;
+  gap: 1rem;
+  margin: 1rem 0;
+}
+
+.difficulty-level {
+  flex: 1;
+  padding: 0.5rem;
+  text-align: center;
+  background-color: var(--background-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-md);
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.difficulty-level.active {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+/* Profile and Form Styles */
+.profile-form {
+  background-color: var(--background-card);
+  border-radius: var(--border-radius-lg);
+  padding: 2rem;
+  max-width: 400px;
+  margin: 2rem auto;
+  border: 1px solid var(--border-color);
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-label {
+  display: block;
+  color: var(--text-secondary);
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.gender-selection {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.gender-option {
+  flex: 1;
+  padding: 1rem;
+  text-align: center;
+  background-color: var(--background-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-md);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.gender-option.active {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+  color: var(--text-primary);
+}
+
+/* Progress Tracking */
+.progress-section {
+  margin-top: 2rem;
+}
+
+.progress-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.progress-title {
+  font-size: 1.2rem;
+  color: var(--text-primary);
+}
+
+.progress-card {
+  background-color: var(--background-card);
+  border-radius: var(--border-radius-md);
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  border: 1px solid var(--border-color);
+}
+
+.progress-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+
+.progress-stat {
+  text-align: center;
+}
+
+.stat-label {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  margin-bottom: 0.25rem;
+}
+
+.stat-number {
+  font-size: 1.5rem;
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+/* Calendar and Period Tracking */
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 0.5rem;
+  margin: 1rem 0;
+}
+
+.calendar-day {
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--background-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-sm);
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.calendar-day.active {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+  color: var(--text-primary);
+}
+
+.calendar-day.period {
+  background-color: rgba(123, 104, 238, 0.2);
+  border-color: var(--primary-color);
+}
+
+/* Nutrition Tracking */
+.nutrition-card {
+  background-color: var(--background-card);
+  border-radius: var(--border-radius-md);
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  border: 1px solid var(--border-color);
+}
+
+.nutrition-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.nutrition-progress {
+  margin: 1rem 0;
+}
+
+.nutrition-label {
+  display: flex;
+  justify-content: space-between;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+}
+
+.nutrition-bar {
+  height: 0.5rem;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: var(--border-radius-sm);
+  overflow: hidden;
+}
+
+.nutrition-fill {
+  height: 100%;
+  background-color: var(--primary-color);
+  border-radius: var(--border-radius-sm);
+  transition: width 0.3s ease;
+}
+
+/* Update card backgrounds with transparency */
+.common-form, .landing-form, .profile-form,
+.stat-card, .progress-card, .nutrition-card,
+.workout-type, .difficulty-level, .date-item,
+.calendar-day, .appointment-card, .exercise-item {
+  background-color: rgba(35, 35, 35, 0.5) !important;
+  backdrop-filter: blur(10px);
+}
+
+/* Update navigation background with transparency */
+.client-nav, .trainer-nav {
+  background-color: rgba(35, 35, 35, 0.9) !important;
+  backdrop-filter: blur(10px);
+}
+
+/* Update active states to maintain visibility */
+.workout-type.active, .difficulty-level.active,
+.date-item.active, .calendar-day.active,
+.gender-option.active {
+  background-color: rgba(123, 104, 238, 0.7) !important;
+}
+
+/* Add a subtle text shadow to improve readability over the background */
+.title, .stat-value, .progress-title,
+.user-greeting, .nutrition-header {
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+/* Common Container Styles */
+.container-center {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 1.5rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Profile Containers */
+.client-container,
+.trainer-container,
+.admin-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: calc(100vh - 70px); /* Account for bottom nav */
+  padding: 2rem 1rem;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* List Styles */
+.list-container {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+.list-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+  width: 100%;
+  margin: 1rem 0;
+}
+
+/* Form Centering */
+.form-container {
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+/* Table Styles */
+.table-container {
+  width: 100%;
+  max-width: 1000px;
+  margin: 2rem auto;
+  overflow-x: auto;
+  background-color: rgba(35, 35, 35, 0.5);
+  backdrop-filter: blur(10px);
+  border-radius: var(--border-radius-md);
+  border: 1px solid var(--border-color);
+}
+
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0 auto;
+}
+
+th, td {
+  padding: 1rem;
+  text-align: left;
+  border-bottom: 1px solid var(--border-color);
+}
+
+/* Search and Filter Containers */
+.search-filter-container {
+  width: 100%;
+  max-width: 800px;
+  margin: 1rem auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Dashboard Cards Grid */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+/* Schedule and Calendar Container */
+.schedule-container {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+/* Workout Plan Container */
+.workout-plan-container {
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+/* Client List Container */
+.client-list-container {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+/* Admin Management Container */
+.admin-management-container {
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .container-center,
+  .list-container,
+  .form-container,
+  .table-container,
+  .search-filter-container,
+  .schedule-container,
+  .workout-plan-container,
+  .client-list-container,
+  .admin-management-container {
+    padding: 1rem 0.5rem;
+  }
+
+  .list-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  table {
+    font-size: 0.9rem;
+  }
+
+  th, td {
+    padding: 0.75rem;
+  }
+}
+
+/* Ensure forms maintain proper width on smaller screens */
+@media (max-width: 480px) {
+  .form-container {
+    width: calc(100% - 2rem);
+    padding: 1rem;
+  }
+
+  .search-filter-container {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
+.common-form select,
+.profile-form select {
+  width: 100%;
+  padding: 1rem;
+  background-color: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-md);
+  color: var(--text-primary);
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  background-size: 1em;
+  padding-right: 2.5rem;
+}
+
+.common-form select option,
+.profile-form select option {
+  background-color: var(--background-card);
+  color: var(--text-primary);
+  padding: 1rem;
+}
+
+.common-form select:focus,
+.profile-form select:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px rgba(123, 104, 238, 0.2);
+}
+
+/* For Firefox */
+.common-form select,
+.profile-form select {
+  text-indent: 0.01px;
+  text-overflow: '';
+}
+
+/* For IE/Edge */
+.common-form select::-ms-expand,
+.profile-form select::-ms-expand {
+  display: none;
+}
+
+/* Hover state for options */
+.common-form select option:hover,
+.profile-form select option:hover,
+.common-form select option:focus,
+.profile-form select option:focus {
+  background-color: rgba(123, 104, 238, 0.2);
+}
+
+/* Common Form Container */
+.common-form-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  min-height: calc(100vh - 70px);
+  width: 100%;
+  padding: 2rem 1rem;
+  box-sizing: border-box;
+}
+
+.common-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: rgba(35, 35, 35, 0.5);
+  backdrop-filter: blur(10px);
+  border-radius: var(--border-radius-lg);
+  padding: 2rem;
+  width: calc(100% - 4rem); /* Account for padding */
+  max-width: 400px;
+  margin: 2rem auto;
+  border: 1px solid var(--border-color);
+}
+
+.common-form form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.common-form .form-group {
+  width: 100%;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.common-form label {
+  display: block;
+  color: var(--text-secondary);
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+  width: 100%;
+  text-align: left;
+}
+
+.common-form input,
+.common-form select,
+.common-form textarea {
+  width: 100%;
+  padding: 1rem;
+  background-color: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-md);
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.common-form button {
+  width: 100%;
+  margin-top: 1rem;
+  text-align: center;
+}
+
+.common-form .success-message,
+.common-form .error-message {
+  width: 100%;
+  text-align: center;
+  margin: 1rem 0;
+}
+
+/* Responsive adjustments */
+@media (max-width: 480px) {
+  .common-form-container {
+    padding: 1rem 0.5rem;
+  }
+  
+  .common-form {
+    padding: 1.5rem;
+    margin: 1rem auto;
+  }
+
+  .common-form input,
+  .common-form select,
+  .common-form textarea {
+    padding: 0.75rem;
+  }
+}
+
+/* Day Navigation Styles */
+.day-buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 1.5rem auto;
+  max-width: 600px;
+  padding: 0 1rem;
+  flex-wrap: wrap;
+}
+
+.day-nav-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid var(--border-color);
+  background-color: rgba(35, 35, 35, 0.5);
+  color: var(--text-primary);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(10px);
+}
+
+.day-nav-btn:hover {
+  background-color: rgba(123, 104, 238, 0.3);
+  transform: translateY(-2px);
+}
+
+.day-nav-btn.active {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+  transform: translateY(-2px);
+}
+
+/* Routine Display Styles */
+.routine-container {
+  display: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  margin: 1rem auto;
+  max-width: 800px;
+  padding: 0 1rem;
+}
+
+.routine-container.visible {
+  display: block;
+  opacity: 1;
+}
+
+.routine-card {
+  background-color: rgba(35, 35, 35, 0.5);
+  backdrop-filter: blur(10px);
+  border-radius: var(--border-radius-md);
+  border: 1px solid var(--border-color);
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.exercise-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.exercise-item {
+  background-color: rgba(35, 35, 35, 0.3);
+  border-radius: var(--border-radius-sm);
+  padding: 1rem;
+  margin-bottom: 0.5rem;
+  border: 1px solid var(--border-color);
+}
+
+/* Responsive adjustments */
+@media (max-width: 480px) {
+  .day-buttons {
+    gap: 0.25rem;
+  }
+
+  .day-nav-btn {
+    width: 35px;
+    height: 35px;
+    font-size: 0.9rem;
+  }
+}
+
+/* Workout Navigation and Day Buttons */
+.workouts-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.workout-nav {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
+.day-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.day-nav-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid var(--border-color);
+  background-color: rgba(35, 35, 35, 0.5);
+  color: var(--text-primary);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(10px);
+}
+
+.day-nav-btn:hover {
+  background-color: rgba(123, 104, 238, 0.3);
+  transform: translateY(-2px);
+}
+
+.day-nav-btn.active {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+  transform: translateY(-2px);
+}
+
+/* Routine Grid and Cards */
+.routine-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.day-card {
+  display: none;
+  opacity: 0;
+  background-color: rgba(35, 35, 35, 0.5);
+  backdrop-filter: blur(10px);
+  border-radius: var(--border-radius-md);
+  padding: 1.5rem;
+  border: 1px solid var(--border-color);
+  transition: opacity 0.3s ease;
+  margin-bottom: 1rem;
+}
+
+.day-card.visible {
+  display: block;
+  opacity: 1;
+}
+
+.routine-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Update exercise values layout */
+.exercise-values {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin: 1rem 0;
+  padding: 1rem;
+  background-color: rgba(35, 35, 35, 0.3);
+  border-radius: var(--border-radius-sm);
+}
+
+.exercise-value {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.exercise-value label {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+.update-btn {
+  width: 100%;
+  padding: 0.75rem;
+  background-color: var(--primary-color);
+  color: var(--text-primary);
+  border: none;
+  border-radius: var(--border-radius-sm);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 1rem;
+}
+
+.update-btn:hover {
+  background-color: var(--primary-hover);
+  transform: translateY(-1px);
+}
+
+/* Edit Button */
+.edit-button {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  background-color: rgba(123, 104, 238, 0.2);
+  color: var(--text-primary);
+  text-decoration: none;
+  border-radius: var(--border-radius-sm);
+  margin: 0.5rem auto;
+  transition: all 0.3s ease;
+  text-align: center;
+  font-size: 0.9rem;
+  border: 1px solid rgba(123, 104, 238, 0.3);
+  backdrop-filter: blur(10px);
+}
+
+.edit-button:hover {
+  background-color: rgba(123, 104, 238, 0.3);
+  transform: translateY(-1px);
+}
+
+/* Exercise List */
+.exercise-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.exercise-item {
+  background-color: rgba(35, 35, 35, 0.3);
+  border-radius: var(--border-radius-sm);
+  padding: 1rem;
+  margin-bottom: 0.5rem;
+  border: 1px solid var(--border-color);
+}
+
+/* Rest Day Message */
+.rest-day {
+  text-align: center;
+  color: var(--text-secondary);
+  font-style: italic;
+  padding: 2rem;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 480px) {
+  .day-buttons {
+    gap: 0.25rem;
+  }
+
+  .day-nav-btn {
+    width: 35px;
+    height: 35px;
+    font-size: 0.9rem;
+  }
+
+  .routine-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Header Styles */
+.header-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  padding: 1rem 2rem;
+  margin-bottom: 1.5rem;
+  border-radius: 8px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.gym-name {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0;
+  text-align: left;
+  justify-self: start;
+}
+
+.membership-days {
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  margin: 0;
+  text-align: right;
+  justify-self: end;
+}
+
+/* Responsive adjustments */
+@media (max-width: 480px) {
+  .header-container {
+    padding: 1rem;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .gym-name {
+    font-size: 1.2rem;
+  }
+
+  .membership-days {
+    font-size: 1rem;
+  }
+}
+
+.link-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  width: 100%;
+  margin-top: 1rem;
+}
+
+.link-container .link:first-child {
+  justify-self: start;
+  text-align: left;
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.link-container .link:last-child {
+  justify-self: end;
+  text-align: right;
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.link-container .link:hover {
+  color: var(--primary-color);
+}
+
+@media (max-width: 480px) {
+  .link-container {
+    gap: 0.5rem;
+  }
+  
+  .link-container .link {
+    font-size: 0.9rem;
+  }
 }

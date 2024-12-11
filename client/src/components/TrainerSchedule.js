@@ -56,24 +56,24 @@ const TrainerSchedule = () => {
         fetchAppointments();
     }, []);
 
-    if (loading) return <div className="loading">Loading...</div>;
+    if (loading) return <div className="loading">Cargando...</div>;
     if (error) return <div className="error-message">{error}</div>;
 
     return (
         <div className="schedule-container">
-            <h2>Appointments Management</h2>
+            <h2>Agenda</h2>
             
             <div className="appointments-list">
                 {appointments.length === 0 ? (
-                    <p className="no-appointments">No pending appointments</p>
+                    <p className="no-appointments">No citas pendientes</p>
                 ) : (
                     appointments.map((appointment) => (
                         <div key={appointment._id} className="appointment-card">
                             <div className="appointment-info">
                                 <h3>{appointment.userName}</h3>
-                                <p><strong>Date:</strong> {appointment.date}</p>
-                                <p><strong>Time:</strong> {appointment.time}</p>
-                                <p><strong>Status:</strong> 
+                                <p><strong>Fecha:</strong> {appointment.date}</p>
+                                <p><strong>Hora:</strong> {appointment.time}</p>
+                                <p><strong>Estado:</strong> 
                                     <span className={`status-${appointment.status}`}>
                                         {appointment.status}
                                     </span>
@@ -86,13 +86,13 @@ const TrainerSchedule = () => {
                                         onClick={() => handleAppointmentStatus(appointment._id, 'confirmed')}
                                         className="confirm-button"
                                     >
-                                        Accept
+                                        Aceptar
                                     </button>
                                     <button
                                         onClick={() => handleAppointmentStatus(appointment._id, 'cancelled')}
                                         className="cancel-button"
                                     >
-                                        Reject
+                                        Rechazar
                                     </button>
                                 </div>
                             )}

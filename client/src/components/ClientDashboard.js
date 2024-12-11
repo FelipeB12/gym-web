@@ -33,9 +33,9 @@ const ClientDashboard = ({ userName, membership, gymType }) => {
   return (
     <div className="dashboard-container">
       <div className="dashboard-content">
-        <div className="header">
-          <div className="member-id">{trainerName}</div>
-          <div className="days-left">Días de membresía: {membership} days</div>
+        <div className="header-container">
+          <div className="gym-name">{trainerName}</div>
+          <div className="membership-days">Días de membresía: {membership} days</div>
         </div>
 
         <button className="button" onClick={() => navigate('/clientworkouts')}>

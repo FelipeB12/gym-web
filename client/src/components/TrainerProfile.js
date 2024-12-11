@@ -73,13 +73,13 @@ const TrainerProfile = () => {
 
     if (formData.newPassword) {
       if (!formData.currentPassword) {
-        newErrors.currentPassword = 'Current password is required to change password';
+        newErrors.currentPassword = 'La contraseña actual es requerida para cambiar la contraseña';
       }
       if (formData.newPassword.length < 6) {
-        newErrors.newPassword = 'New password must be at least 6 characters';
+        newErrors.newPassword = 'La nueva contraseña debe tener al menos 6 caracteres';
       }
       if (formData.newPassword !== formData.confirmPassword) {
-        newErrors.confirmPassword = 'Passwords do not match';
+        newErrors.confirmPassword = 'Las contraseñas no coinciden';
       }
     }
 
@@ -153,7 +153,7 @@ const TrainerProfile = () => {
       </div>
 
       <form className="common-form" onSubmit={handleSubmit}>
-        <h1 className="common-title">My Profile</h1>
+        <h1 className="common-title">Mi Perfil</h1>
         
         {successMessage && (
           <div className="success-message">{successMessage}</div>
@@ -164,7 +164,7 @@ const TrainerProfile = () => {
         )}
 
         <div className="form-group">
-          <label htmlFor="name">Name:</label>
+          <label htmlFor="name">Nombre:</label>
           <input
             type="text"
             id="name"
@@ -188,7 +188,7 @@ const TrainerProfile = () => {
         </div>
 
         <div className="form-group">
-          <label htmlFor="currentPassword">Current Password:</label>
+          <label htmlFor="currentPassword">Contraseña actual:</label>
           <input
             type="password"
             id="currentPassword"
@@ -200,7 +200,7 @@ const TrainerProfile = () => {
         </div>
 
         <div className="form-group">
-          <label htmlFor="newPassword">New Password:</label>
+          <label htmlFor="newPassword">Nueva contraseña:</label>
           <input
             type="password"
             id="newPassword"
@@ -212,7 +212,7 @@ const TrainerProfile = () => {
         </div>
 
         <div className="form-group">
-          <label htmlFor="confirmPassword">Confirm New Password:</label>
+          <label htmlFor="confirmPassword">Confirmar nueva contraseña:</label>
           <input
             type="password"
             id="confirmPassword"
@@ -227,7 +227,7 @@ const TrainerProfile = () => {
           type="submit" 
           className="submit-button"
         >
-          Save Changes
+          Guardar cambios
         </button>
       </form>
     </div>

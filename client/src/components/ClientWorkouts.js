@@ -160,12 +160,15 @@ const ClientWorkouts = () => {
         </div>
       </div>
       <Link to="/ClientEditWorkout" className="edit-button">
-        Editar
+        Editar rutinas
       </Link>
       <div className="routine-grid">
         {Object.entries(filteredRoutine).map(([day, exercises]) => (
-          <div key={day} className="day-card">
-            {/*<h3>{getDayName(day)}</h3>*/}
+          <div 
+            key={day} 
+            className={`day-card ${selectedDay === day ? 'visible' : ''}`}
+          >
+            <h3>Día {day}</h3>
             {exercises && exercises.length > 0 ? (
               <ul className="exercise-list">
                 {exercises.map((exercise, index) => (
@@ -241,21 +244,19 @@ const ClientWorkouts = () => {
                         )}
                       </div>
                     ) : (
-                      <>
-                        <div className="exercise-values">
-                          <span className="exercise-value">
-                            <label>Series:</label>
-                            {exercise.sets}
-                          </span>
-                          <span className="exercise-value">
-                            <label>Reps:</label>
-                            {exercise.reps}
-                          </span>
-                          <span className="exercise-value">
-                            <label>Peso:</label>
-                            {exercise.weight}kg
-                          </span>
-                        </div>
+                      <div className="exercise-values">
+                        <span className="exercise-value">
+                          <label>Series:</label>
+                          {exercise.sets}
+                        </span>
+                        <span className="exercise-value">
+                          <label>Reps:</label>
+                          {exercise.reps}
+                        </span>
+                        <span className="exercise-value">
+                          <label>Peso:</label>
+                          {exercise.weight}kg
+                        </span>
                         {exercise.lastUpdated && (
                           <div className="last-updated">
                             Última actualización: {new Date(exercise.lastUpdated).toLocaleDateString()}
@@ -267,7 +268,7 @@ const ClientWorkouts = () => {
                         >
                           Actualizar
                         </button>
-                      </>
+                      </div>
                     )}
                   </li>
                 ))}

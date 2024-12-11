@@ -12,42 +12,42 @@ const ClientNavBar = () => {
         className={location.pathname === '/ClientDashboard' ? 'active' : ''}
       >
         <FaHome />
-        <span>Home</span>
-      </Link>
-      <Link 
-        to="/ClientProfile" 
-        className={location.pathname === '/ClientProfile' ? 'active' : ''}
-      >
-        <FaUser />
-        <span>Profile</span>
+        <span>Inicio</span>
       </Link>
       <Link 
         to="/ClientWorkouts" 
         className={location.pathname === '/ClientWorkouts' ? 'active' : ''}
       >
         <FaDumbbell />
-        <span>Workouts</span>
-      </Link>
-      <Link 
-        to="/ClientAIChat" 
-        className={location.pathname === '/ClientAIChat' ? 'active' : ''}
-      >
-        <FaRobot />
-        <span>AI Chat</span>
+        <span>Rutinas</span>
       </Link>
       <Link 
         to="/ClientProgress" 
         className={location.pathname === '/ClientProgress' ? 'active' : ''}
       >
         <FaChartLine />
-        <span>Progress</span>
+        <span>Progreso</span>
+      </Link>
+      <Link 
+        to="/ClientAIChat" 
+        className={location.pathname === '/ClientAIChat' ? 'active' : ''}
+      >
+        <FaRobot />
+        <span>Chat</span>
+      </Link>
+      <Link 
+        to="/ClientProfile" 
+        className={location.pathname === '/ClientProfile' ? 'active' : ''}
+      >
+        <FaUser />
+        <span>Perfil</span>
       </Link>
       <Link 
         to="/ClientAppointment" 
         className={location.pathname === '/ClientAppointment' ? 'active' : ''}
       >
         <FaCalendarAlt />
-        <span>Appointment</span>
+        <span>Valoración</span>
       </Link>
     </nav>
   );

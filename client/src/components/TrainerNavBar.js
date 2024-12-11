@@ -12,28 +12,28 @@ const TrainerNavBar = () => {
         className={location.pathname === '/TrainerDashboard' ? 'active' : ''}
       >
         <FaHome />
-        <span>Home</span>
+        <span>Inicio</span>
       </Link>
       <Link 
         to="/TrainerDashboard/search" 
         className={location.pathname.includes('/search') ? 'active' : ''}
       >
         <FaSearch />
-        <span>Search</span>
+        <span>Buscar</span>
       </Link>
       <Link 
         to="/TrainerDashboard/schedule" 
         className={location.pathname.includes('/schedule') ? 'active' : ''}
       >
         <FaCalendarAlt />
-        <span>Schedule</span>
+        <span>Agenda</span>
       </Link>
       <Link 
         to="/TrainerDashboard/profile" 
         className={location.pathname.includes('/profile') ? 'active' : ''}
       >
         <FaUser />
-        <span>Profile</span>
+        <span>Perfil</span>
       </Link>
     </nav>
   );
