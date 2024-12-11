@@ -1113,7 +1113,6 @@ tr[style*="cursor: pointer"][aria-expanded="true"] td::after {
 .exercise-card span {
   display: block;
   font-weight: bold;
-  color: #333;
 }
 
 .save-button {
@@ -1484,9 +1483,8 @@ tr[style*="cursor: pointer"][aria-expanded="true"] td::after {
 }
 
 .edit-actions {
-  display: flex;
-  gap: 10px;
-  margin-top: 10px;
+  margin-right: 1rem;
+  margin-left: 1rem;
 }
 
 .save-btn, .cancel-btn, .update-btn {
@@ -1526,7 +1524,6 @@ tr[style*="cursor: pointer"][aria-expanded="true"] td::after {
   background: rgba(35, 35, 35, 0.5);
   border-radius: 8px;
   margin-top: 10px;
-  width: 100%;
 }
 
 .input-group {
@@ -3129,7 +3126,6 @@ th, td {
 .update-btn {
   width: 100%;
   padding: 0.75rem;
-  background-color: var(--primary-color);
   color: var(--text-primary);
   border: none;
   border-radius: var(--border-radius-sm);
@@ -3285,4 +3281,95 @@ th, td {
   .link-container .link {
     font-size: 0.9rem;
   }
+}
+
+/* Day buttons in ClientEditWorkout */
+.day-selector {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  max-width: 600px;
+  margin: 1.5rem auto;
+}
+
+.day-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid var(--border-color);
+  background-color: rgba(35, 35, 35, 0.5);
+  color: var(--text-primary);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(10px);
+}
+
+.day-btn:hover {
+  background-color: rgba(123, 104, 238, 0.3);
+  transform: translateY(-2px);
+}
+
+.day-btn.selected {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+  transform: translateY(-2px);
+}
+
+/* Select menu styles */
+.muscle-group-select {
+  width: 100%;
+  padding: 1rem;
+  background-color: rgba(35, 35, 35, 0.5);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-md);
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+  text-align: center;
+  cursor: pointer;
+  backdrop-filter: blur(10px);
+}
+
+.muscle-group-select option {
+  background-color: rgb(35, 35, 35);
+  color: var(--text-primary);
+  padding: 1rem;
+}
+
+/* Back button styles */
+.back-button {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  background-color: rgba(123, 104, 238, 0.2);
+  color: var(--text-primary);
+  text-decoration: none;
+  border-radius: var(--border-radius-sm);
+  margin: 0.5rem auto;
+  transition: all 0.3s ease;
+  text-align: center;
+  font-size: 0.9rem;
+  border: 1px solid rgba(123, 104, 238, 0.3);
+  backdrop-filter: blur(10px);
+}
+
+.back-button:hover {
+  background-color: rgba(123, 104, 238, 0.3);
+  transform: translateY(-1px);
+}
+
+/* Edit header styles */
+.edit-header {
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.edit-header h2 {
+  margin: 0;
+  color: var(--text-primary);
+  font-size: 1.4rem;
 }
