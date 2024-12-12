@@ -6,6 +6,7 @@ import ClientWorkouts from './ClientWorkouts';
 import ClientAIChat from './ClientAIChat';
 import ClientAppointment from './ClientAppointment';
 import ClientProgress from './ClientProgress';
+import ClientNavBar from './ClientNavBar';
 
 const ClientDashboard = ({ userName, membership, gymType }) => {
   const navigate = useNavigate();
@@ -30,27 +31,33 @@ const ClientDashboard = ({ userName, membership, gymType }) => {
     }
   }, [gymType]);
 
-  return (
-    <div className="dashboard-container">
-      <div className="dashboard-content">
-        <div className="header-container">
-          <div className="gym-name">{trainerName}</div>
-          <div className="membership-days">Días de membresía: {membership} days</div>
-        </div>
-
-        <button className="button" onClick={() => navigate('/clientworkouts')}>
-          Empezar
-        </button>
+  const DashboardHome = () => (
+    <div className="dashboard-content">
+      <div className="header-container">
+        <div className="gym-name">{trainerName}</div>
+        <div className="membership-days">Días de membresía: {membership} days</div>
       </div>
 
-      <Routes>
-        <Route path="clientprofile" element={<ClientProfile />} />
-        <Route path="clientworkouts" element={<ClientWorkouts />} />
-        <Route path="clientaichat" element={<ClientAIChat />} />
-        <Route path="clientprogress" element={<ClientProgress />} />
-        <Route path="clientappointment" element={<ClientAppointment />} />
-      </Routes>
+      <button className="button" onClick={() => navigate('clientworkouts')}>
+        Empezar
+      </button>
     </div>
+  );
+
+  return (
+    <>
+      <ClientNavBar />
+      <div className="dashboard-container">
+        <Routes>
+          <Route index element={<DashboardHome />} />
+          <Route path="clientprofile" element={<ClientProfile />} />
+          <Route path="clientworkouts" element={<ClientWorkouts />} />
+          <Route path="clientaichat" element={<ClientAIChat />} />
+          <Route path="clientprogress" element={<ClientProgress />} />
+          <Route path="clientappointment" element={<ClientAppointment />} />
+        </Routes>
+      </div>
+    </>
   );
 };
 

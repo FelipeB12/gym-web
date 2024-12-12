@@ -176,7 +176,7 @@ const ClientProfile = () => {
           <input
             type="text"
             id="name"
-            value={formData.name}
+            value={formData.name || ''}
             onChange={handleChange}
             className={errors.name ? 'error' : ''}
           />
@@ -188,7 +188,7 @@ const ClientProfile = () => {
           <input
             type="email"
             id="email"
-            value={formData.email}
+            value={formData.email || ''}
             onChange={handleChange}
             className={errors.email ? 'error' : ''}
           />
@@ -199,7 +199,7 @@ const ClientProfile = () => {
           <label htmlFor="gym">Entrenador:</label>
           <select
             id="gym"
-            value={formData.gym}
+            value={formData.gym || ''}
             onChange={handleChange}
             className={errors.gym ? 'error' : ''}
           >
@@ -218,7 +218,7 @@ const ClientProfile = () => {
           <input
             type="number"
             id="age"
-            value={formData.age}
+            value={formData.age || ''}
             onChange={handleChange}
             className={errors.age ? 'error' : ''}
           />
@@ -231,7 +231,7 @@ const ClientProfile = () => {
             type="number"
             id="height"
             placeholder="Altura en cm"
-            value={formData.height}
+            value={formData.height || ''}
             onChange={handleChange}
             className={errors.height ? 'error' : ''}
           />
@@ -267,9 +267,10 @@ const ClientProfile = () => {
           <input
             type="password"
             id="currentPassword"
-            value={formData.currentPassword}
+            value={formData.currentPassword || ''}
             onChange={handleChange}
             className={errors.currentPassword ? 'error' : ''}
+            autoComplete="current-password"
           />
           {errors.currentPassword && <div className="error-message">{errors.currentPassword}</div>}
         </div>
@@ -279,9 +280,10 @@ const ClientProfile = () => {
           <input
             type="password"
             id="newPassword"
-            value={formData.newPassword}
+            value={formData.newPassword || ''}
             onChange={handleChange}
             className={errors.newPassword ? 'error' : ''}
+            autoComplete="new-password"
           />
           {errors.newPassword && <div className="error-message">{errors.newPassword}</div>}
         </div>
@@ -291,9 +293,10 @@ const ClientProfile = () => {
           <input
             type="password"
             id="confirmPassword"
-            value={formData.confirmPassword}
+            value={formData.confirmPassword || ''}
             onChange={handleChange}
             className={errors.confirmPassword ? 'error' : ''}
+            autoComplete="new-password"
           />
           {errors.confirmPassword && <div className="error-message">{errors.confirmPassword}</div>}
         </div>

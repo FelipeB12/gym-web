@@ -8,43 +8,43 @@ const ClientNavBar = () => {
   return (
     <nav className="client-nav">
       <Link 
-        to="/ClientDashboard" 
-        className={location.pathname === '/ClientDashboard' ? 'active' : ''}
+        to="/clientdashboard" 
+        className={location.pathname === '/clientdashboard' ? 'active' : ''}
       >
         <FaHome />
         <span>Inicio</span>
       </Link>
       <Link 
-        to="/ClientWorkouts" 
-        className={location.pathname === '/ClientWorkouts' ? 'active' : ''}
+        to="clientworkouts" 
+        className={location.pathname === '/clientworkouts' ? 'active' : ''}
       >
         <FaDumbbell />
         <span>Rutinas</span>
       </Link>
       <Link 
-        to="/ClientProgress" 
-        className={location.pathname === '/ClientProgress' ? 'active' : ''}
+        to="clientprogress" 
+        className={location.pathname === '/clientprogress' ? 'active' : ''}
       >
         <FaChartLine />
         <span>Progreso</span>
       </Link>
       <Link 
-        to="/ClientAIChat" 
-        className={location.pathname === '/ClientAIChat' ? 'active' : ''}
+        to="clientaichat" 
+        className={location.pathname === '/clientaichat' ? 'active' : ''}
       >
         <FaRobot />
         <span>Chat</span>
       </Link>
       <Link 
-        to="/ClientProfile" 
-        className={location.pathname === '/ClientProfile' ? 'active' : ''}
+        to="clientprofile" 
+        className={location.pathname === '/clientprofile' ? 'active' : ''}
       >
         <FaUser />
         <span>Perfil</span>
       </Link>
       <Link 
-        to="/ClientAppointment" 
-        className={location.pathname === '/ClientAppointment' ? 'active' : ''}
+        to="clientappointment" 
+        className={location.pathname === '/clientappointment' ? 'active' : ''}
       >
         <FaCalendarAlt />
         <span>Valoración</span>
