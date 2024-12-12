@@ -20,7 +20,16 @@ const TrainerSchedule = () => {
                 }
             );
             
-            setAppointments(response.data.appointments);
+            // Filter out past appointments
+            const now = new Date();
+            const futureAppointments = response.data.appointments.filter(apt => {
+                const [day, month, year] = apt.date.split('/');
+                const [hours, minutes] = apt.time.split(':');
+                const appointmentDate = new Date(year, month - 1, day, hours, minutes);
+                return appointmentDate > now;
+            });
+            
+            setAppointments(futureAppointments);
             setLoading(false);
         } catch (err) {
             console.error('Error fetching trainer appointments:', err);
@@ -71,9 +80,9 @@ const TrainerSchedule = () => {
                         <div key={appointment._id} className="appointment-card">
                             <div className="appointment-info">
                                 <h3>{appointment.userName}</h3>
-                                <p><strong>Fecha:</strong> {appointment.date}</p>
-                                <p><strong>Hora:</strong> {appointment.time}</p>
-                                <p><strong>Estado:</strong> 
+                                <p><strong>Fecha: </strong> {appointment.date}</p>
+                                <p><strong>Hora: </strong> {appointment.time}</p>
+                                <p><strong>Estado: </strong> 
                                     <span className={`status-${appointment.status}`}>
                                         {appointment.status}
                                     </span>

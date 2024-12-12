@@ -44,7 +44,7 @@ const TrainerSearch = () => {
 
     return (
         <div className="trainer-search">
-            <h2>Mis Clientes</h2>
+            <h2>Mis clientes</h2>
             <input
                 type="text"
                 placeholder="Buscar por nombre"

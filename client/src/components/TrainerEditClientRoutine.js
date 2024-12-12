@@ -230,11 +230,11 @@ const TrainerEditClientRoutine = () => {
 
   const renderRoutineSummary = () => (
     <div className="routine-summary">
-      <h3>Current Routine</h3>
+      <h3>Rutina actual</h3>
       {Object.entries(currentRoutine).map(([day, exercises]) => (
         exercises.length > 0 && (
           <div key={day} className="day-summary">
-            <h4>Day {day}</h4>
+            <h4>Día {day}</h4>
             <ul>
               {exercises.map((ex, index) => (
                 <li key={index}>
@@ -258,7 +258,7 @@ const TrainerEditClientRoutine = () => {
         <Link to="/TrainerDashboard/search" className="back-button">
           ← Volver
         </Link>
-        <h2>Editar Rutina para {client.name}</h2>
+        <h2>Editar rutina para {client.name}</h2>
       </div>
 
       <div className="routine-layout">

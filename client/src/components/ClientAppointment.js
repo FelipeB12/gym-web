@@ -46,7 +46,15 @@ const ClientAppointment = () => {
 
             console.log('Appointments response:', response.data);
             if (response.data && response.data.appointments) {
-                setAppointments(response.data.appointments);
+                // Filter only future appointments
+                const now = new Date();
+                const futureAppointments = response.data.appointments.filter(apt => {
+                    const [day, month, year] = apt.date.split('/');
+                    const [hours, minutes] = apt.time.split(':');
+                    const appointmentDate = new Date(year, month - 1, day, hours, minutes);
+                    return appointmentDate > now;
+                });
+                setAppointments(futureAppointments);
             }
         } catch (error) {
             console.error('Error fetching appointments:', error);
@@ -61,12 +69,20 @@ const ClientAppointment = () => {
     const handleBook = async () => {
         if (selectedDay && selectedHour) {
             try {
-                const hasActiveAppointment = appointments.some(apt => 
-                    apt.status !== 'completed' && apt.status !== 'cancelled'
-                );
+                // Check for existing future appointments
+                const [day, month, year] = selectedDay.split('/');
+                const [hours, minutes] = selectedHour.split(':');
+                const selectedDate = new Date(year, month - 1, day, hours, minutes);
+                const now = new Date();
 
-                if (hasActiveAppointment) {
-                    alert('You already have an active appointment. Please cancel it before booking a new one.');
+                if (selectedDate <= now) {
+                    alert('Cannot book appointments in the past');
+                    return;
+                }
+
+                const hasFutureAppointment = appointments.length > 0;
+                if (hasFutureAppointment) {
+                    alert('You already have a future appointment. Please cancel it before booking a new one.');
                     return;
                 }
 

@@ -113,14 +113,14 @@ const TrainerEditClientProgress = () => {
   };
 
   return (
-    <div className="edit-progress-container">
-      <h2>Actualizar Medidas del Cliente</h2>
-      
-      {error && <div className="error-message">{error}</div>}
-      {success && <div className="success-message">{success}</div>}
+    <div className="container common-form">
+      <form onSubmit={handleSubmit}>
+        <h1 className="common-title">Actualizar Medidas del Cliente</h1>
+        
+        {error && <div className="error-message">{error}</div>}
+        {success && <div className="success-message">{success}</div>}
 
-      <form onSubmit={handleSubmit} className="measurements-form">
-        <div className="measurements-section">
+        <div className="form-section">
           <h3>Medidas Generales</h3>
           <div className="form-group">
             <label htmlFor="peso">Peso (kg):</label>
@@ -131,6 +131,7 @@ const TrainerEditClientProgress = () => {
               name="peso"
               value={measurements.peso}
               onChange={handleChange}
+              className={error && error.peso ? 'error' : ''}
             />
           </div>
           <div className="form-group">
@@ -142,11 +143,12 @@ const TrainerEditClientProgress = () => {
               name="grasaCorporal"
               value={measurements.grasaCorporal}
               onChange={handleChange}
+              className={error && error.grasaCorporal ? 'error' : ''}
             />
           </div>
         </div>
 
-        <div className="measurements-section">
+        <div className="form-section">
           <h3>Medidas Musculares (cm)</h3>
           <div className="form-group">
             <label htmlFor="pecho">Pecho:</label>
@@ -157,6 +159,7 @@ const TrainerEditClientProgress = () => {
               name="pecho"
               value={measurements.pecho}
               onChange={handleChange}
+              className={error && error.pecho ? 'error' : ''}
             />
           </div>
           <div className="form-group">
@@ -168,6 +171,7 @@ const TrainerEditClientProgress = () => {
               name="bicepDerecho"
               value={measurements.bicepDerecho}
               onChange={handleChange}
+              className={error && error.bicepDerecho ? 'error' : ''}
             />
           </div>
           <div className="form-group">
@@ -179,6 +183,7 @@ const TrainerEditClientProgress = () => {
               name="bicepIzquierdo"
               value={measurements.bicepIzquierdo}
               onChange={handleChange}
+              className={error && error.bicepIzquierdo ? 'error' : ''}
             />
           </div>
           <div className="form-group">
@@ -190,6 +195,7 @@ const TrainerEditClientProgress = () => {
               name="espalda"
               value={measurements.espalda}
               onChange={handleChange}
+              className={error && error.espalda ? 'error' : ''}
             />
           </div>
           <div className="form-group">
@@ -201,6 +207,7 @@ const TrainerEditClientProgress = () => {
               name="cintura"
               value={measurements.cintura}
               onChange={handleChange}
+              className={error && error.cintura ? 'error' : ''}
             />
           </div>
           <div className="form-group">
@@ -212,6 +219,7 @@ const TrainerEditClientProgress = () => {
               name="gluteos"
               value={measurements.gluteos}
               onChange={handleChange}
+              className={error && error.gluteos ? 'error' : ''}
             />
           </div>
           <div className="form-group">
@@ -223,6 +231,7 @@ const TrainerEditClientProgress = () => {
               name="musloDerecho"
               value={measurements.musloDerecho}
               onChange={handleChange}
+              className={error && error.musloDerecho ? 'error' : ''}
             />
           </div>
           <div className="form-group">
@@ -234,6 +243,7 @@ const TrainerEditClientProgress = () => {
               name="musloIzquierdo"
               value={measurements.musloIzquierdo}
               onChange={handleChange}
+              className={error && error.musloIzquierdo ? 'error' : ''}
             />
           </div>
           <div className="form-group">
@@ -245,6 +255,7 @@ const TrainerEditClientProgress = () => {
               name="gemeloDerecho"
               value={measurements.gemeloDerecho}
               onChange={handleChange}
+              className={error && error.gemeloDerecho ? 'error' : ''}
             />
           </div>
           <div className="form-group">
@@ -256,6 +267,7 @@ const TrainerEditClientProgress = () => {
               name="gemeloIzquierdo"
               value={measurements.gemeloIzquierdo}
               onChange={handleChange}
+              className={error && error.gemeloIzquierdo ? 'error' : ''}
             />
           </div>
         </div>
