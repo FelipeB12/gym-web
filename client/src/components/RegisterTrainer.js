@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
+import logo from './img/logo.png';
 
 const RegisterTrainer = () => {
   const [gymName, setGymName] = useState('');
@@ -54,8 +55,9 @@ const RegisterTrainer = () => {
   return (
     <div className="app-container">
       <div className="landing-form common-form">
+        <img src={logo} alt="Logo" className="logo" />
         <form onSubmit={handleSubmit}>
-          <h2 className="common-title">Registrar Entrenador</h2>
+          <h2 className="common-title">Registrar entrenador</h2>
           {error && <p className="error-message">{error}</p>}
           {successMessage && <p className="success-message">{successMessage}</p>}
           <input
@@ -96,6 +98,9 @@ const RegisterTrainer = () => {
           <button type="submit" className="common-button">
             Registrarme
           </button>
+          <div className="link-container">
+            <Link to="/" className="link">Volver</Link>
+          </div>
         </form>
       </div>
     </div>

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
+import logo from './img/logo.png';
 
 const Register = () => {
   const [email, setEmail] = useState('');
@@ -80,11 +81,9 @@ const Register = () => {
   return (
     <div className="app-container">
       <div className="landing-form common-form">
+        <img src={logo} alt="Logo" className="logo" />
         <form onSubmit={handleSubmit}>
           <h2 className="common-title">GYM APP</h2>
-          <div className="link-container">
-            <Link to="/register-trainer" className="link">Registrarme como GYM</Link>
-          </div>
           {error && <p className="error-message">{error}</p>}
           {successMessage && <p className="success-message">{successMessage}</p>}
           <input
@@ -125,10 +124,10 @@ const Register = () => {
             ))}
           </select>
 
-          <p className='title'>Información de progreso</p>
+          <h3>Información de progreso</h3>
           
           <div className="gender-selection">
-            <label className={`gender-button ${gender === 'male' ? 'active' : ''}`}>
+            <label className={`gender-option ${gender === 'male' ? 'active' : ''}`}>
               <input
                 type="radio"
                 value="male"
@@ -138,7 +137,7 @@ const Register = () => {
               />
               Hombre
             </label>
-            <label className={`gender-button ${gender === 'female' ? 'active' : ''}`}>
+            <label className={`gender-option ${gender === 'female' ? 'active' : ''}`}>
               <input
                 type="radio"
                 value="female"
@@ -197,6 +196,7 @@ const Register = () => {
           </button>
           <div className="link-container">
             <Link to="/" className="link">¿Ya tienes una cuenta? Inicia sesión</Link>
+            <Link to="/register-trainer" className="link">Registrarme como GYM</Link>
           </div>
         </form>
       </div>
