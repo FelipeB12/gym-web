@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import '../styles.css';
@@ -27,6 +27,9 @@ const ClientWorkouts = () => {
   const [expandedExercise, setExpandedExercise] = useState(null);
   const [editingExercise, setEditingExercise] = useState(null);
   const [updatedValues, setUpdatedValues] = useState({});
+  const [time, setTime] = useState(0);
+  const [isRunning, setIsRunning] = useState(false);
+  const timerRef = useRef(null);
 
   // Exercise image mapping
   const exerciseImages = {
@@ -71,6 +74,18 @@ const ClientWorkouts = () => {
 
     fetchRoutine();
   }, []);
+
+  useEffect(() => {
+    if (isRunning) {
+      timerRef.current = setInterval(() => {
+        setTime(prevTime => prevTime + 1);
+      }, 1000);
+    }
+
+    return () => {
+      if (timerRef.current) clearInterval(timerRef.current);
+    };
+  }, [isRunning]);
 
   const handleUpdateExercise = async (day, exerciseIndex, exerciseName) => {
     const exercise = routine[day][exerciseIndex];
@@ -126,6 +141,42 @@ const ClientWorkouts = () => {
     }
   };
 
+  const startTimer = () => {
+    setIsRunning(true);
+  };
+
+  const pauseTimer = () => {
+    setIsRunning(false);
+  };
+
+  const resetTimer = () => {
+    setIsRunning(false);
+    setTime(0);
+  };
+
+  const formatTime = (timeInSeconds) => {
+    const hours = Math.floor(timeInSeconds / 3600);
+    const minutes = Math.floor((timeInSeconds % 3600) / 60);
+    const seconds = timeInSeconds % 60;
+    return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+  };
+
+  const renderTimer = () => (
+    <div className="timer-container">
+      <div className="timer-display">
+        {formatTime(time)}
+      </div>
+      <div className="timer-controls">
+        <button className="timer-button" onClick={isRunning ? pauseTimer : startTimer}>
+          {isRunning ? '⏸️' : '▶️'}
+        </button>
+        <button className="timer-button reset" onClick={resetTimer}>
+          ↺
+        </button>
+      </div>
+    </div>
+  );
+
   if (loading) {
     return <div>Loading...</div>;
   }
@@ -145,6 +196,7 @@ const ClientWorkouts = () => {
 
   return (
     <div className="workouts-container">
+      {renderTimer()}
       <h5>Mi Rutina</h5>
       <div className="workout-nav">
         <div className="day-buttons">
@@ -162,6 +214,7 @@ const ClientWorkouts = () => {
       <Link to="/ClientEditWorkout" className="edit-button">
         Editar rutinas
       </Link>
+      
       <div className="routine-grid">
         {Object.entries(filteredRoutine).map(([day, exercises]) => (
           <div 
