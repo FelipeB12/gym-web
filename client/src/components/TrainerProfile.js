@@ -108,7 +108,7 @@ const TrainerProfile = () => {
       }
 
       const response = await axios.put(
-        'http://localhost:5002/api/users/profile',
+        'http://localhost:5002/api/auth/profile',
         updateData,
         {
           headers: {
@@ -171,6 +171,7 @@ const TrainerProfile = () => {
             value={formData.name}
             onChange={handleChange}
             className={errors.name ? 'error' : ''}
+            disabled
           />
           {errors.name && <div className="error-message">{errors.name}</div>}
         </div>
@@ -183,6 +184,7 @@ const TrainerProfile = () => {
             value={formData.email}
             onChange={handleChange}
             className={errors.email ? 'error' : ''}
+            disabled
           />
           {errors.email && <div className="error-message">{errors.email}</div>}
         </div>
