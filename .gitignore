@@ -5,10 +5,6 @@ server/node_modules
 
 # Environment files
 .env
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
 client/.env
 server/.env
 
@@ -18,8 +14,8 @@ yarn-debug.log*
 yarn-error.log*
 
 # Build files
-/build
 /client/build
+/server/build
 
 # IDE files
 .idea
@@ -30,3 +26,10 @@ yarn-error.log*
 # OS files
 .DS_Store
 Thumbs.db
+
+# Ignore test files and folders
+client/src/tests
+server/tests
+
+# Ignore any local configuration files
+*.local
