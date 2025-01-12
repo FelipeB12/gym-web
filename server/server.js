@@ -43,8 +43,8 @@ app.use((err, req, res, next) => {
   res.status(500).json({ message: err.message });
 });
 
-// Serve static files from the React app
-app.use(express.static(path.join(__dirname, '../client/build')));
+// Serve static files from the 'public' directory
+app.use(express.static(path.join(__dirname, 'public')));
 
 // The "catchall" handler: for any request that doesn't
 // match one above, send back the React app.
