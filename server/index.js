@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
+const path = require('path');
 require('dotenv').config();
 
 const app = express();
@@ -16,6 +17,14 @@ app.use(cors({
   credentials: true
 }));
 app.use(express.json());
+
+// Serve static files from the 'client/build' directory
+app.use(express.static(path.join(__dirname, '../client/build')));
+
+// Serve the CSS file
+app.get('/src/styles.css', (req, res) => {
+  res.sendFile(path.join(__dirname, '../client/src/styles.css'));
+});
 
 // Make environment variables available to routes
 app.use((req, res, next) => {
