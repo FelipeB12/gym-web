@@ -15,7 +15,7 @@ const AdminTrainers = () => {
   const fetchTrainers = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.get('http://localhost:5002/api/auth/trainers', {
+      const response = await axios.get('https://gymapp.site/api/auth/trainers', {
         headers: { Authorization: `Bearer ${token}` }
       });
       setTrainers(response.data);
@@ -32,7 +32,7 @@ const AdminTrainers = () => {
       const newStatus = currentStatus === 'active' ? 'inactive' : 'active';
       
       await axios.put(
-        `http://localhost:5002/api/auth/trainer-status/${trainerId}`,
+        `https://gymapp.site/api/auth/trainer-status/${trainerId}`,
         { status: newStatus },
         { headers: { Authorization: `Bearer ${token}` }}
       );

@@ -25,7 +25,7 @@ const RegisterTrainer = () => {
     }
     setError('');
     try {
-      const response = await axios.post('http://localhost:5002/api/auth/register-trainer', {
+      const response = await axios.post('https://gymapp.site/api/auth/register-trainer', {
         gymName,
         email,
         password,

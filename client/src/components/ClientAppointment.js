@@ -35,7 +35,7 @@ const ClientAppointment = () => {
 
             console.log('Fetching appointments with token:', token);
             const response = await axios.get(
-                'http://localhost:5002/api/auth/appointments',
+                'https://gymapp.site/api/auth/appointments',
                 {
                     headers: { 
                         'Authorization': `Bearer ${token}`,
@@ -88,7 +88,7 @@ const ClientAppointment = () => {
 
                 const token = localStorage.getItem('token');
                 const response = await axios.post(
-                    'http://localhost:5002/api/auth/appointments',
+                    'https://gymapp.site/api/auth/appointments',
                     {
                         date: selectedDay,
                         time: selectedHour
@@ -116,7 +116,7 @@ const ClientAppointment = () => {
             try {
                 const token = localStorage.getItem('token');
                 const response = await axios.delete(
-                    `http://localhost:5002/api/auth/appointments/${appointmentId}`,
+                    `https://gymapp.site/api/auth/appointments/${appointmentId}`,
                     {
                         headers: { 
                             Authorization: `Bearer ${token}`,

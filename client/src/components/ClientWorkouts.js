@@ -121,7 +121,7 @@ const ClientWorkouts = () => {
       exercise.lastUpdated = new Date().toISOString();
 
       const response = await axios.post(
-        'http://localhost:5002/api/workouts',
+        'https://gymapp.site/api/workouts',
         { [editingExercise.day]: updatedRoutine[editingExercise.day] },
         {
           headers: {

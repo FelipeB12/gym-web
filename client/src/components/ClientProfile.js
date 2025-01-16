@@ -128,7 +128,7 @@ const ClientProfile = () => {
       }
 
       await axios.put(
-        'http://localhost:5002/api/auth/user',
+        'https://gymapp.site/api/auth/user',
         updateData,
         {
           headers: {

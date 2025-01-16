@@ -11,7 +11,7 @@ const AdminSearch = () => {
             const token = localStorage.getItem('token');
             console.log('Fetching trainers with token:', token ? 'Present' : 'Missing');
             
-            const response = await axios.get('http://localhost:5002/api/auth/trainers', {
+            const response = await axios.get('https://gymapp.site/api/auth/trainers', {
                 headers: { 
                     Authorization: `Bearer ${token}`,
                     'Content-Type': 'application/json'
@@ -44,7 +44,7 @@ const AdminSearch = () => {
             });
 
             const response = await axios.put(
-                `http://localhost:5002/api/auth/trainer-status/${trainerId}`,
+                `https://gymapp.site/api/auth/trainer-status/${trainerId}`,
                 { status: newStatus },
                 {
                     headers: { 

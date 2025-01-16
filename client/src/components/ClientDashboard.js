@@ -16,7 +16,7 @@ const ClientDashboard = ({ userName, membership, gymType }) => {
     const fetchTrainerName = async () => {
       console.log('Fetching trainer name for gymType:', gymType);
       try {
-        const response = await axios.get(`http://localhost:5002/api/auth/trainer/${gymType}`);
+        const response = await axios.get(`https://gymapp.site/api/auth/trainer/${gymType}`);
         console.log('Trainer response:', response.data);
         setTrainerName(response.data.name);
       } catch (err) {

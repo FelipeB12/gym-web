@@ -152,7 +152,7 @@ const ClientEditWorkout = () => {
       };
 
       const response = await axios.post(
-        'http://localhost:5002/api/workouts',
+        'https://gymapp.site/api/workouts',
         workoutData,
         {
           headers: {

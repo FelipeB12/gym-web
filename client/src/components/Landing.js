@@ -14,7 +14,7 @@ const Landing = ({ onLogin }) => {
     setError('');
 
     try {
-      const response = await axios.post('http://localhost:5002/api/auth/login', 
+      const response = await axios.post('https://gymapp.site/api/auth/login', 
         { email, password },
         {
           headers: {

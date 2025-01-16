@@ -22,7 +22,7 @@ const Register = () => {
   useEffect(() => {
     const fetchActiveTrainers = async () => {
       try {
-        const response = await axios.get('http://localhost:5002/api/auth/active-trainers');
+        const response = await axios.get('https://gymapp.site/api/auth/active-trainers');
         setActiveTrainers(response.data);
         if (response.data.length > 0) {
           setGymType(response.data[0]._id);
@@ -44,7 +44,7 @@ const Register = () => {
     }
     setError('');
     try {
-      await axios.post('http://localhost:5002/api/auth/register', {
+      await axios.post('https://gymapp.site/api/auth/register', {
         name,
         email,
         password,
