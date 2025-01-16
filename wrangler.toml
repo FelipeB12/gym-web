@@ -1,0 +1,18 @@
+# Configuration for Gym Web Application
+name = "gym-web"
+compatibility_date = "2024-01-16"
+
+[build]
+command = "cd client && npm install && npm run build"
+publish = "client/build"
+
+[site]
+bucket = "./client/build"
+
+[env.production]
+name = "gym-web-production"
+route = { pattern = "gymapp.site/*", zone_name = "gymapp.site" }
+
+[env.staging]
+name = "gym-web-staging"
+route = { pattern = "staging.gymapp.site/*", zone_name = "gymapp.site" }
