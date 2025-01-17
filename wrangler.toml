@@ -2,9 +2,11 @@
 name = "gym-web"
 
 [build]
-command = "cd client && npm install && CI=false npm run build"
+command = "cd client && npm install && npm run build"
 output_directory = "client/build"
-base_directory = "client"
+base_directory = "/"
 
 [build.environment]
 NODE_VERSION = "18"
+BUILD_VERSION = "2"
+CI = "false"
