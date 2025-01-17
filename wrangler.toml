@@ -1,10 +1,9 @@
 # Configuration for Gym Web Application
 name = "gym-web"
-compatibility_date = "2024-01-16"
 
 [build]
-command = "cd client && npm install && npm run build"
-publish = "client/build"
+command = "cd client && npm install && CI=false npm run build"
+pages_build_output_dir = "client/build"
 
 [site]
 bucket = "./client/build"
