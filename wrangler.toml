@@ -1,0 +1,10 @@
+# Configuration for Gym Web Application
+name = "gym-web"
+
+[build]
+command = "cd client && npm install && CI=false npm run build"
+output_directory = "client/build"
+base_directory = "client"
+
+[build.environment]
+NODE_VERSION = "18"
