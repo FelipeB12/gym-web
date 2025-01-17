@@ -1,12 +1,23 @@
 # Configuration for Gym Web Application
 name = "gym-web"
+pages_build_output_dir = "client/build"
 
 [build]
 command = "cd client && npm install && npm run build"
-output_directory = "client/build"
-base_directory = "/"
 
 [build.environment]
 NODE_VERSION = "18"
-BUILD_VERSION = "2"
 CI = "false"
+
+[vars]
+REACT_APP_API_URL = "https://gymapp.site/api"
+
+# Add KV and D1 configurations if needed later
+# [[kv_namespaces]]
+# binding = "KV"
+# id = ""
+
+# [[d1_databases]]
+# binding = "DB"
+# database_name = ""
+# database_id = ""
